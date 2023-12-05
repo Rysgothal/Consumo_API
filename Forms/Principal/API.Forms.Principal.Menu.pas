@@ -6,7 +6,7 @@ uses
   System.Variants, System.Classes, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.OleCtrls,
   Vcl.StdCtrls, Vcl.Menus, Winapi.WebView2, Winapi.ActiveX, Vcl.Edge, SHDocVw, Vcl.ExtCtrls,
   Vcl.ComCtrls, System.ImageList, Vcl.ImgList, Vcl.BaseImageCollection, Vcl.ImageCollection, Vcl.Imaging.pngimage,
-  System.UITypes, Winapi.Windows, Vcl.Graphics;
+  System.UITypes, Winapi.Windows, Vcl.Graphics, API.DataModules.Principal;
 
 type
   TfrmPrincipal = class(TForm)
@@ -16,11 +16,11 @@ type
     mmnMenuPrincipal: TMainMenu;
     menuConsultar: TMenuItem;
     menuConsultarViaCep: TMenuItem;
-    imglistIcons: TImageList;
     procedure imgLogoGansoMouseLeave(Sender: TObject);
     procedure imgLogoGansoMouseEnter(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure tmrTempoAtualTimer(Sender: TObject);
+    procedure menuConsultarViaCepClick(Sender: TObject);
   private
     procedure CarregarImagemLogo(pNomeImagem: string);
     { Private declarations }
@@ -34,7 +34,7 @@ var
 implementation
 
 uses
-  System.SysUtils;
+  System.SysUtils, API.Forms.ViaCep;
 
 {$R *.dfm}
 
@@ -69,6 +69,16 @@ end;
 procedure TfrmPrincipal.imgLogoGansoMouseLeave(Sender: TObject);
 begin
   CarregarImagemLogo('LogoGansoCinza');
+end;
+
+procedure TfrmPrincipal.menuConsultarViaCepClick(Sender: TObject);
+begin
+  if not Assigned(frmViaCep) then
+  begin
+    frmViaCep := TfrmViaCep.Create(Self);
+  end;
+
+  frmViaCep.ShowModal;
 end;
 
 procedure TfrmPrincipal.tmrTempoAtualTimer(Sender: TObject);

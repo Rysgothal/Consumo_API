@@ -1,83 +1,10 @@
-object frmPrincipal: TfrmPrincipal
-  Left = 0
-  Top = 0
-  BorderIcons = [biSystemMenu, biMinimize]
-  BorderStyle = bsSingle
-  Caption = 'API'
-  ClientHeight = 414
-  ClientWidth = 504
-  Color = clAppWorkSpace
-  Font.Charset = DEFAULT_CHARSET
-  Font.Color = clWindowText
-  Font.Height = -12
-  Font.Name = 'Segoe UI'
-  Font.Style = []
-  Menu = mmnMenuPrincipal
-  Position = poScreenCenter
-  OnCreate = FormCreate
+object dmPrincipal: TdmPrincipal
+  Height = 126
+  Width = 134
   PixelsPerInch = 96
-  TextHeight = 15
-  object imgLogoGanso: TImage
-    Left = 92
-    Top = 134
-    Width = 320
-    Height = 114
-    AutoSize = True
-    Center = True
-    OnMouseEnter = imgLogoGansoMouseEnter
-    OnMouseLeave = imgLogoGansoMouseLeave
-  end
-  object sttsbarBarraStatus: TStatusBar
-    Left = 0
-    Top = 395
-    Width = 504
-    Height = 19
-    Color = clAppWorkSpace
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBtnText
-    Font.Height = -12
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    Panels = <
-      item
-        Bevel = pbNone
-        BiDiMode = bdLeftToRight
-        ParentBiDiMode = False
-        Width = 250
-      end
-      item
-        Alignment = taRightJustify
-        BiDiMode = bdLeftToRight
-        ParentBiDiMode = False
-        Text = '00:00:00'
-        Width = 50
-      end>
-    UseSystemFont = False
-  end
-  object tmrTempoAtual: TTimer
-    Enabled = False
-    Interval = 500
-    OnTimer = tmrTempoAtualTimer
-    Left = 440
-    Top = 344
-  end
-  object mmnMenuPrincipal: TMainMenu
-    Images = imglistIcons
-    Left = 48
-    Top = 16
-    object menuConsultar: TMenuItem
-      Caption = 'Consultar'
-      ImageIndex = 1
-      object menuConsultarViaCep: TMenuItem
-        Caption = 'Cep'
-        SubMenuImages = imglistIcons
-        ImageIndex = 0
-      end
-    end
-  end
   object imglistIcons: TImageList
     Left = 48
-    Top = 64
+    Top = 32
     Bitmap = {
       494C010102000800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010

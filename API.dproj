@@ -85,6 +85,8 @@
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -100,7 +102,33 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="Forms\Principal\API.Forms.Principal.pas"/>
+        <DCCReference Include="Forms\Principal\API.Forms.Principal.Menu.pas">
+            <Form>frmPrincipal</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\ViaCep\API.Forms.ViaCep.pas">
+            <Form>frmViaCep</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="DataModules\API.DataModules.Principal.pas">
+            <Form>dmPrincipal</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Classes\JSON\API.Classes.JSON.ViaCep.pas"/>
+        <DCCReference Include="Classes\Helpers\API.Classes.Helpers.Exceptions.pas"/>
+        <DCCReference Include="Classes\Base\API.Classes.Base.Principal.pas"/>
+        <DCCReference Include="Classes\Base\API.Classes.Base.ViaCep.pas"/>
+        <DCCReference Include="Classes\Helpers\API.Classes.Helpers.Strings.pas"/>
+        <DCCReference Include="Interfaces\AbstractFactory\API.Interfaces.AbstractFactory.FabricaApi.pas"/>
+        <DCCReference Include="Classes\Base\API.Classes.Base.IBGEMesorregiao.pas"/>
+        <DCCReference Include="Classes\AbstractFactory\API.Classes.AbstractFactory.FabricaAPi.pas"/>
+        <DCCReference Include="Classes\AbstractFactory\API.Classes.AbstractFactory.ProdutoViaCep.pas"/>
+        <DCCReference Include="Classes\Singleton\API.Classes.Singleton.Principal.pas"/>
+        <DCCReference Include="Classes\Helpers\API.Classes.Helpers.Enumerados.pas"/>
+        <DCCReference Include="Classes\AbstractFactory\API.Classes.AbstractFactory.ProdutoIBGE.pas"/>
+        <DCCReference Include="Classes\Base\API.Classes.Base.IBGERegiao.pas"/>
+        <DCCReference Include="Classes\Base\API.Classes.Base.IBGENomes.pas"/>
         <RcItem Include="Imagens\Logo-Ganso.png">
             <ResourceType>RCDATA</ResourceType>
             <ResourceId>LogoGansoColor</ResourceId>
@@ -129,6 +157,10 @@
                 <Source>
                     <Source Name="MainSource">API.dpr</Source>
                 </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k280.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp280.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
                 <DeployFile LocalName="Win32\Debug\API.exe" Configuration="Debug" Class="ProjectOutput">
