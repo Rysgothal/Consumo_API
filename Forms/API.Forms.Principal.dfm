@@ -130,6 +130,17 @@ object frmPrincipal: TfrmPrincipal
         ImageIndex = 0
         OnClick = menuConsultarViaCepClick
       end
+      object mmnIBGE: TMenuItem
+        Caption = 'IBGE'
+        object mmnIBGERegioes: TMenuItem
+          Caption = 'Regi'#245'es'
+          OnClick = mmnIBGERegioesClick
+        end
+        object mmnMesorregioes: TMenuItem
+          Caption = 'Mesorregi'#245'es'
+          OnClick = mmnMesorregioesClick
+        end
+      end
     end
   end
 end

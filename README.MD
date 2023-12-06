@@ -14,5 +14,5 @@ Ao executar a aplicação, você se depara com uma tela com um menu na parte sup
 - Conceito S.O.L.I.D.
 
 - Conceito de Design Pattern
-    > - Chain of Responsibility (Talvez)
+    > - Strategy
     > - 

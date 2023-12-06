@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Mask, System.StrUtils, JSON,
-  System.ImageList, Vcl.ImgList, API.Classes.Helpers.Strings;
+  System.ImageList, Vcl.ImgList, API.Classes.Helpers.Strings,
+  API.Classes.Base.ViaCep;
 
 type
   TfrmViaCep = class(TForm)
@@ -34,6 +35,7 @@ type
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
+    FViaCep: TApiViaCep;
     procedure PesquisarCep;
     procedure PreencherEdits(pJson: TJSONValue);
     procedure LimparFormulario;
@@ -49,7 +51,8 @@ var
 implementation
 
 uses
-  REST.Json, API.Classes.Base.ViaCep, API.Classes.JSON.ViaCep;
+  REST.Json, API.Classes.JSON.ViaCep, API.Classes.Helpers.Enumerados,
+  API.Forms.Navegador;
 
 {$R *.dfm}
 
@@ -77,7 +80,7 @@ begin
   lCep := TStringHelper.DigitarSomenteNumeros(lbeCepConsulta.Text);
 
   try
-//    lJson := FViaCep.ConsultarCep(lCep);
+    lJson := FViaCep.ConsultarCep(lCep);
     PreencherEdits(lJson);
   except
 //    on ECepNaoExiste do
@@ -153,16 +156,17 @@ end;
 
 procedure TfrmViaCep.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  FViaCep.Destroy;
   Action := TCloseAction.caFree;
   frmViaCep := nil;
 end;
 
 procedure TfrmViaCep.FormCreate(Sender: TObject);
 begin
-//  if not Assigned(FViaCep) then
-//  begin
-//    FViaCep := TViaCep.Create('https://viacep.com.br/ws/');
-//  end;
+  if not Assigned(FViaCep) then
+  begin
+    FViaCep := TApiViaCep.Create('https://viacep.com.br/ws/', taViaCep);
+  end;
 end;
 
 procedure TfrmViaCep.lbeCepConsultaChange(Sender: TObject);
@@ -171,21 +175,21 @@ begin
 end;
 
 procedure TfrmViaCep.AbrirMapa;
-//var
-//  lPesquisa: string;
+var
+  lPesquisa: string;
 begin
-//  if memJson.Text = EmptyStr then
-//  begin
-//    Exit;
-//  end;
+  if lbeCep.Text = EmptyStr then
+  begin
+    Exit;
+  end;
 
-//  if not Assigned(frmNavegador) then
-//  begin
-//    vPesquisa := 'https://www.google.com.br/maps/search/' + lbeCep1.Text;
-//    frmNavegador := TfrmNavegador.Create(vPesquisa);
-//  end;
+  if not Assigned(frmNavegador) then
+  begin
+    lPesquisa := 'https://www.google.com.br/maps/search/' + lbeCep.Text;
+    frmNavegador := TfrmNavegador.Create(lPesquisa);
+  end;
 
-//  frmNavegador.Show;
+  frmNavegador.Show;
 end;
 
 end.

@@ -30,7 +30,7 @@ begin
     raise ECepInvalido.Create('O CEP está inválido');
   end;
 
-  ConfigurarRequisicao('/{CEP}/json', 'CEP', pCep);
+  FConfigRequest.ConfigurarRequisicao(Request, pCep);
 
   if ContainsStr(Request.Response.JSONText, 'erro') then
   begin

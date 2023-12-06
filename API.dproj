@@ -102,13 +102,11 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="Forms\Principal\API.Forms.Principal.Menu.pas">
+        <DCCReference Include="Forms\API.Forms.Principal.pas">
             <Form>frmPrincipal</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="Forms\ViaCep\API.Forms.ViaCep.pas">
+        <DCCReference Include="Forms\API.Forms.ViaCep.pas">
             <Form>frmViaCep</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="DataModules\API.DataModules.Principal.pas">
             <Form>dmPrincipal</Form>
@@ -120,15 +118,39 @@
         <DCCReference Include="Classes\Base\API.Classes.Base.Principal.pas"/>
         <DCCReference Include="Classes\Base\API.Classes.Base.ViaCep.pas"/>
         <DCCReference Include="Classes\Helpers\API.Classes.Helpers.Strings.pas"/>
-        <DCCReference Include="Interfaces\AbstractFactory\API.Interfaces.AbstractFactory.FabricaApi.pas"/>
-        <DCCReference Include="Classes\Base\API.Classes.Base.IBGEMesorregiao.pas"/>
-        <DCCReference Include="Classes\AbstractFactory\API.Classes.AbstractFactory.FabricaAPi.pas"/>
-        <DCCReference Include="Classes\AbstractFactory\API.Classes.AbstractFactory.ProdutoViaCep.pas"/>
-        <DCCReference Include="Classes\Singleton\API.Classes.Singleton.Principal.pas"/>
+        <DCCReference Include="Classes\Base\IBGE\API.Classes.Base.IBGE.Mesorregiao.pas"/>
         <DCCReference Include="Classes\Helpers\API.Classes.Helpers.Enumerados.pas"/>
-        <DCCReference Include="Classes\AbstractFactory\API.Classes.AbstractFactory.ProdutoIBGE.pas"/>
-        <DCCReference Include="Classes\Base\API.Classes.Base.IBGERegiao.pas"/>
-        <DCCReference Include="Classes\Base\API.Classes.Base.IBGENomes.pas"/>
+        <DCCReference Include="Classes\Base\IBGE\API.Classes.Base.IBGE.Regiao.pas"/>
+        <DCCReference Include="Classes\Base\IBGE\API.Classes.Base.IBGE.Nomes.pas"/>
+        <DCCReference Include="Interfaces\Strategy\API.Interfaces.Strategy.Principal.pas"/>
+        <DCCReference Include="Classes\Strategy\API.Classes.Strategy.ViaCepStrategy.pas"/>
+        <DCCReference Include="Classes\JSON\IBGE\API.Classes.JSON.IBGE.Regiao.pas"/>
+        <DCCReference Include="Classes\JSON\IBGE\API.Classes.JSON.IBGE.Mesorregiao.pas"/>
+        <DCCReference Include="Classes\JSON\IBGE\API.Classes.JSON.IBGE.Metadados.pas"/>
+        <DCCReference Include="Classes\JSON\IBGE\API.Classes.JSON.IBGE.NomeFrequencia.pas"/>
+        <DCCReference Include="Classes\JSON\IBGE\API.Classes.JSON.IBGE.NomeRanking.pas"/>
+        <DCCReference Include="Classes\JSON\IBGE\API.Classes.JSON.IBGE.UF.pas"/>
+        <DCCReference Include="Forms\IBGE\API.Forms.IBGEMesorregiao.pas">
+            <Form>frmIbgeMesorregiao</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\IBGE\API.Forms.IBGENome.pas">
+            <Form>frmNomes</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\IBGE\API.Forms.IBGERegiao.pas">
+            <Form>frmIbgeRegiao</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\API.Forms.Navegador.pas">
+            <Form>frmNavegador</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Classes\Strategy\API.Classes.Strategy.IBGERegioesStrategy.pas"/>
+        <DCCReference Include="Classes\Strategy\API.Classes.Strategy.IBGEMetadadosStrategy.pas"/>
+        <DCCReference Include="Classes\Base\IBGE\API.Classes.Base.IBGE.Metadados.pas"/>
+        <DCCReference Include="Classes\Strategy\API.Classes.Strategy.IBGEMesorregiaoStrategy.pas"/>
+        <DCCReference Include="Classes\Strategy\API.Classes.Strategy.IBGEEstadosStrategy.pas"/>
         <RcItem Include="Imagens\Logo-Ganso.png">
             <ResourceType>RCDATA</ResourceType>
             <ResourceId>LogoGansoColor</ResourceId>
@@ -169,13 +191,13 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Imagens\Logo-Ganso-Grey.png" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="Imagens\Logo-Ganso.png" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Imagens\Logo-Ganso.png" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="Imagens\Logo-Ganso-Grey.png" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
@@ -982,10 +1004,10 @@
                 </DeployClass>
                 <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="OSX64" Name="$(PROJECTNAME).app"/>
-                <ProjectRoot Platform="Android64" Name="$(PROJECTNAME)"/>
-                <ProjectRoot Platform="OSXARM64" Name="$(PROJECTNAME).app"/>
-                <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="OSXARM64" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Android64" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>

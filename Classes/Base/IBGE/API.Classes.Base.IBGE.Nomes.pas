@@ -1,4 +1,4 @@
-unit API.Classes.Base.IBGENomes;
+unit API.Classes.Base.IBGE.Nomes;
 
 interface
 
@@ -6,7 +6,7 @@ uses
   API.Classes.Base.Principal, System.JSON;
 
 type
-  TIBGENomes = class(TApi)
+  TApiIBGENomes = class(TApi)
   public
     function ConsultarNomes(const pNome: string): TJSONValue;
   end;
@@ -18,14 +18,14 @@ uses
 
 { TIBGENomes }
 
-function TIBGENomes.ConsultarNomes(const pNome: string): TJSONValue;
+function TApiIBGENomes.ConsultarNomes(const pNome: string): TJSONValue;
 begin
   if pNome = EmptyStr then
   begin
     raise ENomeNaoInformado.Create('Nome não inserido');
   end;
 
-  ConfigurarRequisicao('/{nome}/', 'nome', pNome);
+  FConfigRequest.ConfigurarRequisicao(Request, pNome);
 
   if Request.Response.StatusCode <> 200 then
   begin

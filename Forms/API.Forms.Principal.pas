@@ -1,4 +1,4 @@
-unit API.Forms.Principal.Menu;
+unit API.Forms.Principal;
 
 interface
 
@@ -16,11 +16,16 @@ type
     mmnMenuPrincipal: TMainMenu;
     menuConsultar: TMenuItem;
     menuConsultarViaCep: TMenuItem;
+    mmnIBGE: TMenuItem;
+    mmnIBGERegioes: TMenuItem;
+    mmnMesorregioes: TMenuItem;
     procedure imgLogoGansoMouseLeave(Sender: TObject);
     procedure imgLogoGansoMouseEnter(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure tmrTempoAtualTimer(Sender: TObject);
     procedure menuConsultarViaCepClick(Sender: TObject);
+    procedure mmnIBGERegioesClick(Sender: TObject);
+    procedure mmnMesorregioesClick(Sender: TObject);
   private
     procedure CarregarImagemLogo(pNomeImagem: string);
     { Private declarations }
@@ -34,7 +39,8 @@ var
 implementation
 
 uses
-  System.SysUtils, API.Forms.ViaCep;
+  System.SysUtils, API.Forms.ViaCep, API.Forms.IBGERegiao,
+  API.Forms.IBGEMesorregiao;
 
 {$R *.dfm}
 
@@ -79,6 +85,26 @@ begin
   end;
 
   frmViaCep.ShowModal;
+end;
+
+procedure TfrmPrincipal.mmnIBGERegioesClick(Sender: TObject);
+begin
+  if not Assigned(frmIbgeRegiao) then
+  begin
+    frmIbgeRegiao := TfrmIbgeRegiao.Create(Self);
+  end;
+
+  frmIbgeRegiao.ShowModal;
+end;
+
+procedure TfrmPrincipal.mmnMesorregioesClick(Sender: TObject);
+begin
+  if not Assigned(frmIbgeMesorregiao) then
+  begin
+    frmIbgeMesorregiao := TfrmIbgeMesorregiao.Create(Self);
+  end;
+
+  frmIbgeMesorregiao.ShowModal;
 end;
 
 procedure TfrmPrincipal.tmrTempoAtualTimer(Sender: TObject);
