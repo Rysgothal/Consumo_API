@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Mask, System.StrUtils, JSON,
   System.ImageList, Vcl.ImgList, API.Classes.Helpers.Strings,
-  API.Classes.Base.ViaCep;
+  API.Classes.Base.ViaCep, API.Classes.Decorator.Log;
 
 type
   TfrmViaCep = class(TForm)
@@ -76,11 +76,14 @@ procedure TfrmViaCep.PesquisarCep;
 var
   lCep: string;
   lJson: TJSONValue;
+  lApiViaCepLog: TApiViaCep;
 begin
   lCep := TStringHelper.DigitarSomenteNumeros(lbeCepConsulta.Text);
 
   try
-    lJson := FViaCep.ConsultarCep(lCep);
+    lApiViaCepLog := TDecoratorApiLog.Create('https://viacep.com.br/ws/', taViaCep);
+    lJson := lApiViaCepLog.ConsultarCep(lCep);
+
     PreencherEdits(lJson);
   except
 //    on ECepNaoExiste do

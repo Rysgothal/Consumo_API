@@ -8,13 +8,14 @@ uses
 type
   TApiViaCep = class(TApi)
   public
-    function ConsultarCep(const pCep: string): TJSONValue;
+    function ConsultarCep(const pCep: string): TJSONValue; virtual; // por causa do decorator
   end;
 
 implementation
 
 uses
-  System.SysUtils, API.Classes.Helpers.Exceptions, System.StrUtils;
+  System.SysUtils, API.Classes.Helpers.Exceptions, System.StrUtils,
+  API.Classes.Helpers.Enumerados;
 
 { TViaCep }
 

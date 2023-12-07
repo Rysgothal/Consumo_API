@@ -25,14 +25,14 @@ uses
   API.Classes.JSON.IBGE.NomeRanking in 'Classes\JSON\IBGE\API.Classes.JSON.IBGE.NomeRanking.pas',
   API.Classes.JSON.IBGE.UF in 'Classes\JSON\IBGE\API.Classes.JSON.IBGE.UF.pas',
   API.Forms.IBGEMesorregiao in 'Forms\IBGE\API.Forms.IBGEMesorregiao.pas' {frmIbgeMesorregiao},
-  API.Forms.IBGENome in 'Forms\IBGE\API.Forms.IBGENome.pas' {frmNomes},
   API.Forms.IBGERegiao in 'Forms\IBGE\API.Forms.IBGERegiao.pas' {frmIbgeRegiao},
   API.Forms.Navegador in 'Forms\API.Forms.Navegador.pas' {frmNavegador},
   API.Classes.Strategy.IBGERegioesStrategy in 'Classes\Strategy\API.Classes.Strategy.IBGERegioesStrategy.pas',
   API.Classes.Strategy.IBGEMetadadosStrategy in 'Classes\Strategy\API.Classes.Strategy.IBGEMetadadosStrategy.pas',
   API.Classes.Base.IBGE.Metadados in 'Classes\Base\IBGE\API.Classes.Base.IBGE.Metadados.pas',
   API.Classes.Strategy.IBGEMesorregiaoStrategy in 'Classes\Strategy\API.Classes.Strategy.IBGEMesorregiaoStrategy.pas',
-  API.Classes.Strategy.IBGEEstadosStrategy in 'Classes\Strategy\API.Classes.Strategy.IBGEEstadosStrategy.pas';
+  API.Classes.Strategy.IBGEEstadosStrategy in 'Classes\Strategy\API.Classes.Strategy.IBGEEstadosStrategy.pas',
+  API.Classes.Decorator.Log in 'Classes\Decorator\API.Classes.Decorator.Log.pas';
 
 {$R *.res}
 
