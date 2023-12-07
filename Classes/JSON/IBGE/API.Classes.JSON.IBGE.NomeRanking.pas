@@ -30,6 +30,7 @@ type
     [JSONName('res')]
     FRes: TArray<TJSONIBGEResRanking>;
   public
+    destructor Destroy; override;
     property Localidade: string read FLocalidade write FLocalidade;
     property Sexo: string read FSexo write FSexo;
     property Res: TArray<TJSONIBGEResRanking> read FRes write FRes;
@@ -42,6 +43,7 @@ type
     function GetNomesRanking: TJSONIBGENomeRanking;
   public
     constructor Create(pJSONValue: TJSONValue; aDefault: string); overload;
+    destructor Destroy; override;
     property NomesRanking: TJSONIBGENomeRanking read GetNomesRanking;
   end;
 
@@ -70,9 +72,31 @@ begin
   Self := TJson.JsonToObject<TIbgeNomesRankings>(TJSONObject(pJSONValue));
 end;
 
+destructor TIbgeNomesRankings.Destroy;
+begin
+  for var lNomes in FNomesRankingArray do
+  begin
+    FreeAndNil(lNomes);
+  end;
+
+  inherited;
+end;
+
 function TIbgeNomesRankings.GetNomesRanking: TJSONIBGENomeRanking;
 begin
   Result := FNomesRankingArray[0];
+end;
+
+{ TJSONIBGENomeRanking }
+
+destructor TJSONIBGENomeRanking.Destroy;
+begin
+  for var lRes in FRes do
+  begin
+    FreeAndNil(lRes);
+  end;
+
+  inherited;
 end;
 
 end.

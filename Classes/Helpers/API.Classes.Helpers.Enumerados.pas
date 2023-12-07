@@ -3,7 +3,8 @@ unit API.Classes.Helpers.Enumerados;
 interface
 
 type
-  TTipoApi = (taViaCep, taMesorregiao, taRegiao, taMetadados);
+  TApiConsulta = (acViaCep, acMesorregiao, acRegiao, acMetadados);
+  TObjetoPara = (opMesorregioes, opRegiao, opRegioes, opMetadados, opUfs);
 
 implementation
 

@@ -33,6 +33,7 @@ type
     property Sexo: string read FSexo write FSexo;
     property Localidade: string read FLocalidade write FLocalidade;
     property Res: TArray<TJSONIBGEResFrequencia> read FRes write FRes;
+    destructor Destroy; override;
   end;
 
   TJSONIBGENomesFrequecias = class
@@ -42,6 +43,7 @@ type
     function GetNomesFrequencias: TObjectList<TJSONIBGENomeFrequencia>;
   public
     constructor Create(pJSONValue: TJSONValue; aDefault: string); overload;
+    destructor Destroy; override;
     property NomesFrequencias: TObjectList<TJSONIBGENomeFrequencia> read GetNomesFrequencias;
   end;
 
@@ -70,6 +72,16 @@ begin
   Self := TJson.JsonToObject<TJSONIBGENomesFrequecias>(TJSONObject(pJSONValue));
 end;
 
+destructor TJSONIBGENomesFrequecias.Destroy;
+begin
+  for var lNomes in FNomesArray do
+  begin
+    FreeAndNil(lNomes);
+  end;
+
+  inherited;
+end;
+
 function TJSONIBGENomesFrequecias.GetNomesFrequencias: TObjectList<TJSONIBGENomeFrequencia>;
 var
   vElemento: TJSONIBGENomeFrequencia;
@@ -83,6 +95,18 @@ begin
   end;
 
   Result := vListaNomes;
+end;
+
+{ TJSONIBGENomeFrequencia }
+
+destructor TJSONIBGENomeFrequencia.Destroy;
+begin
+  for var lRes in FRes do
+  begin
+    FreeAndNil(lRes);
+  end;
+
+  inherited;
 end;
 
 end.

@@ -25,6 +25,7 @@ type
     [JSONName('unidade')]
     FUnidade: TJSONIBGEUnidade;
   public
+    destructor Destroy; override;
     property Dimensao: string read FDimensao write FDimensao;
     property Unidade: TJSONIBGEUnidade read FUnidade write FUnidade;
   end;
@@ -53,6 +54,7 @@ type
     [JSONName('area')]
     FArea: TJSONIBGEArea;
   public
+    destructor Destroy; override;
     property Id: string read FId write FId;
     property NivelGeografico: string read FNivelGeografico write FNivelGeografico;
     property Centroide: TJSONIBGECoordenadas read FCentroide write FCentroide;
@@ -67,6 +69,7 @@ type
     function GetMetadados: TObjectList<TJSONIBGEMetadado>;
   public
     constructor Create(pJSONValue: TJSONValue; aDefault: string); overload;
+    destructor Destroy; override;
     property Metadados: TObjectList<TJSONIBGEMetadado> read GetMetadados;
   end;
 
@@ -95,6 +98,16 @@ begin
   Self := TJson.JsonToObject<TJSONIBGEMetadados>(TJSONObject(pJSONValue));
 end;
 
+destructor TJSONIBGEMetadados.Destroy;
+begin
+  for var lMetadado in FMesorregioesArray do
+  begin
+    FreeAndNil(lMetadado);
+  end;
+
+  inherited;
+end;
+
 function TJSONIBGEMetadados.GetMetadados: TObjectList<TJSONIBGEMetadado>;
 var
   vElemento: TJSONIBGEMetadado;
@@ -108,6 +121,28 @@ begin
   end;
 
   Result := vListaMesorregioes;
+end;
+
+{ TJSONIBGEArea }
+
+destructor TJSONIBGEArea.Destroy;
+begin
+  FreeAndNil(FUnidade);
+  inherited;
+end;
+
+{ TJSONIBGEMetadado }
+
+destructor TJSONIBGEMetadado.Destroy;
+begin
+  for var lRegiao in FRegiaoLimitrofe do
+  begin
+    FreeAndNil(lRegiao);
+  end;
+
+  FreeAndNil(FCentroide);
+  FreeAndNil(FArea);
+  inherited;
 end;
 
 end.

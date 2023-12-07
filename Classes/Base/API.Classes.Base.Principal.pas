@@ -4,18 +4,21 @@ interface
 
 uses
   REST.Client, API.Interfaces.Strategy.Principal,
-  API.Classes.Helpers.Enumerados;
+  API.Classes.Helpers.Enumerados, API.Interfaces.Bridge.JSONParaObject,
+  API.Classes.Bridge.ViaCepBridge;
 
 type
   TApi = class
   private
     FRequest: TRESTRequest;
     FClient: TRESTClient;
+    FTransformar: ITransformar;
   protected
     FConfigRequest: IApiStrategy;
+    constructor Create(const pURL: string; pTipoApi: TApiConsulta);
   public
     property Request: TRESTRequest read FRequest write FRequest;
-    constructor Create(const pURL: string; pTipoApi: TTipoApi);
+    property Transformar: ITransformar read FTransformar write FTransformar;
     destructor Destroy; override;
   end;
 
@@ -26,19 +29,38 @@ uses
   API.Classes.Strategy.IBGERegioesStrategy,
   API.Classes.Strategy.IBGEMetadadosStrategy,
   API.Classes.Strategy.IBGEMesorregiaoStrategy;
+//  API.Classes.Bridge.IBGERegiaoBridge,
+//  API.Classes.Bridge.IBGEMesorregiaoBridge,
+//  API.Classes.Bridge.IBGEMetadadosBridge;
 
 { TApi }
 
-constructor TApi.Create(const pURL: string; pTipoApi: TTipoApi);
+constructor TApi.Create(const pURL: string; pTipoApi: TApiConsulta);
 begin
   FClient := TRESTClient.Create(pURL);
   FRequest := TRESTRequest.Create(FClient);
 
   case pTipoApi of
-    taViaCep: FConfigRequest := TStrategyViaCep.Create;
-    taMesorregiao: FConfigRequest := TStrategyIBGEMesorregiao.Create;
-    taRegiao: FConfigRequest := TStrategyIBGERegiao.Create;
-    taMetadados: FConfigRequest := TStrategyIBGEMetadados.Create;
+    acViaCep:
+    begin
+      FConfigRequest := TStrategyViaCep.Create;
+//      FTransformar := TBridgeViaCep.Create;
+    end;
+    acMesorregiao:
+    begin
+      FConfigRequest := TStrategyIBGEMesorregiao.Create;
+//      FTransformar := TBridgeIBGEMesorregiao.Create;
+    end;
+    acRegiao:
+    begin
+      FConfigRequest := TStrategyIBGERegiao.Create;
+//      FTransformar := TBridgeIBGERegiao.Create;
+    end;
+    acMetadados:
+    begin
+      FConfigRequest := TStrategyIBGEMetadados.Create;
+//      FTransformar := TBridgeIBGEMetadados.Create;
+    end;
   end;
 end;
 

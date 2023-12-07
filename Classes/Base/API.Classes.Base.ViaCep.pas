@@ -3,19 +3,23 @@ unit API.Classes.Base.ViaCep;
 interface
 
 uses
-  API.Classes.Base.Principal, System.JSON;
+  API.Classes.Base.Principal, System.JSON, API.Classes.Helpers.Enumerados;
 
 type
   TApiViaCep = class(TApi)
   public
-    function ConsultarCep(const pCep: string): TJSONValue; virtual; // por causa do decorator
+    class function ObterInstancia: TApiViaCep;
+    function ConsultarCep(const pCep: string): TJSONValue; virtual;
   end;
+
+var
+  FApiViaCep: TApiViaCep;
 
 implementation
 
 uses
   System.SysUtils, API.Classes.Helpers.Exceptions, System.StrUtils,
-  API.Classes.Helpers.Enumerados;
+  API.Classes.Bridge.ViaCepBridge;
 
 { TViaCep }
 
@@ -45,5 +49,21 @@ begin
 
   Result := Request.Response.JSONValue;
 end;
+
+class function TApiViaCep.ObterInstancia: TApiViaCep;
+begin
+  if not Assigned(FApiViaCep) then
+  begin
+    FApiViaCep := TApiViaCep(inherited Create('https://viacep.com.br/ws/', acViaCep));
+  end;
+
+  FApiViaCep.Transformar := TBridgeViaCep.Create;
+  Result := FApiViaCep;
+end;
+
+initialization
+
+finalization
+  FreeAndNil(FApiViaCep);
 
 end.

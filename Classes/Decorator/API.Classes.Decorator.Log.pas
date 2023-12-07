@@ -28,7 +28,7 @@ begin
     on E: Exception do
     begin
       Writeln('Erro durante a requisição para consultar CEP:', E.Message);
-      raise; // Re-raise the exception after logging
+      raise;
     end;
   end;
 end;

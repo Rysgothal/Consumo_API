@@ -32,10 +32,9 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnLimparClick(Sender: TObject);
     procedure btnMapsClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
-    FViaCep: TApiViaCep;
+//    FViaCep: TApiViaCep;
     procedure PesquisarCep;
     procedure PreencherEdits(pJson: TJSONValue);
     procedure LimparFormulario;
@@ -76,14 +75,13 @@ procedure TfrmViaCep.PesquisarCep;
 var
   lCep: string;
   lJson: TJSONValue;
-  lApiViaCepLog: TApiViaCep;
+  lViaCep: TApiViaCep;
 begin
-  lCep := TStringHelper.DigitarSomenteNumeros(lbeCepConsulta.Text);
+  lViaCep := TApiViaCep.ObterInstancia;
 
   try
-    lApiViaCepLog := TDecoratorApiLog.Create('https://viacep.com.br/ws/', taViaCep);
-    lJson := lApiViaCepLog.ConsultarCep(lCep);
-
+    lCep := TStringHelper.DigitarSomenteNumeros(lbeCepConsulta.Text);
+    lJson := lViaCep.ConsultarCep(lCep);
     PreencherEdits(lJson);
   except
 //    on ECepNaoExiste do
@@ -126,20 +124,27 @@ end;
 
 procedure TfrmViaCep.PreencherEdits(pJson: TJSONValue);
 var
-  lInfoCEP: TJSONViaCep;
+  lJSONViaCep: TJSONViaCep;
+  lApiViaCep: TApiViaCep;
 begin
-  lInfoCEP := TJson.JsonToObject<TJSONViaCep>(TJSONObject(pJson));
+  lApiViaCep := TApiViaCep.ObterInstancia;
 
-  lbeCep.Text := lInfoCEP.Cep;
-  lbeBairro.Text := lInfoCEP.Bairro;
-  lbeLogradouro.Text := lInfoCEP.Logradouro;
-  lbeCidade.Text := lInfoCEP.Cidade;
-  lbeEstado.Text := lInfoCEP.Uf;
-  lbeComplemento.Text := lInfoCEP.Complemento;
-  lbeIBGE.Text := lInfoCEP.Ibge.ToString;
-  lbeGIA.Text := lInfoCEP.Gia.ToString;
-  lbeDDD.Text := lInfoCEP.Ddd.ToString;
-  lbeSIAFI.Text := lInfoCEP.Siafi.ToString;
+  try
+    lJSONViaCep := TJSONViaCep(lApiViaCep.Transformar.ParaObjeto(pJson));
+
+    lbeCep.Text := lJSONViaCep.Cep;
+    lbeBairro.Text := lJSONViaCep.Bairro;
+    lbeLogradouro.Text := lJSONViaCep.Logradouro;
+    lbeCidade.Text := lJSONViaCep.Cidade;
+    lbeEstado.Text := lJSONViaCep.Uf;
+    lbeComplemento.Text := lJSONViaCep.Complemento;
+    lbeIBGE.Text := lJSONViaCep.Ibge.ToString;
+    lbeGIA.Text := lJSONViaCep.Gia.ToString;
+    lbeDDD.Text := lJSONViaCep.Ddd.ToString;
+    lbeSIAFI.Text := lJSONViaCep.Siafi.ToString;
+  finally
+    FreeAndNil(lJSONViaCep);
+  end;
 end;
 
 procedure TfrmViaCep.LimparFormulario;
@@ -155,21 +160,16 @@ begin
   lbeLogradouro.Clear;
   lbeCidade.Clear;
   lbeEstado.Clear;
+  lbeIBGE.Clear;
+  lbeGIA.Clear;
+  lbeDDD.Clear;
+  lbeSIAFI.Clear;
 end;
 
 procedure TfrmViaCep.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  FViaCep.Destroy;
   Action := TCloseAction.caFree;
   frmViaCep := nil;
-end;
-
-procedure TfrmViaCep.FormCreate(Sender: TObject);
-begin
-  if not Assigned(FViaCep) then
-  begin
-    FViaCep := TApiViaCep.Create('https://viacep.com.br/ws/', taViaCep);
-  end;
 end;
 
 procedure TfrmViaCep.lbeCepConsultaChange(Sender: TObject);

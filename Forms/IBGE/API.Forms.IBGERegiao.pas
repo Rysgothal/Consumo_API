@@ -32,7 +32,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure cmbRegiaoChange(Sender: TObject);
   private
-    FIBGERegiao: TApiIBGERegiao;
     procedure PreencherEdits(pJson: TJSONValue);
     procedure LimparFormulario;
     procedure LimparEdits;
@@ -91,25 +90,20 @@ end;
 function TfrmIbgeRegiao.RetornarMetadadosRegiao: TJSONValue;
 var
   lJson: TJSONValue;
-  lApiMetadados: TApiIBGEMetadados;
+  lApiIBGEMetadados: TApiIBGEMetadados;
 begin
-  lApiMetadados := TApiIBGEMetadados.Create('https://servicodados.ibge.gov.br/api/v3/malhas/regioes/', taMetadados);
+  lApiIBGEMetadados := TApiIBGEMetadados.ObterInstancia(acMetadados);
+  lJson := lApiIBGEMetadados.ConsultarMetadados((cmbRegiao.ItemIndex + 1).ToString);
 
-  try
-    lApiMetadados.ConsultarMetadados((cmbRegiao.ItemIndex + 1).ToString);
-    lJson := lApiMetadados.Request.Response.JSONValue;
-
-    Result := lJson.Clone as TJSONValue;
-  finally
-    lApiMetadados.Destroy;
-  end;
+  Result := lJson;
 end;
 
 procedure TfrmIbgeRegiao.BuscarRegiao;
 var
-  lJSON: TJSONValue;
-  lRegiao: TJSONIBGERegiao;
   lRegiaoSel: Integer;
+  lApiIBGERegiao: TApiIBGERegiao;
+  lRegiao: TJSONIBGERegiao;
+  lJSON: TJSONValue;
 begin
   lRegiaoSel := cmbRegiao.ItemIndex;
 
@@ -119,14 +113,21 @@ begin
     Exit;
   end;
 
-  lJSON := FIBGERegiao.ConsultarRegiao((lRegiaoSel + 1).ToString);
-  lRegiao := TJson.JsonToObject<TJSONIBGERegiao>(TJSONObject(lJSON));
+  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(opRegiao);
 
-  PesquisarRegiao(lRegiao.Nome);
+  try
+    lJSON := lApiIBGERegiao.ConsultarRegiao((lRegiaoSel + 1).ToString);
+    lRegiao := TJSONIBGERegiao(lApiIBGERegiao.Transformar.ParaObjeto(lJSON));
 
-  if pnlInformacoes.Visible then
-  begin
-    PreencherEdits(RetornarMetadadosRegiao);
+    PesquisarRegiao(lRegiao.Nome);
+
+    if pnlInformacoes.Visible then
+    begin
+      PreencherEdits(RetornarMetadadosRegiao);
+    end;
+  finally
+    FreeAndNil(lRegiao);
+//    FreeAndNil(lJSON);
   end;
 end;
 
@@ -134,10 +135,17 @@ function TfrmIbgeRegiao.BuscarSiglaRegiao: string;
 var
   lJSON: TJSONValue;
   lRegiao: TJSONIBGERegiao;
+  lApiIBGERegiao: TApiIBGERegiao;
 begin
-  lJSON := FIBGERegiao.ConsultarRegiao((cmbRegiao.ItemIndex + 1).ToString);
-  lRegiao := TJson.JsonToObject<TJSONIBGERegiao>(TJSONObject(lJSON));
-  Result := lRegiao.Sigla;
+  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(opRegiao);
+
+  try
+    lJSON := lApiIBGERegiao.ConsultarRegiao((cmbRegiao.ItemIndex + 1).ToString);
+    lRegiao := TJSONIBGERegiao(lApiIBGERegiao.Transformar.ParaObjeto(lJSON));
+    Result := lRegiao.Sigla;
+  finally
+    FreeAndNil(lRegiao);
+  end;
 end;
 
 procedure TfrmIbgeRegiao.MensagemItemNaoSelecionado;
@@ -168,14 +176,12 @@ end;
 
 procedure TfrmIbgeRegiao.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  FIBGERegiao.Destroy;
   Action := TCloseAction.caFree;
   frmIbgeRegiao := nil;
 end;
 
 procedure TfrmIbgeRegiao.FormCreate(Sender: TObject);
 begin
-  FIBGERegiao := TApiIBGERegiao.Create('https://servicodados.ibge.gov.br/api/v1/localidades/regioes/', taRegiao);
   InserirRegioesComboBox;
 end;
 
@@ -183,32 +189,46 @@ procedure TfrmIbgeRegiao.InserirRegioesComboBox;
 var
   lJson: TJSONValue;
   lRegioes: TJSONIBGERegioes;
+  lApiIBGERegiao: TApiIBGERegiao;
 begin
-  lJson := FIBGERegiao.ListarRegioes;
-  lRegioes := TJSONIBGERegioes.Create(lJson, 'regioes');
+  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(opRegioes);
 
-  cmbRegiao.Clear;
-  for var lRegiao in lRegioes.Regiao do
-  begin
-    cmbRegiao.Items.Add(lRegiao.Nome);
+  try
+    lJson := lApiIBGERegiao.ListarRegioes;
+    lRegioes := TJSONIBGERegioes(lApiIBGERegiao.Transformar.ParaObjeto(lJson));
+//    lRegioes := TJSONIBGERegioes.Create(lJson, 'regioes');
+
+    cmbRegiao.Clear;
+    for var lRegiao in lRegioes.Regiao do
+    begin
+      cmbRegiao.Items.Add(lRegiao.Nome);            // Revisar não liberando da memória
+    end;
+  finally
+    FreeAndNil(lRegioes);
   end;
 end;
 
 procedure TfrmIbgeRegiao.PreencherEdits(pJson: TJSONValue);
 var
+  lApiIBGERegiao: TApiIBGERegiao;
   lMetadados: TJSONIBGEMetadados;
 begin
-  lMetadados := TJSONIBGEMetadados.Create(pJson, 'metadados');
+  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(opMetadados);
+  lMetadados := TJSONIBGEMetadados(lApiIBGERegiao.Transformar.ParaObjeto(pJson));
 
-  for var lRegiao in lMetadados.Metadados do
-  begin
-    lbeNome.Text := cmbRegiao.Text;
-    lbeCentroideLong.Text := lRegiao.CentroIde.Longitude;
-    lbeId.Text := lRegiao.Id;
-    lbeArea.Text := lRegiao.Area.Dimensao + ' ' + lRegiao.Area.Unidade.Id;
-    lbeNivelGeografico.Text := lRegiao.NivelGeografico;
-    lbeCentroideLat.Text := lRegiao.CentroIde.Latitude;
-    lbeSigla.Text := BuscarSiglaRegiao;
+  try
+    for var lRegiao in lMetadados.Metadados do
+    begin
+      lbeNome.Text := cmbRegiao.Text;
+      lbeCentroideLong.Text := lRegiao.CentroIde.Longitude;
+      lbeId.Text := lRegiao.Id;
+      lbeArea.Text := lRegiao.Area.Dimensao + ' ' + lRegiao.Area.Unidade.Id;
+      lbeNivelGeografico.Text := lRegiao.NivelGeografico;
+      lbeCentroideLat.Text := lRegiao.CentroIde.Latitude;
+      lbeSigla.Text := BuscarSiglaRegiao;
+    end;
+  finally
+    FreeAndNil(lMetadados);
   end;
 end;
 

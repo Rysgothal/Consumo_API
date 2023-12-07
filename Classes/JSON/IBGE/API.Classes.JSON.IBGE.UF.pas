@@ -18,6 +18,7 @@ type
     [JSONName('regiao')]
     FRegiao: TJSONIBGERegiao;
   public
+    destructor Destroy; override;
     property Id: Integer read FId write FId;
     property Sigla: string read FSigla write FSigla;
     property Nome: string read FNome write FNome;
@@ -31,6 +32,7 @@ type
     function GetUfs: TObjectList<TJSONIbgeUF>;
   public
     constructor Create(pJSONValue: TJSONValue; aDefault: string); overload;
+    destructor Destroy; override;
     property Ufs: TObjectList<TJSONIbgeUF> read GetUfs;
   end;
 
@@ -59,6 +61,16 @@ begin
   Self := TJson.JsonToObject<TJSONIbgeUFs>(TJSONObject(pJSONValue));
 end;
 
+destructor TJSONIbgeUFs.Destroy;
+begin
+  for var lUF in FUfArray do
+  begin
+    FreeAndNil(lUF);
+  end;
+
+  inherited;
+end;
+
 function TJSONIbgeUFs.GetUfs: TObjectList<TJSONIbgeUF>;
 var
   vElemento: TJSONIbgeUF;
@@ -72,6 +84,14 @@ begin
   end;
 
   Result := vListaUf;
+end;
+
+{ TJSONIbgeUF }
+
+destructor TJSONIbgeUF.Destroy;
+begin
+  FreeAndNil(FRegiao);
+  inherited;
 end;
 
 end.

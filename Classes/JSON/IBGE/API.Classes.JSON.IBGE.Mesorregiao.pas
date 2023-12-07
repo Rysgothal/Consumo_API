@@ -17,6 +17,7 @@ type
     [JSONName('UF')]
     FUF: TJSONIbgeUF;
   public
+    destructor Destroy; override;
     property Id: Integer read FId write FId;
     property Nome: string read FNome write FNome;
     property UF: TJSONIbgeUF read FUF write FUF;
@@ -29,6 +30,7 @@ type
     function GetMesorregioes: TObjectList<TJSONIBGEMesorregiao>;
   public
     constructor Create(pJSONValue: TJSONValue; aDefault: string); overload;
+    destructor Destroy; override;
     property Mesorregioes: TObjectList<TJSONIBGEMesorregiao> read GetMesorregioes;
   end;
 
@@ -60,6 +62,16 @@ begin
   Self := TJson.JsonToObject<TJSONIBGEMesorregioes>(TJSONObject(pJSONValue));
 end;
 
+destructor TJSONIBGEMesorregioes.Destroy;
+begin
+  for var lMesorregiao in FMesorregioesArray do
+  begin
+    FreeAndNil(lMesorregiao);
+  end;
+
+  inherited;
+end;
+
 function TJSONIBGEMesorregioes.GetMesorregioes: TObjectList<TJSONIBGEMesorregiao>;
 var
   vElemento: TJSONIBGEMesorregiao;
@@ -73,6 +85,14 @@ begin
   end;
 
   Result := vListaMesorregioes;
+end;
+
+{ TJSONIBGEMesorregiao }
+
+destructor TJSONIBGEMesorregiao.Destroy;
+begin
+  FreeAndNil(FUF);
+  inherited;
 end;
 
 end.

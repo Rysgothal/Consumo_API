@@ -14,7 +14,7 @@ object frmViaCep: TfrmViaCep
   Font.Style = []
   Position = poMainFormCenter
   OnClose = FormClose
-  OnCreate = FormCreate
+  PixelsPerInch = 96
   TextHeight = 15
   object pnlTop: TPanel
     Left = 0
@@ -24,10 +24,9 @@ object frmViaCep: TfrmViaCep
     Align = alTop
     BevelOuter = bvLowered
     TabOrder = 0
-    ExplicitWidth = 577
     object lbeCepConsulta: TLabeledEdit
       Left = 16
-      Top = 25
+      Top = 22
       Width = 145
       Height = 23
       EditLabel.Width = 21
@@ -59,8 +58,6 @@ object frmViaCep: TfrmViaCep
     Align = alBottom
     BevelOuter = bvLowered
     TabOrder = 1
-    ExplicitTop = 70
-    ExplicitWidth = 577
     DesignSize = (
       581
       287)
@@ -150,7 +147,6 @@ object frmViaCep: TfrmViaCep
       Images = imgIcons
       TabOrder = 6
       OnClick = btnLimparClick
-      ExplicitLeft = 463
     end
     object lbeEstado: TLabeledEdit
       Left = 416

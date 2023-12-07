@@ -3,15 +3,7 @@ unit API.Classes.JSON.ViaCep;
 interface
 
 uses
-//  REST.Json,
   REST.Json.Types;
-//  REST.JsonReflect,
-//  System.Generics.Collections,
-//  System.JSON,
-//  System.StrUtils,
-//  System.Classes,
-//  System.SysUtils,
-//  REST.Client;
 
 type
   TJSONViaCep = class

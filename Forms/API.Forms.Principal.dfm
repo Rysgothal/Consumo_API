@@ -32,7 +32,6 @@ object frmPrincipal: TfrmPrincipal
     Top = 395
     Width = 504
     Height = 19
-    Color = clAppWorkSpace
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBtnText
     Font.Height = -12
@@ -47,6 +46,7 @@ object frmPrincipal: TfrmPrincipal
       end
       item
         Alignment = taRightJustify
+        Bevel = pbNone
         BiDiMode = bdLeftToRight
         ParentBiDiMode = False
         Text = '00:00:00'

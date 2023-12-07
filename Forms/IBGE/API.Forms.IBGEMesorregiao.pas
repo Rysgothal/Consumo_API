@@ -48,7 +48,6 @@ type
     procedure btnUltimoRegistroClick(Sender: TObject);
   private
     { Private declarations }
-    FIBGEMesorregiao: TApiIBGEMesorregiao;
     procedure PreencherComboBoxMesorregiao;
     procedure PreencherComboBoxEstados;
     procedure PreencherCamposMetadadosMesorregiao;
@@ -114,49 +113,39 @@ end;
 
 procedure TfrmIbgeMesorregiao.BuscarMesorregioesDoEstado(var pJson: TJSONValue);
 var
-  lApi: TApiIBGEMesorregiao;
+  lApiIBGEMesorregiao: TApiIBGEMesorregiao;
 begin
-  lApi := TApiIBGEMesorregiao.Create('https://servicodados.ibge.gov.br/api/v1/localidades/estados/', taMesorregiao);
+  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(acMesorregiao);
 
   try
-    try
-      pJson := lApi.ConsultarMesorregioesDoEstado(Copy(cmbEstado.Text, 1, 2)).Clone as TJSONValue;
-    except
-      on Exception do
-      begin
-        Application.MessageBox('Não foi possível buscar as Mesorregioes do Estado selecionado, Tente novamente!',
-          'Atenção', MB_OK + MB_ICONINFORMATION);
-        Abort;
-      end;
+    pJson := lApiIBGEMesorregiao.ConsultarMesorregioesDoEstado(Copy(cmbEstado.Text, 1, 2));
+  except
+    on Exception do
+    begin
+      Application.MessageBox('Não foi possível buscar as Mesorregioes do Estado selecionado, Tente novamente!',
+        'Atenção', MB_OK + MB_ICONINFORMATION);
+      Abort;
     end;
-
-  finally
-    lApi.Destroy;
   end;
 end;
 
 procedure TfrmIbgeMesorregiao.BuscarEstadosDaRegiao(var pJson: TJSONValue);
 var
-  lApi: TApiIBGERegiao;
+  lApiIBGERegiao: TApiIBGERegiao;
   lItem: Integer;
 begin
   lItem := cmbRegiao.ItemIndex + 1;
-  lApi := TApiIBGERegiao.Create('https://servicodados.ibge.gov.br/api/v1/localidades/regioes/', taRegiao);
+  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(opRegiao);
 
   try
-    try
-      pJson := lApi.ListarEstadosDaRegiao(lItem.ToString).Clone as TJSONValue;
-    except
-      on Exception do
-      begin
-        Application.MessageBox('Não foi possível buscar os Estados da Região selecionada, Tente novamente!', 'Atenção',
-          MB_OK + MB_ICONINFORMATION);
-        Abort;
-      end;
+    pJson := lApiIBGERegiao.ListarEstadosDaRegiao(lItem.ToString);
+  except
+    on Exception do
+    begin
+      Application.MessageBox('Não foi possível buscar os Estados da Região selecionada, Tente novamente!', 'Atenção',
+        MB_OK + MB_ICONINFORMATION);
+      Abort;
     end;
-
-  finally
-    lApi.Destroy;
   end;
 end;
 
@@ -183,21 +172,16 @@ end;
 
 procedure TfrmIbgeMesorregiao.BuscarRegioes(var pJson: TJSONValue);
 var
-  lApiRegiao: TApiIBGERegiao;
+  lApiIBGERegiao: TApiIBGERegiao;
 begin
-  lApiRegiao := TApiIBGERegiao.Create('https://servicodados.ibge.gov.br/api/v1/localidades/regioes/', taRegiao);
+  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(opRegiao);
 
   try
-    try
-      pJson := lApiRegiao.ListarRegioes.Clone as TJSONValue;
-    except
-      Application.MessageBox('Houve uma falha inesperada no programa, Tente Novamente', 'Falha Desconhecida', MB_OK +
-        MB_ICONINFORMATION);
-      Close;
-    end;
-
-  finally
-    lApiRegiao.Destroy;
+    pJson := lApiIBGERegiao.ListarRegioes;
+  except
+    Application.MessageBox('Houve uma falha inesperada no programa, Tente Novamente', 'Falha Desconhecida', MB_OK +
+      MB_ICONINFORMATION);
+    Close;
   end;
 end;
 
@@ -227,14 +211,12 @@ end;
 
 procedure TfrmIbgeMesorregiao.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-//  FApi.Destroy;
   Action := TCloseAction.caFree;
   frmIbgeMesorregiao := nil;
 end;
 
 procedure TfrmIbgeMesorregiao.FormCreate(Sender: TObject);
 begin
-  FIBGEMesorregiao := TApiIBGEMesorregiao.Create('https://servicodados.ibge.gov.br/api/v3/malhas/mesorregioes/', taMesorregiao);
   PreencherRegioesComboBox;
 end;
 
@@ -290,10 +272,14 @@ begin
     vUrl := 'https://servicodados.ibge.gov.br/api/v3/malhas/mesorregioes/' + lbeId.Text + '?formato=application/vnd';
 
     vUrlEncode := TURLEncoding.Create;
-    vUrl := vUrlEncode.Encode(vUrl);
+    try
+      vUrl := vUrlEncode.Encode(vUrl);
 
-    vUrl := 'http://geojson.io/#data=data:text/x-url,' + vUrl + '.geo+json';
-    frmNavegador := TfrmNavegador.Create(vUrl);
+      vUrl := 'http://geojson.io/#data=data:text/x-url,' + vUrl + '.geo+json';
+      frmNavegador := TfrmNavegador.Create(vUrl);
+    finally
+      FreeAndNil(vUrlEncode);
+    end;
   end;
 
   frmNavegador.Show;
@@ -304,6 +290,7 @@ var
   lJson: TJSONValue;
   lMetadados: TJSONIBGEMetadados;
   lId: Integer;
+  lApiIBGEMesorregiao: TApiIBGEMesorregiao;
 begin
   if cmbNomeMesorregiao.ItemIndex = -1 then
   begin
@@ -311,12 +298,14 @@ begin
     Exit;
   end;
 
+  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(acMesorregiao);
   RetornarIdMesorregiaoSelecionada(lId);
 
   try
-    lJson := FIBGEMesorregiao.ConsultarMetadadosMesorregiao(lId.ToString);
+    lJson := lApiIBGEMesorregiao.ConsultarMetadadosMesorregiao(lId.ToString);
 
-    lMetadados := TJSONIBGEMetadados.Create(lJson, 'metadados');
+//    lMetadados := TJSONIBGEMetadados.Create(lJson, 'metadados');
+    lMetadados := TJSONIBGEMetadados(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
   except
     on EErroDeRota do
     begin
@@ -350,6 +339,7 @@ procedure TfrmIbgeMesorregiao.PreencherComboBoxEstados;
 var
   lJson: TJSONValue;
   lUf: TJSONIbgeUFs;
+  lApiIBGEMesorregiao: TApiIBGEMesorregiao;
 begin
   LimparEdits;
   memJson.Clear;
@@ -366,11 +356,15 @@ begin
   end;
 
   BuscarEstadosDaRegiao(lJson);
-  lUf := TJSONIbgeUFs.Create(lJson, 'uf');
-
-  for var lEstado in lUf.Ufs do
-  begin
-    cmbEstado.Items.Add(lEstado.Sigla + ' - ' + lEstado.Nome);
+  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(acMesorregiao);
+  lUf := TJSONIbgeUFs(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
+  try
+    for var lEstado in lUf.Ufs do
+    begin
+      cmbEstado.Items.Add(lEstado.Sigla + ' - ' + lEstado.Nome);
+    end;
+  finally
+    FreeAndNil(lUf);
   end;
 end;
 
@@ -378,28 +372,39 @@ procedure TfrmIbgeMesorregiao.PreencherComboBoxMesorregiao;
 var
   lJson: TJSONValue;
   lMesorregioes: TJSONIBGEMesorregioes;
+  lApiIBGEMesorregiao: TApiIBGEMesorregiao;
 begin
   BuscarMesorregioesDoEstado(lJson);
-  lMesorregioes := TJSONIBGEMesorregioes.Create(lJson, 'mesorregiao');
+  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(acMesorregiao);
+  lMesorregioes := TJSONIBGEMesorregioes(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
 
-  for var lMesorregiao in lMesorregioes.Mesorregioes do
-  begin
-    cmbNomeMesorregiao.Items.Add(lMesorregiao.Nome);
+  try
+    for var lMesorregiao in lMesorregioes.Mesorregioes do
+    begin
+      cmbNomeMesorregiao.Items.Add(lMesorregiao.Nome);
+    end;
+  finally
+    FreeAndNil(lMesorregioes);
   end;
 end;
 
 procedure TfrmIbgeMesorregiao.PreencherRegioesComboBox;
 var
   lJson: TJSONValue;
-  lRegioes: TJSONIbgeRegioes;
+  lRegioes: TJSONIBGERegioes;
 begin
   BuscarRegioes(lJson);
   lRegioes := TJSONIbgeRegioes.Create(lJson, 'regioes');
 
-  cmbRegiao.Clear;
-  for var lRegiao in lRegioes.Regiao do
-  begin
-    cmbRegiao.Items.Add(lRegiao.Nome);
+  //  lRegioes := lApiIBGERegiao.Transformar(FIBGEMesorregiao.Transformar.ParaObjeto(lJson));
+  try
+    cmbRegiao.Clear;
+    for var lRegiao in lRegioes.Regiao do
+    begin
+      cmbRegiao.Items.Add(lRegiao.Nome);
+    end;
+  finally
+    FreeAndNil(lRegioes);
   end;
 end;
 
@@ -407,9 +412,12 @@ procedure TfrmIbgeMesorregiao.RetornarIdMesorregiaoSelecionada(var pId: Integer)
 var
   vJson: TJSONValue;
   vMesorregioes: TJSONIBGEMesorregioes;
+  lApiIBGEMesorregiao: TApiIBGEMesorregiao;
 begin
   BuscarMesorregioesDoEstado(vJson);
-  vMesorregioes := TJSONIBGEMesorregioes.Create(vJson, 'mesorregiao');
+  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(acMesorregiao);
+
+  vMesorregioes := TJSONIBGEMesorregioes(lApiIBGEMesorregiao.Transformar.ParaObjeto(vJson));
 
   for var vMesorregiao in vMesorregioes.Mesorregioes do
   begin

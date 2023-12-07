@@ -3,7 +3,8 @@ unit API.Classes.JSON.IBGE.Regiao;
 interface
 
 uses
-  REST.Json, REST.Json.Types, REST.JsonReflect, System.Generics.Collections, System.JSON;
+  REST.Json, REST.Json.Types, REST.JsonReflect, System.Generics.Collections, System.JSON,
+  System.SysUtils;
 
 type
   TJSONIBGERegiao = class
@@ -27,6 +28,7 @@ type
     function GetRegiao: TObjectList<TJSONIBGERegiao>;
   public
     constructor Create(pJSONValue: TJSONValue; pDefault: string); overload;
+    destructor Destroy; override;
     property Regiao: TObjectList<TJSONIBGERegiao> read GetRegiao;
   end;
 
@@ -46,13 +48,28 @@ begin
     try
       vJSONUnMarshal.SetFieldArray(Self, pDefault, (pJSONValue as TJSONArray));
     finally
-      vJSONUnMarshal.Free;
+      FreeAndNil(vJSONUnMarshal);
     end;
 
     Exit;
   end;
 
   Self := TJson.JsonToObject<TJSONIBGERegioes>(TJSONObject(pJSONValue));
+end;
+
+destructor TJSONIBGERegioes.Destroy;
+begin
+  for var lRegiao in FRegiaoArray do
+  begin
+    if not Assigned(lRegiao) then
+    begin
+      Continue;
+    end;
+
+    FreeAndNil(lRegiao);
+  end;
+
+  inherited;
 end;
 
 function TJSONIBGERegioes.GetRegiao: TObjectList<TJSONIBGERegiao>;
