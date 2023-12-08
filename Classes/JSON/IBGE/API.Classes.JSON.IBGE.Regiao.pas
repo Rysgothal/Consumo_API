@@ -61,11 +61,6 @@ destructor TJSONIBGERegioes.Destroy;
 begin
   for var lRegiao in FRegiaoArray do
   begin
-    if not Assigned(lRegiao) then
-    begin
-      Continue;
-    end;
-
     FreeAndNil(lRegiao);
   end;
 

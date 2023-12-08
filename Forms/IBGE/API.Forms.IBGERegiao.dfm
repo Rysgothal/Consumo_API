@@ -15,7 +15,6 @@ object frmIbgeRegiao: TfrmIbgeRegiao
   Position = poMainFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 15
   object pnlTop: TPanel
     Left = 0
@@ -25,6 +24,7 @@ object frmIbgeRegiao: TfrmIbgeRegiao
     Align = alTop
     BevelOuter = bvLowered
     TabOrder = 0
+    ExplicitWidth = 1123
     DesignSize = (
       1127
       81)
@@ -45,7 +45,7 @@ object frmIbgeRegiao: TfrmIbgeRegiao
       OnChange = cmbRegiaoChange
     end
     object btnLimpar: TButton
-      Left = 1021
+      Left = 1017
       Top = 21
       Width = 90
       Height = 41
@@ -57,6 +57,7 @@ object frmIbgeRegiao: TfrmIbgeRegiao
       Images = imgIcons
       TabOrder = 2
       OnClick = btnLimparClick
+      ExplicitLeft = 1013
     end
     object btnInformacoes: TButton
       Left = 878
@@ -79,6 +80,9 @@ object frmIbgeRegiao: TfrmIbgeRegiao
     Height = 563
     Align = alClient
     TabOrder = 2
+    UserDataFolder = '%LOCALAPPDATA%\bds.exe.WebView2'
+    ExplicitWidth = 1123
+    ExplicitHeight = 562
   end
   object pnlInformacoes: TPanel
     Left = 768

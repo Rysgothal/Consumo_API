@@ -115,7 +115,7 @@ procedure TfrmIbgeMesorregiao.BuscarMesorregioesDoEstado(var pJson: TJSONValue);
 var
   lApiIBGEMesorregiao: TApiIBGEMesorregiao;
 begin
-  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(acMesorregiao);
+  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(opMesorregioes);          // Verificar...
 
   try
     pJson := lApiIBGEMesorregiao.ConsultarMesorregioesDoEstado(Copy(cmbEstado.Text, 1, 2));
@@ -298,7 +298,7 @@ begin
     Exit;
   end;
 
-  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(acMesorregiao);
+  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(opMesorregioes);
   RetornarIdMesorregiaoSelecionada(lId);
 
   try
@@ -356,8 +356,9 @@ begin
   end;
 
   BuscarEstadosDaRegiao(lJson);
-  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(acMesorregiao);
+  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(opUfs);
   lUf := TJSONIbgeUFs(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
+
   try
     for var lEstado in lUf.Ufs do
     begin
@@ -375,7 +376,7 @@ var
   lApiIBGEMesorregiao: TApiIBGEMesorregiao;
 begin
   BuscarMesorregioesDoEstado(lJson);
-  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(acMesorregiao);
+  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(opMesorregioes);
   lMesorregioes := TJSONIBGEMesorregioes(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
 
   try
@@ -392,11 +393,12 @@ procedure TfrmIbgeMesorregiao.PreencherRegioesComboBox;
 var
   lJson: TJSONValue;
   lRegioes: TJSONIBGERegioes;
+  lApiIBGERegiao: TApiIBGERegiao;
 begin
   BuscarRegioes(lJson);
-  lRegioes := TJSONIbgeRegioes.Create(lJson, 'regioes');
+  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(opRegioes);
+  lRegioes := TJSONIbgeRegioes(lApiIBGERegiao.Transformar.ParaObjeto(lJson));
 
-  //  lRegioes := lApiIBGERegiao.Transformar(FIBGEMesorregiao.Transformar.ParaObjeto(lJson));
   try
     cmbRegiao.Clear;
     for var lRegiao in lRegioes.Regiao do
@@ -415,7 +417,7 @@ var
   lApiIBGEMesorregiao: TApiIBGEMesorregiao;
 begin
   BuscarMesorregioesDoEstado(vJson);
-  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(acMesorregiao);
+  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(opMesorregioes);
 
   vMesorregioes := TJSONIBGEMesorregioes(lApiIBGEMesorregiao.Transformar.ParaObjeto(vJson));
 

@@ -92,7 +92,7 @@ var
   lJson: TJSONValue;
   lApiIBGEMetadados: TApiIBGEMetadados;
 begin
-  lApiIBGEMetadados := TApiIBGEMetadados.ObterInstancia(acMetadados);
+  lApiIBGEMetadados := TApiIBGEMetadados.ObterInstancia(opMetadados);
   lJson := lApiIBGEMetadados.ConsultarMetadados((cmbRegiao.ItemIndex + 1).ToString);
 
   Result := lJson;
@@ -196,7 +196,6 @@ begin
   try
     lJson := lApiIBGERegiao.ListarRegioes;
     lRegioes := TJSONIBGERegioes(lApiIBGERegiao.Transformar.ParaObjeto(lJson));
-//    lRegioes := TJSONIBGERegioes.Create(lJson, 'regioes');
 
     cmbRegiao.Clear;
     for var lRegiao in lRegioes.Regiao do
@@ -210,11 +209,11 @@ end;
 
 procedure TfrmIbgeRegiao.PreencherEdits(pJson: TJSONValue);
 var
-  lApiIBGERegiao: TApiIBGERegiao;
   lMetadados: TJSONIBGEMetadados;
+  lApiIBGEMetadados: TApiIBGEMetadados;
 begin
-  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(opMetadados);
-  lMetadados := TJSONIBGEMetadados(lApiIBGERegiao.Transformar.ParaObjeto(pJson));
+  lApiIBGEMetadados := TApiIBGEMetadados.ObterInstancia(opMetadados);
+  lMetadados := TJSONIBGEMetadados(lApiIBGEMEtadados.Transformar.ParaObjeto(pJson));
 
   try
     for var lRegiao in lMetadados.Metadados do
