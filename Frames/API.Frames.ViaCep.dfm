@@ -1,0 +1,177 @@
+object frmDadosViaCep: TfrmDadosViaCep
+  Left = 0
+  Top = 0
+  Width = 581
+  Height = 241
+  TabOrder = 0
+  PixelsPerInch = 96
+  DesignSize = (
+    581
+    241)
+  object lbeLogradouro: TLabeledEdit
+    Left = 16
+    Top = 25
+    Width = 305
+    Height = 23
+    TabStop = False
+    Color = clInfoBk
+    EditLabel.Width = 62
+    EditLabel.Height = 15
+    EditLabel.Caption = 'Logradouro'
+    ReadOnly = True
+    TabOrder = 0
+    Text = ''
+  end
+  object lbeCidade: TLabeledEdit
+    Left = 351
+    Top = 25
+    Width = 210
+    Height = 23
+    TabStop = False
+    Color = clInfoBk
+    EditLabel.Width = 37
+    EditLabel.Height = 15
+    EditLabel.Caption = 'Cidade'
+    ReadOnly = True
+    TabOrder = 1
+    Text = ''
+  end
+  object lbeEstado: TLabeledEdit
+    Left = 416
+    Top = 86
+    Width = 145
+    Height = 23
+    TabStop = False
+    Color = clInfoBk
+    EditLabel.Width = 35
+    EditLabel.Height = 15
+    EditLabel.Caption = 'Estado'
+    ReadOnly = True
+    TabOrder = 2
+    Text = ''
+  end
+  object lbeBairro: TLabeledEdit
+    Left = 182
+    Top = 86
+    Width = 215
+    Height = 23
+    TabStop = False
+    Color = clInfoBk
+    EditLabel.Width = 31
+    EditLabel.Height = 15
+    EditLabel.Caption = 'Bairro'
+    ReadOnly = True
+    TabOrder = 3
+    Text = ''
+  end
+  object lbeCep: TLabeledEdit
+    Left = 16
+    Top = 86
+    Width = 145
+    Height = 23
+    TabStop = False
+    Color = clInfoBk
+    EditLabel.Width = 21
+    EditLabel.Height = 15
+    EditLabel.Caption = 'CEP'
+    ReadOnly = True
+    TabOrder = 4
+    Text = ''
+  end
+  object lbeComplemento: TLabeledEdit
+    Left = 16
+    Top = 142
+    Width = 145
+    Height = 23
+    TabStop = False
+    Color = clInfoBk
+    EditLabel.Width = 77
+    EditLabel.Height = 15
+    EditLabel.Caption = 'Complemento'
+    ReadOnly = True
+    TabOrder = 5
+    Text = ''
+  end
+  object lbeSIAFI: TLabeledEdit
+    Left = 492
+    Top = 142
+    Width = 69
+    Height = 23
+    TabStop = False
+    Color = clInfoBk
+    EditLabel.Width = 26
+    EditLabel.Height = 15
+    EditLabel.Caption = 'SIAFI'
+    ReadOnly = True
+    TabOrder = 6
+    Text = ''
+  end
+  object lbeIBGE: TLabeledEdit
+    Left = 185
+    Top = 142
+    Width = 99
+    Height = 23
+    TabStop = False
+    Color = clInfoBk
+    EditLabel.Width = 24
+    EditLabel.Height = 15
+    EditLabel.Caption = 'IBGE'
+    ReadOnly = True
+    TabOrder = 7
+    Text = ''
+  end
+  object lbeGIA: TLabeledEdit
+    Left = 308
+    Top = 142
+    Width = 69
+    Height = 23
+    TabStop = False
+    Color = clInfoBk
+    EditLabel.Width = 19
+    EditLabel.Height = 15
+    EditLabel.Caption = 'GIA'
+    ReadOnly = True
+    TabOrder = 8
+    Text = ''
+  end
+  object lbeDDD: TLabeledEdit
+    Left = 401
+    Top = 142
+    Width = 69
+    Height = 23
+    TabStop = False
+    Color = clInfoBk
+    EditLabel.Width = 24
+    EditLabel.Height = 15
+    EditLabel.Caption = 'DDD'
+    ReadOnly = True
+    TabOrder = 9
+    Text = ''
+  end
+  object btnLimpar: TButton
+    Left = 471
+    Top = 184
+    Width = 90
+    Height = 45
+    Anchors = [akTop, akRight]
+    Caption = '&Limpar'
+    ImageIndex = 10
+    ImageMargins.Left = 10
+    ImageMargins.Right = -10
+    Images = dmPrincipal.imglistIconesBotoes
+    TabOrder = 10
+  end
+  object btnMaps: TButton
+    Left = 16
+    Top = 184
+    Width = 97
+    Height = 45
+    Caption = '&Maps'
+    ImageIndex = 3
+    ImageMargins.Left = 10
+    ImageMargins.Right = -10
+    Images = dmPrincipal.imglistIconesBotoes
+    TabOrder = 11
+    OnClick = btnMapsClick
+  end
+end

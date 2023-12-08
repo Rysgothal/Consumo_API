@@ -7,7 +7,8 @@ uses
 
 type
   TdmPrincipal = class(TDataModule)
-    imglistIcons: TImageList;
+    imglistIconesMenu: TImageList;
+    imglistIconesBotoes: TImageList;
   private
     { Private declarations }
   public

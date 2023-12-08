@@ -9,7 +9,8 @@ uses
 type
   TApiIBGERegiao = class(TApi)
   public
-    class function ObterInstancia(pTransformar: TObjetoPara): TApiIBGERegiao;
+    class function ObterInstancia(pTransformar: TObjetoJSON): TApiIBGERegiao; overload;
+    class function ObterInstancia: TApiIBGERegiao; overload;
     function ConsultarRegiao(const pRegiao: string): TJSONValue;
     function ListarRegioes: TJSONValue;
     function ListarEstadosDaRegiao(const pRegiao: string): TJSONValue;
@@ -58,7 +59,18 @@ begin
   Result := Request.Response.JSONValue;
 end;
 
-class function TApiIBGERegiao.ObterInstancia(pTransformar: TObjetoPara): TApiIBGERegiao;
+class function TApiIBGERegiao.ObterInstancia: TApiIBGERegiao;
+begin
+  if not Assigned(FApiIBGERegiao) then
+  begin
+    FApiIBGERegiao := TApiIBGERegiao(inherited Create('https://servicodados.ibge.gov.br/api/v1/localidades/regioes/',
+      acRegiao));
+  end;
+
+  Result := FApiIBGERegiao;
+end;
+
+class function TApiIBGERegiao.ObterInstancia(pTransformar: TObjetoJSON): TApiIBGERegiao;
 begin
   if not Assigned(FApiIBGERegiao) then
   begin
@@ -67,8 +79,8 @@ begin
   end;
 
   case pTransformar of
-    opRegioes: FApiIBGERegiao.Transformar := TBridgeIBGERegioes.Create;
-    opRegiao: FApiIBGERegiao.Transformar := TBridgeIBGERegiao.Create;
+    ojRegioes: FApiIBGERegiao.Transformar := TBridgeIBGERegioes.Create;  //Passou
+    ojRegiao: FApiIBGERegiao.Transformar := TBridgeIBGERegiao.Create;    //Passou
   end;
 
   Result := FApiIBGERegiao;

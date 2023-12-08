@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, System.ImageList, Vcl.ImgList,
-  System.JSON, System.Generics.Collections, Vcl.Mask, REST.Json,
+  System.JSON, System.Generics.Collections, Vcl.Mask, REST.Json, API.DataModules.Principal,
   API.Classes.JSON.IBGE.Metadados, API.Classes.Helpers.Exceptions,
   API.Classes.Base.IBGE.Mesorregiao, API.Classes.JSON.IBGE.Regiao,
   API.Classes.JSON.IBGE.UF, API.Classes.JSON.IBGE.Mesorregiao,
@@ -13,7 +13,6 @@ uses
 
 type
   TfrmIbgeMesorregiao = class(TForm)
-    imgIcons: TImageList;
     pnlTop: TPanel;
     lblRegiao: TLabel;
     cmbRegiao: TComboBox;
@@ -116,7 +115,7 @@ procedure TfrmIbgeMesorregiao.BuscarMesorregioesDoEstado(var pJson: TJSONValue);
 var
   lApiIBGEEstado: TApiIBGEEstado;
 begin
-  lApiIBGEEstado := TApiIBGEEstado.ObterInstancia(opMesorregioes);
+  lApiIBGEEstado := TApiIBGEEstado.ObterInstancia;
 
   try
     pJson := lApiIBGEEstado.ConsultarMesorregioes(Copy(cmbEstado.Text, 1, 2));
@@ -136,7 +135,7 @@ var
   lItem: Integer;
 begin
   lItem := cmbRegiao.ItemIndex + 1;
-  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(opRegiao);
+  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(ojRegiao);
 
   try
     pJson := lApiIBGERegiao.ListarEstadosDaRegiao(lItem.ToString);
@@ -175,7 +174,7 @@ procedure TfrmIbgeMesorregiao.BuscarRegioes(var pJson: TJSONValue);
 var
   lApiIBGERegiao: TApiIBGERegiao;
 begin
-  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(opRegiao);
+  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(ojRegiao);
 
   try
     pJson := lApiIBGERegiao.ListarRegioes;
@@ -303,7 +302,7 @@ begin
 
   try
     try
-      lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(opMetadados);
+      lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(ojMetadados);
       lJson := lApiIBGEMesorregiao.ConsultarMetadadosMesorregiao(lId.ToString);
       lMetadados := TJSONIBGEMetadados(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
     except
@@ -359,7 +358,7 @@ begin
   end;
 
   BuscarEstadosDaRegiao(lJson);
-  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(opUfs);
+  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(ojUfs);
   lUf := TJSONIbgeUFs(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
 
   try
@@ -379,7 +378,7 @@ var
   lApiIBGEMesorregiao: TApiIBGEMesorregiao;
 begin
   BuscarMesorregioesDoEstado(lJson);
-  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(opMesorregioes);
+  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(ojMesorregioes);
   lMesorregioes := TJSONIBGEMesorregioes(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
 
   try
@@ -399,7 +398,7 @@ var
   lApiIBGERegiao: TApiIBGERegiao;
 begin
   BuscarRegioes(lJson);
-  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(opRegioes);
+  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(ojRegioes);
   lRegioes := TJSONIbgeRegioes(lApiIBGERegiao.Transformar.ParaObjeto(lJson));
 
   try
@@ -420,7 +419,7 @@ var
   lApiIBGEMesorregiao: TApiIBGEMesorregiao;
 begin
   BuscarMesorregioesDoEstado(lJson);
-  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(opMesorregioes);
+  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(ojMesorregioes);
 
   try
     lMesorregioes := TJSONIBGEMesorregioes(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
