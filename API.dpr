@@ -41,9 +41,7 @@ uses
   API.Classes.Bridge.IBGEMesorregiaoBridge in 'Classes\Bridge\API.Classes.Bridge.IBGEMesorregiaoBridge.pas',
   API.Classes.Base.IBGE.Estados in 'Classes\Base\IBGE\API.Classes.Base.IBGE.Estados.pas',
   Vcl.Themes,
-  Vcl.Styles,
-  API.Frames.ViaCep in 'Frames\API.Frames.ViaCep.pas' {frmDadosViaCep: TFrame},
-  API.Classes.Singleton.Principal in 'Classes\Singleton\API.Classes.Singleton.Principal.pas';
+  Vcl.Styles;
 
 {$R *.res}
 

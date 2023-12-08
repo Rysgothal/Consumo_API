@@ -5,8 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Mask, System.StrUtils, JSON,
-  System.ImageList, Vcl.ImgList, API.Classes.Helpers.Strings, API.DataModules.Principal,
-  API.Classes.Base.ViaCep, API.Classes.Decorator.Log, API.Frames.ViaCep;
+  System.ImageList, Vcl.ImgList, API.Classes.Helpers.Strings,
+  API.Classes.Base.ViaCep, API.Classes.Decorator.Log;
 
 type
   TfrmViaCep = class(TForm)
@@ -14,7 +14,19 @@ type
     lbeCepConsulta: TLabeledEdit;
     btnPesquisar: TButton;
     pnlBottom: TPanel;
-    frmDadosViaCep: TfrmDadosViaCep;
+    lbeBairro: TLabeledEdit;
+    lbeCep: TLabeledEdit;
+    lbeLogradouro: TLabeledEdit;
+    lbeCidade: TLabeledEdit;
+    btnMaps: TButton;
+    imgIcons: TImageList;
+    btnLimpar: TButton;
+    lbeEstado: TLabeledEdit;
+    lbeComplemento: TLabeledEdit;
+    lbeIBGE: TLabeledEdit;
+    lbeGIA: TLabeledEdit;
+    lbeDDD: TLabeledEdit;
+    lbeSIAFI: TLabeledEdit;
     procedure lbeCepConsultaChange(Sender: TObject);
     procedure btnPesquisarClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -22,6 +34,7 @@ type
     procedure btnMapsClick(Sender: TObject);
   private
     { Private declarations }
+//    FViaCep: TApiViaCep;
     procedure PesquisarCep;
     procedure PreencherEdits(pJson: TJSONValue);
     procedure LimparFormulario;
@@ -38,7 +51,7 @@ implementation
 
 uses
   REST.Json, API.Classes.JSON.ViaCep, API.Classes.Helpers.Enumerados,
-  API.Forms.Navegador, API.Classes.Singleton.Principal;
+  API.Forms.Navegador;
 
 {$R *.dfm}
 
@@ -62,16 +75,13 @@ procedure TfrmViaCep.PesquisarCep;
 var
   lCep: string;
   lJson: TJSONValue;
-//  lViaCep: TApiViaCep;
-  lApi: TApiSingleton;
+  lViaCep: TApiViaCep;
 begin
-//  lViaCep := TApiViaCep.ObterInstancia;
-  lApi := TApiSingleton.ObterInstancia(ojViaCep);
+  lViaCep := TApiViaCep.ObterInstancia;
 
   try
     lCep := TStringHelper.DigitarSomenteNumeros(lbeCepConsulta.Text);
-//    lJson := lViaCep.ConsultarCep(lCep);
-    lJson := lApi.ViaCep.ConsultarCep(lCep);
+    lJson := lViaCep.ConsultarCep(lCep);
     PreencherEdits(lJson);
   except
 //    on ECepNaoExiste do
@@ -115,26 +125,23 @@ end;
 procedure TfrmViaCep.PreencherEdits(pJson: TJSONValue);
 var
   lJSONViaCep: TJSONViaCep;
-//  lApiViaCep: TApiViaCep;
-  lApi: TApiSingleton;
+  lApiViaCep: TApiViaCep;
 begin
-//  lApiViaCep := TApiViaCep.ObterInstancia;
-  lApi := TApiSingleton.ObterInstancia(ojViaCep);
+  lApiViaCep := TApiViaCep.ObterInstancia;
 
   try
-//    lJSONViaCep := TJSONViaCep(lApiViaCep.Transformar.ParaObjeto(pJson));
-    lJSONViaCep := TJSONViaCep(lApi.ViaCep.Transformar.ParaObjeto(pJson));
+    lJSONViaCep := TJSONViaCep(lApiViaCep.Transformar.ParaObjeto(pJson));
 
-//    lbeCep.Text := lJSONViaCep.Cep;
-//    lbeBairro.Text := lJSONViaCep.Bairro;
-//    lbeLogradouro.Text := lJSONViaCep.Logradouro;
-//    lbeCidade.Text := lJSONViaCep.Cidade;
-//    lbeEstado.Text := lJSONViaCep.Uf;
-//    lbeComplemento.Text := lJSONViaCep.Complemento;
-//    lbeIBGE.Text := lJSONViaCep.Ibge.ToString;
-//    lbeGIA.Text := lJSONViaCep.Gia.ToString;
-//    lbeDDD.Text := lJSONViaCep.Ddd.ToString;
-//    lbeSIAFI.Text := lJSONViaCep.Siafi.ToString;
+    lbeCep.Text := lJSONViaCep.Cep;
+    lbeBairro.Text := lJSONViaCep.Bairro;
+    lbeLogradouro.Text := lJSONViaCep.Logradouro;
+    lbeCidade.Text := lJSONViaCep.Cidade;
+    lbeEstado.Text := lJSONViaCep.Uf;
+    lbeComplemento.Text := lJSONViaCep.Complemento;
+    lbeIBGE.Text := lJSONViaCep.Ibge.ToString;
+    lbeGIA.Text := lJSONViaCep.Gia.ToString;
+    lbeDDD.Text := lJSONViaCep.Ddd.ToString;
+    lbeSIAFI.Text := lJSONViaCep.Siafi.ToString;
   finally
     FreeAndNil(lJSONViaCep);
   end;
@@ -148,15 +155,15 @@ end;
 
 procedure TfrmViaCep.LimparPnlBottom;
 begin
-//  lbeBairro.Clear;
-//  lbeCep.Clear;
-//  lbeLogradouro.Clear;
-//  lbeCidade.Clear;
-//  lbeEstado.Clear;
-//  lbeIBGE.Clear;
-//  lbeGIA.Clear;
-//  lbeDDD.Clear;
-//  lbeSIAFI.Clear;
+  lbeBairro.Clear;
+  lbeCep.Clear;
+  lbeLogradouro.Clear;
+  lbeCidade.Clear;
+  lbeEstado.Clear;
+  lbeIBGE.Clear;
+  lbeGIA.Clear;
+  lbeDDD.Clear;
+  lbeSIAFI.Clear;
 end;
 
 procedure TfrmViaCep.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -174,14 +181,14 @@ procedure TfrmViaCep.AbrirMapa;
 var
   lPesquisa: string;
 begin
-//  if lbeCep.Text = EmptyStr then
-//  begin
-//    Exit;
-//  end;
+  if lbeCep.Text = EmptyStr then
+  begin
+    Exit;
+  end;
 
   if not Assigned(frmNavegador) then
   begin
-//    lPesquisa := 'https://www.google.com.br/maps/search/' + lbeCep.Text;
+    lPesquisa := 'https://www.google.com.br/maps/search/' + lbeCep.Text;
     frmNavegador := TfrmNavegador.Create(lPesquisa);
   end;
 

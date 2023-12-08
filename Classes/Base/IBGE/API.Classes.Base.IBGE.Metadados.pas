@@ -9,7 +9,7 @@ uses
 type
   TApiIBGEMetadados = class(TApi)
   public
-    class function ObterInstancia: TApiIBGEMetadados;
+    class function ObterInstancia(pTransformar: TObjetoPara): TApiIBGEMetadados;
     function ConsultarMetadados(const pIdRegiao: string): TJSONValue;
   end;
 
@@ -38,7 +38,7 @@ begin
   Result := Request.Response.JSONValue;
 end;
 
-class function TApiIBGEMetadados.ObterInstancia: TApiIBGEMetadados;
+class function TApiIBGEMetadados.ObterInstancia(pTransformar: TObjetoPara): TApiIBGEMetadados;
 begin
   if not Assigned(FApiIBGEMetadados) then
   begin
@@ -46,7 +46,10 @@ begin
       acMetadados));
   end;
 
-  FApiIBGEMetadados.Transformar := TBridgeIBGEMetadados.Create;
+  case pTransformar of
+    opMetadados: FApiIBGEMetadados.Transformar := TBridgeIBGEMetadados.Create;
+  end;
+
   Result := FApiIBGEMetadados;
 end;
 

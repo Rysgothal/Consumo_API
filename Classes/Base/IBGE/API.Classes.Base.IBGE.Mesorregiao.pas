@@ -9,8 +9,7 @@ uses
 type
   TApiIBGEMesorregiao = class(TApi)
   public
-    class function ObterInstancia(pTransformar: TObjetoJSON): TApiIBGEMesorregiao; overload;
-    class function ObterInstancia: TApiIBGEMesorregiao; overload;
+    class function ObterInstancia(pTransformar: TObjetoPara): TApiIBGEMesorregiao;
     function ConsultarMetadadosMesorregiao(const pIdMesorregiao: string): TJSONValue;
   end;
 
@@ -47,7 +46,7 @@ begin
   Result := Request.Response.JSONValue;
 end;
 
-class function TApiIBGEMesorregiao.ObterInstancia(pTransformar: TObjetoJSON): TApiIBGEMesorregiao;
+class function TApiIBGEMesorregiao.ObterInstancia(pTransformar: TObjetoPara): TApiIBGEMesorregiao;
 begin
   if not Assigned(FApiIBGEMesorregiao) then
   begin
@@ -56,20 +55,9 @@ begin
   end;
 
   case pTransformar of
-    ojMesorregioes: FApiIBGEMesorregiao.Transformar := TBridgeIBGEMesorregioes.Create;  // Passou
-    ojMetadados: FApiIBGEMesorregiao.Transformar := TBridgeIBGEMetadados.Create;        // Passou
-    ojUfs: FApiIBGEMesorregiao.Transformar := TBridgeIBGEUFs.Create;                    // Passou
-  end;
-
-  Result := FApiIBGEMesorregiao;
-end;
-
-class function TApiIBGEMesorregiao.ObterInstancia: TApiIBGEMesorregiao;
-begin
-  if not Assigned(FApiIBGEMesorregiao) then
-  begin
-    FApiIBGEMesorregiao := TApiIBGEMesorregiao(inherited Create('https://servicodados.ibge.gov.br/api/v3/malhas/' +
-      'mesorregioes/', acMesorregiao));
+    opMesorregioes: FApiIBGEMesorregiao.Transformar := TBridgeIBGEMesorregioes.Create;
+    opMetadados: FApiIBGEMesorregiao.Transformar := TBridgeIBGEMetadados.Create;
+    opUfs: FApiIBGEMesorregiao.Transformar := TBridgeIBGEUFs.Create;
   end;
 
   Result := FApiIBGEMesorregiao;

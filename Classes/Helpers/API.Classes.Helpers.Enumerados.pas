@@ -4,7 +4,7 @@ interface
 
 type
   TApiConsulta = (acViaCep, acMesorregiao, acRegiao, acMetadados);
-  TObjetoJSON = (ojViaCep, ojMesorregioes, ojRegiao, ojRegioes, ojMetadados, ojUfs);
+  TObjetoPara = (opMesorregioes, opRegiao, opRegioes, opMetadados, opUfs);
 
 implementation
 

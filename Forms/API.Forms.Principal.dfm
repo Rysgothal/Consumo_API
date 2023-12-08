@@ -62,7 +62,7 @@ object frmPrincipal: TfrmPrincipal
     Top = 344
   end
   object mmnMenuPrincipal: TMainMenu
-    Images = dmPrincipal.imglistIconesMenu
+    Images = dmPrincipal.imglistIcons
     Left = 48
     Top = 16
     object menuConsultar: TMenuItem
