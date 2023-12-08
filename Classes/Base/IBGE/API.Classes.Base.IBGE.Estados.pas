@@ -8,7 +8,7 @@ uses
 type
   TApiIBGEEstado = class(TApi)
   public
-    class function ObterInstancia(pTransformar: TObjetoPara): TApiIBGEEstado;
+    class function ObterInstancia: TApiIBGEEstado;
     function ConsultarMesorregioes(const pUF: string): TJSONValue;
   end;
 
@@ -29,7 +29,7 @@ begin
   Result := Request.Response.JSONValue;
 end;
 
-class function TApiIBGEEstado.ObterInstancia(pTransformar: TObjetoPara): TApiIBGEEstado;
+class function TApiIBGEEstado.ObterInstancia: TApiIBGEEstado;
 begin
   if not Assigned(FApiIBGEEstado) then
   begin
@@ -37,10 +37,7 @@ begin
       'estados/', acMesorregiao));
   end;
 
-  case pTransformar of
-    opMesorregioes: FApiIBGEEstado.Transformar := TBridgeIBGEMesorregioes.Create;
-  end;
-
+  FApiIBGEEstado.Transformar := TBridgeIBGEMesorregioes.Create;
   Result := FApiIBGEEstado;
 end;
 

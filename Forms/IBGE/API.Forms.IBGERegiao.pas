@@ -5,13 +5,12 @@ interface
 uses
   Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms,
   Vcl.Dialogs, Vcl.StdCtrls, Vcl.Mask, Vcl.ExtCtrls, System.ImageList, Vcl.ImgList, Winapi.Windows, System.Math,
-  System.JSON, Winapi.WebView2, Winapi.ActiveX, Vcl.Edge,
+  System.JSON, Winapi.WebView2, Winapi.ActiveX, Vcl.Edge, API.DataModules.Principal,
   API.Classes.Base.IBGE.Regiao, API.Classes.JSON.IBGE.Metadados;
 
 type
   TfrmIbgeRegiao = class(TForm)
     pnlTop: TPanel;
-    imgIcons: TImageList;
     cmbRegiao: TComboBox;
     lblRegiao: TLabel;
     edbNavegador: TEdgeBrowser;
@@ -92,7 +91,7 @@ var
   lJson: TJSONValue;
   lApiIBGEMetadados: TApiIBGEMetadados;
 begin
-  lApiIBGEMetadados := TApiIBGEMetadados.ObterInstancia(opMetadados);
+  lApiIBGEMetadados := TApiIBGEMetadados.ObterInstancia;
   lJson := lApiIBGEMetadados.ConsultarMetadados((cmbRegiao.ItemIndex + 1).ToString);
 
   Result := lJson;
@@ -113,7 +112,7 @@ begin
     Exit;
   end;
 
-  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(opRegiao);
+  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(ojRegiao);
 
   try
     lJSON := lApiIBGERegiao.ConsultarRegiao((lRegiaoSel + 1).ToString);
@@ -136,7 +135,7 @@ var
   lRegiao: TJSONIBGERegiao;
   lApiIBGERegiao: TApiIBGERegiao;
 begin
-  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(opRegiao);
+  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(ojRegiao);
 
   try
     lJSON := lApiIBGERegiao.ConsultarRegiao((cmbRegiao.ItemIndex + 1).ToString);
@@ -190,7 +189,7 @@ var
   lRegioes: TJSONIBGERegioes;
   lApiIBGERegiao: TApiIBGERegiao;
 begin
-  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(opRegioes);
+  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(ojRegioes);
   lJson := lApiIBGERegiao.ListarRegioes;
 
   try
@@ -211,7 +210,7 @@ var
   lMetadados: TJSONIBGEMetadados;
   lApiIBGEMetadados: TApiIBGEMetadados;
 begin
-  lApiIBGEMetadados := TApiIBGEMetadados.ObterInstancia(opMetadados);
+  lApiIBGEMetadados := TApiIBGEMetadados.ObterInstancia;
   lMetadados := TJSONIBGEMetadados(lApiIBGEMEtadados.Transformar.ParaObjeto(pJson));
 
   try
