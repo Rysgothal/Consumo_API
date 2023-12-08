@@ -8,7 +8,8 @@ uses
   System.JSON, System.Generics.Collections, Vcl.Mask, REST.Json,
   API.Classes.JSON.IBGE.Metadados, API.Classes.Helpers.Exceptions,
   API.Classes.Base.IBGE.Mesorregiao, API.Classes.JSON.IBGE.Regiao,
-  API.Classes.JSON.IBGE.UF, API.Classes.JSON.IBGE.Mesorregiao;
+  API.Classes.JSON.IBGE.UF, API.Classes.JSON.IBGE.Mesorregiao,
+  API.Classes.Base.IBGE.Estados, API.Classes.Base.IBGE.Metadados;
 
 type
   TfrmIbgeMesorregiao = class(TForm)
@@ -113,12 +114,12 @@ end;
 
 procedure TfrmIbgeMesorregiao.BuscarMesorregioesDoEstado(var pJson: TJSONValue);
 var
-  lApiIBGEMesorregiao: TApiIBGEMesorregiao;
+  lApiIBGEEstado: TApiIBGEEstado;
 begin
-  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(opMesorregioes);          // Verificar...
+  lApiIBGEEstado := TApiIBGEEstado.ObterInstancia(opMesorregioes);
 
   try
-    pJson := lApiIBGEMesorregiao.ConsultarMesorregioesDoEstado(Copy(cmbEstado.Text, 1, 2));
+    pJson := lApiIBGEEstado.ConsultarMesorregioes(Copy(cmbEstado.Text, 1, 2));
   except
     on Exception do
     begin
@@ -241,24 +242,24 @@ procedure TfrmIbgeMesorregiao.InserirNoMemo(pMetadados: TJSONIBGEMetadados);
 begin
   memJson.Clear;
 
-  for var vMetadado in pMetadados.Metadados do
+  for var lMetadado in pMetadados.Metadados do
   begin
     memJson.Lines.Add('Mesorregiao: ' + cmbNomeMesorregiao.Text);
     memJson.Lines.Add('');
-    memJson.Lines.Add(' ID: ' + vMetadado.Id);
-    memJson.Lines.Add(' Nível Geográfico: ' + vMetadado.NivelGeografico);
+    memJson.Lines.Add(' ID: ' + lMetadado.Id);
+    memJson.Lines.Add(' Nível Geográfico: ' + lMetadado.NivelGeografico);
     memJson.Lines.Add(' Centroide:');
-    memJson.Lines.Add('     - Longitude: ' + vMetadado.Centroide.Longitude);
-    memJson.Lines.Add('     - Latitude: ' + vMetadado.Centroide.Latitude);
-    memJson.Lines.Add(' Área: ' + vMetadado.Area.Dimensao + ' ' + vMetadado.Area.Unidade.Id);
+    memJson.Lines.Add('     - Longitude: ' + lMetadado.Centroide.Longitude);
+    memJson.Lines.Add('     - Latitude: ' + lMetadado.Centroide.Latitude);
+    memJson.Lines.Add(' Área: ' + lMetadado.Area.Dimensao + ' ' + lMetadado.Area.Unidade.Id);
     memJson.Lines.Add('');
   end;
 end;
 
 procedure TfrmIbgeMesorregiao.AbrirMapa;
 var
-  vUrl: string;
-  vUrlEncode: TUrlEncoding;
+  lUrl: string;
+  lUrlEncode: TUrlEncoding;
 begin
   if cmbNomeMesorregiao.ItemIndex = -1 then
   begin
@@ -269,16 +270,16 @@ begin
 
   if not Assigned(frmNavegador) then
   begin
-    vUrl := 'https://servicodados.ibge.gov.br/api/v3/malhas/mesorregioes/' + lbeId.Text + '?formato=application/vnd';
+    lUrl := 'https://servicodados.ibge.gov.br/api/v3/malhas/mesorregioes/' + lbeId.Text + '?formato=application/vnd';
 
-    vUrlEncode := TURLEncoding.Create;
+    lUrlEncode := TURLEncoding.Create;
     try
-      vUrl := vUrlEncode.Encode(vUrl);
+      lUrl := lUrlEncode.Encode(lUrl);
 
-      vUrl := 'http://geojson.io/#data=data:text/x-url,' + vUrl + '.geo+json';
-      frmNavegador := TfrmNavegador.Create(vUrl);
+      lUrl := 'http://geojson.io/#data=data:text/x-url,' + lUrl + '.geo+json';
+      frmNavegador := TfrmNavegador.Create(lUrl);
     finally
-      FreeAndNil(vUrlEncode);
+      FreeAndNil(lUrlEncode);
     end;
   end;
 
@@ -298,41 +299,43 @@ begin
     Exit;
   end;
 
-  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(opMesorregioes);
   RetornarIdMesorregiaoSelecionada(lId);
 
   try
-    lJson := lApiIBGEMesorregiao.ConsultarMetadadosMesorregiao(lId.ToString);
+    try
+      lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(opMetadados);
+      lJson := lApiIBGEMesorregiao.ConsultarMetadadosMesorregiao(lId.ToString);
+      lMetadados := TJSONIBGEMetadados(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
+    except
+      on EErroDeRota do
+      begin
+        Application.MessageBox('Não foi possivel estabelecer uma rota, por favor, tente novamente', 'Erro de Rota',
+          MB_OK + MB_ICONINFORMATION);
+        Exit;
+      end;
 
-//    lMetadados := TJSONIBGEMetadados.Create(lJson, 'metadados');
-    lMetadados := TJSONIBGEMetadados(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
-  except
-    on EErroDeRota do
-    begin
-      Application.MessageBox('Não foi possivel estabelecer uma rota, por favor, tente novamente', 'Erro de Rota',
-        MB_OK + MB_ICONINFORMATION);
-      Exit;
+      on Exception do
+      begin
+        Application.MessageBox('Ouve uma falha desconhecida, tente novamente', 'Falha Desconhecida', MB_OK +
+          MB_ICONINFORMATION);
+        Exit;
+      end;
     end;
 
-    on Exception do
+    for var lMetadado in lMetadados.Metadados do
     begin
-      Application.MessageBox('Ouve uma falha desconhecida, tente novamente', 'Falha Desconhecida', MB_OK +
-        MB_ICONINFORMATION);
-      Exit;
+      lbeLatitude.Text := lMetadado.Centroide.Latitude;
+      lbeLongitude.Text := lMetadado.Centroide.Latitude;
+      lbeId.Text := lMetadado.Id;
+      lbeNome.Text := cmbNomeMesorregiao.Text;
+      lbeDimensao.Text := lMetadado.Area.Dimensao + ' ' + lMetadado.Area.Unidade.Nome;
     end;
-  end;
 
-  for var vMetadado in lMetadados.Metadados do
-  begin
-    lbeLatitude.Text := vMetadado.Centroide.Latitude;
-    lbeLongitude.Text := vMetadado.Centroide.Latitude;
-    lbeId.Text := vMetadado.Id;
-    lbeNome.Text := cmbNomeMesorregiao.Text;
-    lbeDimensao.Text := vMetadado.Area.Dimensao + ' ' + vMetadado.Area.Unidade.Nome;
+    HabilitarBotoesNavegacao(True);
+    InserirNoMemo(lMetadados);
+  finally
+    FreeAndNil(lMetadados);
   end;
-
-  HabilitarBotoesNavegacao(True);
-  InserirNoMemo(lMetadados);
 end;
 
 procedure TfrmIbgeMesorregiao.PreencherComboBoxEstados;
@@ -412,24 +415,28 @@ end;
 
 procedure TfrmIbgeMesorregiao.RetornarIdMesorregiaoSelecionada(var pId: Integer);
 var
-  vJson: TJSONValue;
-  vMesorregioes: TJSONIBGEMesorregioes;
+  lJson: TJSONValue;
+  lMesorregioes: TJSONIBGEMesorregioes;
   lApiIBGEMesorregiao: TApiIBGEMesorregiao;
 begin
-  BuscarMesorregioesDoEstado(vJson);
+  BuscarMesorregioesDoEstado(lJson);
   lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(opMesorregioes);
 
-  vMesorregioes := TJSONIBGEMesorregioes(lApiIBGEMesorregiao.Transformar.ParaObjeto(vJson));
+  try
+    lMesorregioes := TJSONIBGEMesorregioes(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
 
-  for var vMesorregiao in vMesorregioes.Mesorregioes do
-  begin
-    if vMesorregiao.Nome <> cmbNomeMesorregiao.Text then
+    for var lMesorregiao in lMesorregioes.Mesorregioes do
     begin
-      Continue;
-    end;
+      if lMesorregiao.Nome <> cmbNomeMesorregiao.Text then
+      begin
+        Continue;
+      end;
 
-    pId := vMesorregiao.Id;
-    Break;
+      pId := lMesorregiao.Id;
+      Break;
+    end;
+  finally
+    FreeAndNil(lMesorregioes);
   end;
 end;
 

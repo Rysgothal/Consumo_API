@@ -29,9 +29,6 @@ uses
   API.Classes.Strategy.IBGERegioesStrategy,
   API.Classes.Strategy.IBGEMetadadosStrategy,
   API.Classes.Strategy.IBGEMesorregiaoStrategy;
-//  API.Classes.Bridge.IBGERegiaoBridge,
-//  API.Classes.Bridge.IBGEMesorregiaoBridge,
-//  API.Classes.Bridge.IBGEMetadadosBridge;
 
 { TApi }
 
@@ -41,26 +38,10 @@ begin
   FRequest := TRESTRequest.Create(FClient);
 
   case pTipoApi of
-    acViaCep:
-    begin
-      FConfigRequest := TStrategyViaCep.Create;
-//      FTransformar := TBridgeViaCep.Create;
-    end;
-    acMesorregiao:
-    begin
-      FConfigRequest := TStrategyIBGEMesorregiao.Create;
-//      FTransformar := TBridgeIBGEMesorregiao.Create;
-    end;
-    acRegiao:
-    begin
-      FConfigRequest := TStrategyIBGERegiao.Create;
-//      FTransformar := TBridgeIBGERegiao.Create;
-    end;
-    acMetadados:
-    begin
-      FConfigRequest := TStrategyIBGEMetadados.Create;
-//      FTransformar := TBridgeIBGEMetadados.Create;
-    end;
+    acViaCep: FConfigRequest := TStrategyViaCep.Create;
+    acMesorregiao: FConfigRequest := TStrategyIBGEMesorregiao.Create;
+    acRegiao: FConfigRequest := TStrategyIBGERegiao.Create;
+    acMetadados: FConfigRequest := TStrategyIBGEMetadados.Create;
   end;
 end;
 

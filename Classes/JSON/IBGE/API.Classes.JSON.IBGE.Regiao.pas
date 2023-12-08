@@ -25,6 +25,7 @@ type
   private
     [JSONName('regioes')]
     FRegiaoArray: TArray<TJSONIBGERegiao>;
+    FRegiaoLista: TObjectList<TJSONIBGERegiao>;
     function GetRegiao: TObjectList<TJSONIBGERegiao>;
   public
     constructor Create(pJSONValue: TJSONValue; pDefault: string); overload;
@@ -38,17 +39,18 @@ implementation
 
 constructor TJSONIBGERegioes.Create(pJSONValue: TJSONValue; pDefault: string);
 var
-  vJSONUnMarshal: TJSONUnMarshal;
+  lJSONUnMarshal: TJSONUnMarshal;
 begin
   inherited Create;
+  FRegiaoLista := TObjectList<TJSONIBGERegiao>.Create;
 
   if pJSONValue is TJSONArray then
   begin
-    vJSONUnMarshal := TJSONUnMarshal.Create;
+    lJSONUnMarshal := TJSONUnMarshal.Create;
     try
-      vJSONUnMarshal.SetFieldArray(Self, pDefault, (pJSONValue as TJSONArray));
+      lJSONUnMarshal.SetFieldArray(Self, pDefault, (pJSONValue as TJSONArray));
     finally
-      FreeAndNil(vJSONUnMarshal);
+      FreeAndNil(lJSONUnMarshal);
     end;
 
     Exit;
@@ -59,27 +61,24 @@ end;
 
 destructor TJSONIBGERegioes.Destroy;
 begin
-  for var lRegiao in FRegiaoArray do
+  for var lRegiaoArray in FRegiaoArray do
   begin
-    FreeAndNil(lRegiao);
+    FreeAndNil(lRegiaoArray);
   end;
 
+  FRegiaoArray := nil;
+  FRegiaoLista.FreeInstance;
   inherited;
 end;
 
 function TJSONIBGERegioes.GetRegiao: TObjectList<TJSONIBGERegiao>;
-var
-  vElemento: TJSONIBGERegiao;
-  vListaRegioes: TObjectList<TJSONIBGERegiao>;
 begin
-  vListaRegioes := TObjectList<TJSONIBGERegiao>.Create;
-
-  for vElemento in FRegiaoArray do
+  for var lElemento in FRegiaoArray do
   begin
-    vListaRegioes.Add(vElemento);
+    FRegiaoLista.Add(lElemento);
   end;
 
-  Result := vListaRegioes;
+  Result := FRegiaoLista;
 end;
 
 end.

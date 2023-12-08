@@ -27,6 +27,7 @@ type
   private
     [JSONName('mesorregiao'), JSONMarshalled(False)]
     FMesorregioesArray: TArray<TJSONIBGEMesorregiao>;
+    FMesorregioesLista: TObjectList<TJSONIBGEMesorregiao>;
     function GetMesorregioes: TObjectList<TJSONIBGEMesorregiao>;
   public
     constructor Create(pJSONValue: TJSONValue; aDefault: string); overload;
@@ -43,17 +44,18 @@ uses
 
 constructor TJSONIBGEMesorregioes.Create(pJSONValue: TJSONValue; aDefault: string);
 var
-  vJSONUnMarshal: TJSONUnMarshal;
+  lJSONUnMarshal: TJSONUnMarshal;
 begin
   inherited Create;
+  FMesorregioesLista := TObjectList<TJSONIBGEMesorregiao>.Create;
 
   if pJSONValue is TJSONArray then
   begin
-    vJSONUnMarshal := TJSONUnMarshal.Create;
+    lJSONUnMarshal := TJSONUnMarshal.Create;
     try
-      vJSONUnMarshal.SetFieldArray(Self, aDefault, (pJSONValue as TJSONArray));
+      lJSONUnMarshal.SetFieldArray(Self, aDefault, (pJSONValue as TJSONArray));
     finally
-      vJSONUnMarshal.Free;
+      lJSONUnMarshal.Free;
     end;
 
     Exit;
@@ -69,22 +71,19 @@ begin
     FreeAndNil(lMesorregiao);
   end;
 
+  FMesorregioesArray := nil;
+  FMesorregioesLista.FreeInstance;
   inherited;
 end;
 
 function TJSONIBGEMesorregioes.GetMesorregioes: TObjectList<TJSONIBGEMesorregiao>;
-var
-  vElemento: TJSONIBGEMesorregiao;
-  vListaMesorregioes: TObjectList<TJSONIBGEMesorregiao>;
 begin
-  vListaMesorregioes := TObjectList<TJSONIBGEMesorregiao>.Create;
-
-  for vElemento in FMesorregioesArray do
+  for var lElemento in FMesorregioesArray do
   begin
-    vListaMesorregioes.Add(vElemento);
+    FMesorregioesLista.Add(lElemento);
   end;
 
-  Result := vListaMesorregioes;
+  Result := FMesorregioesLista;
 end;
 
 { TJSONIBGEMesorregiao }

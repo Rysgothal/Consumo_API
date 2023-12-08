@@ -23,7 +23,7 @@ implementation
 uses
   API.Classes.Helpers.Exceptions, System.SysUtils,
   API.Classes.Strategy.IBGEEstadosStrategy,
-  API.Classes.Bridge.IBGEMesorregiaoBridge;
+  API.Classes.Bridge.IBGEMesorregiaoBridge, API.Interfaces.Strategy.Principal;
 
 { TApiIBGERegiao }
 
@@ -40,9 +40,15 @@ begin
 end;
 
 function TApiIBGERegiao.ListarEstadosDaRegiao(const pRegiao: string): TJSONValue;
+var
+  lConfig: IAPIStrategy;
 begin
+  lConfig := FConfigRequest;
+
   FConfigRequest := TStrategyIBGEEstados.Create;
   FConfigRequest.ConfigurarRequisicao(Request, pRegiao);
+  FConfigRequest := lConfig;
+
   Result := Request.Response.JSONValue;
 end;
 
@@ -63,10 +69,6 @@ begin
   case pTransformar of
     opRegioes: FApiIBGERegiao.Transformar := TBridgeIBGERegioes.Create;
     opRegiao: FApiIBGERegiao.Transformar := TBridgeIBGERegiao.Create;
-//    opMesorregioes: FApiIBGERegiao.Transformar := TBridgeIBGEMesorregioes.Create;
-//    opRegiao: FApiIBGERegiao.Transformar := TBridgeIBGERegiao.Create;
-//    opMetadados: ;
-//    opUfs: ;
   end;
 
   Result := FApiIBGERegiao;

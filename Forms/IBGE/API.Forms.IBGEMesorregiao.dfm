@@ -14,6 +14,7 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
   Position = poMainFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
+  PixelsPerInch = 96
   TextHeight = 15
   object pnlTop: TPanel
     Left = 0
@@ -23,7 +24,6 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
     Align = alTop
     BevelOuter = bvLowered
     TabOrder = 0
-    ExplicitWidth = 655
     object lblRegiao: TLabel
       Left = 16
       Top = 18
@@ -68,8 +68,6 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
     Align = alBottom
     ReadOnly = True
     TabOrder = 1
-    ExplicitTop = 237
-    ExplicitWidth = 655
   end
   object pnlBotton: TPanel
     Left = 0
@@ -80,7 +78,6 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
     BevelEdges = [beTop, beBottom]
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitWidth = 655
     DesignSize = (
       659
       157)
@@ -199,7 +196,6 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
       Images = imgIcons
       TabOrder = 7
       OnClick = btnLimparClick
-      ExplicitLeft = 546
     end
     object btnMaps: TButton
       Left = 451

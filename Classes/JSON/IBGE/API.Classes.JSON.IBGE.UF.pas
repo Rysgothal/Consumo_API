@@ -29,6 +29,7 @@ type
   private
     [JSONName('uf'), JSONMarshalled(False)]
     FUfArray: TArray<TJSONIbgeUF>;
+    FUfLista: TObjectList<TJSONIbgeUF>;
     function GetUfs: TObjectList<TJSONIbgeUF>;
   public
     constructor Create(pJSONValue: TJSONValue; aDefault: string); overload;
@@ -42,17 +43,18 @@ implementation
 
 constructor TJSONIbgeUFs.Create(pJSONValue: TJSONValue; aDefault: string);
 var
-  vJSONUnMarshal: TJSONUnMarshal;
+  lJSONUnMarshal: TJSONUnMarshal;
 begin
   inherited Create;
+  FUfLista := TObjectList<TJSONIbgeUF>.Create;
 
   if pJSONValue is TJSONArray then
   begin
-    vJSONUnMarshal := TJSONUnMarshal.Create;
+    lJSONUnMarshal := TJSONUnMarshal.Create;
     try
-      vJSONUnMarshal.SetFieldArray(Self, aDefault, (pJSONValue as TJSONArray));
+      lJSONUnMarshal.SetFieldArray(Self, aDefault, (pJSONValue as TJSONArray));
     finally
-      vJSONUnMarshal.Free;
+      lJSONUnMarshal.Free;
     end;
 
     Exit;
@@ -68,22 +70,19 @@ begin
     FreeAndNil(lUF);
   end;
 
+  FUfArray := nil;
+  FUfLista.FreeInstance;
   inherited;
 end;
 
 function TJSONIbgeUFs.GetUfs: TObjectList<TJSONIbgeUF>;
-var
-  vElemento: TJSONIbgeUF;
-  vListaUf: TObjectList<TJSONIbgeUF>;
 begin
-  vListaUf := TObjectList<TJSONIbgeUF>.Create;
-
-  for vElemento in FUfArray do
+  for var lElemento in FUfArray do
   begin
-    vListaUf.Add(vElemento);
+    FUfLista.Add(lElemento);
   end;
 
-  Result := vListaUf;
+  Result := FUfLista;
 end;
 
 { TJSONIbgeUF }

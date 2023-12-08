@@ -127,7 +127,6 @@ begin
     end;
   finally
     FreeAndNil(lRegiao);
-//    FreeAndNil(lJSON);
   end;
 end;
 
@@ -155,13 +154,13 @@ end;
 
 procedure TfrmIbgeRegiao.PesquisarRegiao(pRegiao: string);
 var
-  vPesquisa: string;
+  lPesquisa: string;
 begin
   edbNavegador.ReinitializeWebView;
 
-  vPesquisa := 'https://www.google.com.br/maps/search/Região ';
-  vPesquisa := vPesquisa + pRegiao + ' do Brasil';
-  edbNavegador.Navigate(vPesquisa);
+  lPesquisa := 'https://www.google.com.br/maps/search/Região ';
+  lPesquisa := lPesquisa + pRegiao + ' do Brasil';
+  edbNavegador.Navigate(lPesquisa);
 end;
 
 procedure TfrmIbgeRegiao.btnInformacoesClick(Sender: TObject);
@@ -192,15 +191,15 @@ var
   lApiIBGERegiao: TApiIBGERegiao;
 begin
   lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(opRegioes);
+  lJson := lApiIBGERegiao.ListarRegioes;
 
   try
-    lJson := lApiIBGERegiao.ListarRegioes;
     lRegioes := TJSONIBGERegioes(lApiIBGERegiao.Transformar.ParaObjeto(lJson));
 
     cmbRegiao.Clear;
     for var lRegiao in lRegioes.Regiao do
     begin
-      cmbRegiao.Items.Add(lRegiao.Nome);            // Revisar não liberando da memória
+      cmbRegiao.Items.Add(lRegiao.Nome);
     end;
   finally
     FreeAndNil(lRegioes);

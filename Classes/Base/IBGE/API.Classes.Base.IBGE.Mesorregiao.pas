@@ -11,7 +11,6 @@ type
   public
     class function ObterInstancia(pTransformar: TObjetoPara): TApiIBGEMesorregiao;
     function ConsultarMetadadosMesorregiao(const pIdMesorregiao: string): TJSONValue;
-    function ConsultarMesorregioesDoEstado(const pUF: string): TJSONValue; // TApiIBGEEstado
   end;
 
 var
@@ -21,12 +20,17 @@ implementation
 
 uses
   API.Classes.Helpers.Exceptions, System.SysUtils,
-  API.Classes.Strategy.IBGEMetadadosStrategy, API.Classes.Bridge.IBGEUFBridge;
+  API.Classes.Strategy.IBGEMetadadosStrategy, API.Classes.Bridge.IBGEUFBridge,
+  API.Classes.Bridge.IBGEMesorregiaoBridge,
+  API.Classes.Bridge.IBGEMetadadosBridge, API.Interfaces.Strategy.Principal;
 
 { TIBGEMesorregiao }
 
 function TApiIBGEMesorregiao.ConsultarMetadadosMesorregiao(const pIdMesorregiao: string): TJSONValue;
+var
+  lConfig: IApiStrategy;
 begin
+  lConfig := FConfigRequest;
   FConfigRequest := TStrategyIBGEMetadados.Create;
 
   try
@@ -38,6 +42,7 @@ begin
     end;
   end;
 
+  FConfigRequest := lConfig;
   Result := Request.Response.JSONValue;
 end;
 
@@ -50,20 +55,12 @@ begin
   end;
 
   case pTransformar of
-//    opMesorregioes: ;
-//    opRegiao: ;
-//    opRegioes: ;
-//    opMetadados: ;
+    opMesorregioes: FApiIBGEMesorregiao.Transformar := TBridgeIBGEMesorregioes.Create;
+    opMetadados: FApiIBGEMesorregiao.Transformar := TBridgeIBGEMetadados.Create;
     opUfs: FApiIBGEMesorregiao.Transformar := TBridgeIBGEUFs.Create;
   end;
 
   Result := FApiIBGEMesorregiao;
-end;
-
-function TApiIBGEMesorregiao.ConsultarMesorregioesDoEstado(const pUF: string): TJSONValue;
-begin
-  FConfigRequest.ConfigurarRequisicao(Request, pUF);
-  Result := Request.Response.JSONValue;
 end;
 
 initialization

@@ -47,11 +47,7 @@ begin
   end;
 
   case pTransformar of
-//    opMesorregioes: TBridgeIBGEMesorregioes.Create;
-//    opRegiao: ;
-//    opRegioes: ;
     opMetadados: FApiIBGEMetadados.Transformar := TBridgeIBGEMetadados.Create;
-//    opUfs: ;
   end;
 
   Result := FApiIBGEMetadados;

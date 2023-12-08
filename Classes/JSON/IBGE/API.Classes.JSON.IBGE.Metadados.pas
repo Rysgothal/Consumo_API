@@ -66,6 +66,7 @@ type
   private
     [JSONName('metadados'), JSONMarshalled(false)]
     FMesorregioesArray: TArray<TJSONIBGEMetadado>;
+    FMesorregioesLista: TObjectList<TJSONIBGEMetadado>;
     function GetMetadados: TObjectList<TJSONIBGEMetadado>;
   public
     constructor Create(pJSONValue: TJSONValue; aDefault: string); overload;
@@ -79,17 +80,18 @@ implementation
 
 constructor TJSONIBGEMetadados.Create(pJSONValue: TJSONValue; aDefault: string);
 var
-  vJSONUnMarshal: TJSONUnMarshal;
+  lJSONUnMarshal: TJSONUnMarshal;
 begin
   inherited Create;
+  FMesorregioesLista := TObjectList<TJSONIBGEMetadado>.Create;
 
   if pJSONValue is TJSONArray then
   begin
-    vJSONUnMarshal := TJSONUnMarshal.Create;
+    lJSONUnMarshal := TJSONUnMarshal.Create;
     try
-      vJSONUnMarshal.SetFieldArray(Self, aDefault, (pJSONValue as TJSONArray));
+      lJSONUnMarshal.SetFieldArray(Self, aDefault, (pJSONValue as TJSONArray));
     finally
-      vJSONUnMarshal.Free;
+      lJSONUnMarshal.Free;
     end;
 
     Exit;
@@ -105,22 +107,19 @@ begin
     FreeAndNil(lMetadado);
   end;
 
+  FMesorregioesArray := nil;
+  FMesorregioesLista.FreeInstance;
   inherited;
 end;
 
 function TJSONIBGEMetadados.GetMetadados: TObjectList<TJSONIBGEMetadado>;
-var
-  vElemento: TJSONIBGEMetadado;
-  vListaMesorregioes: TObjectList<TJSONIBGEMetadado>;
 begin
-  vListaMesorregioes := TObjectList<TJSONIBGEMetadado>.Create;
-
-  for vElemento in FMesorregioesArray do
+  for var lElemento in FMesorregioesArray do
   begin
-    vListaMesorregioes.Add(vElemento);
+    FMesorregioesLista.Add(lElemento);
   end;
 
-  Result := vListaMesorregioes;
+  Result := FMesorregioesLista;
 end;
 
 { TJSONIBGEArea }
