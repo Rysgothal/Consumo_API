@@ -2,7 +2,7 @@ object frmViaCep: TfrmViaCep
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
-  BorderStyle = bsDialog
+  BorderStyle = bsSingle
   Caption = 'API - ViaCep'
   ClientHeight = 358
   ClientWidth = 581

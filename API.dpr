@@ -39,7 +39,9 @@ uses
   API.Classes.Bridge.IBGEMetadadosBridge in 'Classes\Bridge\API.Classes.Bridge.IBGEMetadadosBridge.pas',
   API.Classes.Bridge.IBGEUFBridge in 'Classes\Bridge\API.Classes.Bridge.IBGEUFBridge.pas',
   API.Classes.Bridge.IBGEMesorregiaoBridge in 'Classes\Bridge\API.Classes.Bridge.IBGEMesorregiaoBridge.pas',
-  API.Classes.Base.IBGE.Estados in 'Classes\Base\IBGE\API.Classes.Base.IBGE.Estados.pas';
+  API.Classes.Base.IBGE.Estados in 'Classes\Base\IBGE\API.Classes.Base.IBGE.Estados.pas',
+  Vcl.Themes,
+  Vcl.Styles;
 
 {$R *.res}
 
