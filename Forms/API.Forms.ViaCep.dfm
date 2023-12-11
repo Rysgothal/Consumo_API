@@ -14,6 +14,7 @@ object frmViaCep: TfrmViaCep
   Font.Style = []
   Position = poMainFormCenter
   OnClose = FormClose
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 15
   object pnlTop: TPanel
@@ -24,30 +25,28 @@ object frmViaCep: TfrmViaCep
     Align = alTop
     BevelOuter = bvLowered
     TabOrder = 0
-    object lbeCepConsulta: TLabeledEdit
-      Left = 16
-      Top = 22
-      Width = 145
-      Height = 23
-      EditLabel.Width = 21
-      EditLabel.Height = 15
-      EditLabel.Caption = 'CEP'
+    inline frmBuscarCep: TfrmBuscarCep
+      Left = 1
+      Top = 1
+      Width = 579
+      Height = 63
+      Align = alClient
       TabOrder = 0
-      Text = ''
-      OnChange = lbeCepConsultaChange
-    end
-    object btnPesquisar: TButton
-      Left = 456
-      Top = 19
-      Width = 105
-      Height = 29
-      Caption = '&Pesquisar'
-      ImageIndex = 4
-      ImageMargins.Left = 10
-      ImageMargins.Right = -10
-      Images = dmPrincipal.imglistIconesBotoes
-      TabOrder = 1
-      OnClick = btnPesquisarClick
+      ExplicitLeft = 1
+      ExplicitTop = 1
+      ExplicitWidth = 579
+      ExplicitHeight = 63
+      inherited lbeCepConsulta: TLabeledEdit
+        Top = 21
+        EditLabel.ExplicitTop = 3
+        ExplicitTop = 21
+      end
+      inherited btnPesquisar: TButton
+        Left = 455
+        Top = 18
+        ExplicitLeft = 455
+        ExplicitTop = 18
+      end
     end
   end
   object pnlBottom: TPanel
@@ -71,6 +70,7 @@ object frmViaCep: TfrmViaCep
       ExplicitHeight = 234
       inherited btnLimpar: TButton
         Left = 470
+        OnClick = frmDadosViaCepbtnLimparClick
         ExplicitLeft = 470
       end
       inherited btnMaps: TButton

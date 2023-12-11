@@ -4,13 +4,18 @@ interface
 
 uses
   API.Classes.Base.Principal, System.JSON, REST.Types,
-  API.Classes.Helpers.Enumerados, API.Classes.Bridge.IBGEMetadadosBridge;
+  API.Classes.Helpers.Enumerados, API.Classes.Bridge.IBGEMetadadosBridge,
+  API.Classes.JSON.IBGE.Metadados, API.Interfaces.Bridge.JSONParaObject;
 
 type
   TApiIBGEMetadados = class(TApi)
+  private
+    FJSON: TJSONIBGEMetadados;
   public
     class function ObterInstancia: TApiIBGEMetadados;
-    function ConsultarMetadados(const pIdRegiao: string): TJSONValue;
+    destructor Destroy; override;
+    property JSON: TJSONIBGEMetadados read FJSON write FJSON;
+    procedure ConsultarMetadados(const pIdRegiao: string; pTransformar: ITransformar);
   end;
 
 var
@@ -24,7 +29,7 @@ uses
 
 { TApiIBGEMetadados }
 
-function TApiIBGEMetadados.ConsultarMetadados(const pIdRegiao: string): TJSONValue;
+procedure TApiIBGEMetadados.ConsultarMetadados(const pIdRegiao: string; pTransformar: ITransformar);
 begin
   try
     FConfigRequest.ConfigurarRequisicao(Request, pIdRegiao);
@@ -35,7 +40,13 @@ begin
     end;
   end;
 
-  Result := Request.Response.JSONValue;
+  FJSON := TJSONIBGEMetadados(pTransformar.ParaObjeto((Request.Response.JSONValue)));
+end;
+
+destructor TApiIBGEMetadados.Destroy;
+begin
+  FreeAndNil(FJSON);
+  inherited;
 end;
 
 class function TApiIBGEMetadados.ObterInstancia: TApiIBGEMetadados;
@@ -46,7 +57,6 @@ begin
       acMetadados));
   end;
 
-  FApiIBGEMetadados.Transformar := TBridgeIBGEMetadados.Create;
   Result := FApiIBGEMetadados;
 end;
 

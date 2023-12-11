@@ -12,13 +12,11 @@ type
   private
     FRequest: TRESTRequest;
     FClient: TRESTClient;
-    FTransformar: ITransformar;
   protected
     FConfigRequest: IApiStrategy;
     constructor Create(const pURL: string; pTipoApi: TApiConsulta);
   public
     property Request: TRESTRequest read FRequest write FRequest;
-    property Transformar: ITransformar read FTransformar write FTransformar;
     destructor Destroy; override;
   end;
 

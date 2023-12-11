@@ -139,7 +139,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Forms\API.Forms.Navegador.pas">
-            <Form>frmNavegador</Form>
+            <Form>frmTelaNavegador</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Classes\Strategy\API.Classes.Strategy.IBGERegioesStrategy.pas"/>
@@ -155,6 +155,33 @@
         <DCCReference Include="Classes\Bridge\API.Classes.Bridge.IBGEUFBridge.pas"/>
         <DCCReference Include="Classes\Bridge\API.Classes.Bridge.IBGEMesorregiaoBridge.pas"/>
         <DCCReference Include="Classes\Base\IBGE\API.Classes.Base.IBGE.Estados.pas"/>
+        <DCCReference Include="Classes\Singleton\API.Classes.Singleton.Principal.pas"/>
+        <DCCReference Include="Frames\ViaCep\API.Frames.ViaCep.Dados.pas">
+            <Form>frmDadosViaCep</Form>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Frames\ViaCep\API.Frames.ViaCep.BuscarCep.pas">
+            <Form>frmBuscarCep</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Interfaces\Observer\API.Interfaces.Observer.Notificacao.pas"/>
+        <DCCReference Include="Interfaces\Observer\API.Interfaces.Observer.Subject.pas"/>
+        <DCCReference Include="Frames\IBGE\Regiao\API.Frames.IBGE.Regiao.SelecionarRegiao.pas">
+            <Form>frmSelecionarRegiao</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Frames\IBGE\Regiao\API.Frames.IBGE.Regiao.InformacaoRegiao.pas">
+            <Form>frmDadosRegiao</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Frames\API.Frames.Navegador.pas">
+            <Form>frameNavegador</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
         <RcItem Include="Imagens\Logo-Ganso.png">
             <ResourceType>RCDATA</ResourceType>
             <ResourceId>LogoGansoColor</ResourceId>
@@ -195,13 +222,13 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Imagens\Logo-Ganso.png" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="Imagens\Logo-Ganso-Grey.png" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Imagens\Logo-Ganso-Grey.png" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="Imagens\Logo-Ganso.png" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
@@ -1008,10 +1035,10 @@
                 </DeployClass>
                 <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="OSX64" Name="$(PROJECTNAME).app"/>
-                <ProjectRoot Platform="Android64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
-                <ProjectRoot Platform="OSXARM64" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Android64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="OSXARM64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>

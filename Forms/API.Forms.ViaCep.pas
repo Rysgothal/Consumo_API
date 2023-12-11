@@ -6,27 +6,20 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Mask, System.StrUtils, JSON,
   System.ImageList, Vcl.ImgList, API.Classes.Helpers.Strings, API.DataModules.Principal,
-  API.Classes.Base.ViaCep, API.Classes.Decorator.Log, API.Frames.ViaCep;
+  API.Classes.Base.ViaCep, API.Classes.Decorator.Log, API.Frames.ViaCep.BuscarCep,
+  API.Frames.ViaCep.Dados;
 
 type
   TfrmViaCep = class(TForm)
     pnlTop: TPanel;
-    lbeCepConsulta: TLabeledEdit;
-    btnPesquisar: TButton;
     pnlBottom: TPanel;
     frmDadosViaCep: TfrmDadosViaCep;
-    procedure lbeCepConsultaChange(Sender: TObject);
-    procedure btnPesquisarClick(Sender: TObject);
+    frmBuscarCep: TfrmBuscarCep;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure btnLimparClick(Sender: TObject);
-    procedure btnMapsClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure frmDadosViaCepbtnLimparClick(Sender: TObject);
   private
     { Private declarations }
-    procedure PesquisarCep;
-    procedure PreencherEdits(pJson: TJSONValue);
-    procedure LimparFormulario;
-    procedure LimparPnlBottom;
-    procedure AbrirMapa;
   public
     { Public declarations }
   end;
@@ -42,150 +35,25 @@ uses
 
 {$R *.dfm}
 
-procedure TfrmViaCep.btnLimparClick(Sender: TObject);
-begin
-  LimparFormulario;
-end;
-
-procedure TfrmViaCep.btnPesquisarClick(Sender: TObject);
-begin
-  PesquisarCep;
-end;
-
-procedure TfrmViaCep.btnMapsClick(Sender: TObject);
-begin
-  btnPesquisar.Click;
-  AbrirMapa;
-end;
-
-procedure TfrmViaCep.PesquisarCep;
-var
-  lCep: string;
-  lJson: TJSONValue;
-//  lViaCep: TApiViaCep;
-  lApi: TApiSingleton;
-begin
-//  lViaCep := TApiViaCep.ObterInstancia;
-  lApi := TApiSingleton.ObterInstancia(ojViaCep);
-
-  try
-    lCep := TStringHelper.DigitarSomenteNumeros(lbeCepConsulta.Text);
-//    lJson := lViaCep.ConsultarCep(lCep);
-    lJson := lApi.ViaCep.ConsultarCep(lCep);
-    PreencherEdits(lJson);
-  except
-//    on ECepNaoExiste do
-//    begin
-//      Application.MessageBox(pChar('O Cep informado não existe'), 'Cep Inexistente', MB_OK + MB_ICONINFORMATION);
-//      LimparPnlBottom;
-//      FocarEdtCep;
-//    end;
-//
-//    on EErroDeRota do
-//    begin
-//      Application.MessageBox(pChar('Não foi possivel trazer as informações, Verifique'), 'Rota não estabelecida', MB_OK +
-//        MB_ICONINFORMATION);
-//      LimparPnlBottom;
-//      FocarEdtCep;
-//    end;
-//
-//    on EValorNaoInserido do
-//    begin
-//      Application.MessageBox(pChar('O Cep não foi Informado'), 'Campo Vazio', MB_OK + MB_ICONINFORMATION);
-//      LimparPnlBottom;
-//      FocarEdtCep;
-//    end;
-//
-//    on ECepInvalido do
-//    begin
-//      Application.MessageBox(pChar('O Cep Informado não esta completo, por favor verifique'), 'Campo Vazio', MB_OK +
-//        MB_ICONINFORMATION);
-//      LimparPnlBottom;
-//      FocarEdtCep;
-//    end;
-
-    on Exception do
-    begin
-      Application.MessageBox(pChar('Falha inesperada, por favor tente novamente'), 'Falha Desconhecida', MB_OK +
-        MB_ICONINFORMATION);
-    end;
-  end;
-end;
-
-procedure TfrmViaCep.PreencherEdits(pJson: TJSONValue);
-var
-  lJSONViaCep: TJSONViaCep;
-//  lApiViaCep: TApiViaCep;
-  lApi: TApiSingleton;
-begin
-//  lApiViaCep := TApiViaCep.ObterInstancia;
-  lApi := TApiSingleton.ObterInstancia(ojViaCep);
-
-  try
-//    lJSONViaCep := TJSONViaCep(lApiViaCep.Transformar.ParaObjeto(pJson));
-    lJSONViaCep := TJSONViaCep(lApi.ViaCep.Transformar.ParaObjeto(pJson));
-
-//    lbeCep.Text := lJSONViaCep.Cep;
-//    lbeBairro.Text := lJSONViaCep.Bairro;
-//    lbeLogradouro.Text := lJSONViaCep.Logradouro;
-//    lbeCidade.Text := lJSONViaCep.Cidade;
-//    lbeEstado.Text := lJSONViaCep.Uf;
-//    lbeComplemento.Text := lJSONViaCep.Complemento;
-//    lbeIBGE.Text := lJSONViaCep.Ibge.ToString;
-//    lbeGIA.Text := lJSONViaCep.Gia.ToString;
-//    lbeDDD.Text := lJSONViaCep.Ddd.ToString;
-//    lbeSIAFI.Text := lJSONViaCep.Siafi.ToString;
-  finally
-    FreeAndNil(lJSONViaCep);
-  end;
-end;
-
-procedure TfrmViaCep.LimparFormulario;
-begin
-  lbeCepConsulta.Clear;
-  LimparPnlBottom;
-end;
-
-procedure TfrmViaCep.LimparPnlBottom;
-begin
-//  lbeBairro.Clear;
-//  lbeCep.Clear;
-//  lbeLogradouro.Clear;
-//  lbeCidade.Clear;
-//  lbeEstado.Clear;
-//  lbeIBGE.Clear;
-//  lbeGIA.Clear;
-//  lbeDDD.Clear;
-//  lbeSIAFI.Clear;
-end;
-
 procedure TfrmViaCep.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := TCloseAction.caFree;
   frmViaCep := nil;
 end;
 
-procedure TfrmViaCep.lbeCepConsultaChange(Sender: TObject);
+procedure TfrmViaCep.FormCreate(Sender: TObject);
+var
+  lApi: TApiSingleton;
 begin
-  TStringHelper.FormatarCep(lbeCepConsulta);
+  lApi := TApiSingleton.ObterInstancia(ojViaCep);
+  lApi.AdicionarObserver(ojViaCep, frmDadosViaCep);
 end;
 
-procedure TfrmViaCep.AbrirMapa;
-var
-  lPesquisa: string;
+procedure TfrmViaCep.frmDadosViaCepbtnLimparClick(Sender: TObject);
 begin
-//  if lbeCep.Text = EmptyStr then
-//  begin
-//    Exit;
-//  end;
-
-  if not Assigned(frmNavegador) then
-  begin
-//    lPesquisa := 'https://www.google.com.br/maps/search/' + lbeCep.Text;
-    frmNavegador := TfrmNavegador.Create(lPesquisa);
-  end;
-
-  frmNavegador.Show;
+  frmDadosViaCep.btnLimparClick(Sender);
+  frmBuscarCep.lbeCepConsulta.Clear;
+  frmBuscarCep.lbeCepConsulta.SetFocus;
 end;
 
 end.

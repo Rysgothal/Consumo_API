@@ -3,7 +3,7 @@ unit API.Classes.Bridge.ViaCepBridge;
 interface
 
 uses
-  API.Interfaces.Bridge.JSONParaObject, System.JSON;
+  API.Interfaces.Bridge.JSONParaObject, System.JSON, API.Classes.JSON.ViaCep;
 
 type
   TBridgeViaCep = class(TInterfacedObject, ITransformar)
@@ -14,7 +14,7 @@ type
 implementation
 
 uses
-  API.Classes.JSON.ViaCep, REST.Json;
+  REST.Json;
 
 { TBridgeViaCep }
 

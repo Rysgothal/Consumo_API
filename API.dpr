@@ -26,7 +26,7 @@ uses
   API.Classes.JSON.IBGE.UF in 'Classes\JSON\IBGE\API.Classes.JSON.IBGE.UF.pas',
   API.Forms.IBGEMesorregiao in 'Forms\IBGE\API.Forms.IBGEMesorregiao.pas' {frmIbgeMesorregiao},
   API.Forms.IBGERegiao in 'Forms\IBGE\API.Forms.IBGERegiao.pas' {frmIbgeRegiao},
-  API.Forms.Navegador in 'Forms\API.Forms.Navegador.pas' {frmNavegador},
+  API.Forms.Navegador in 'Forms\API.Forms.Navegador.pas' {frmTelaNavegador},
   API.Classes.Strategy.IBGERegioesStrategy in 'Classes\Strategy\API.Classes.Strategy.IBGERegioesStrategy.pas',
   API.Classes.Strategy.IBGEMetadadosStrategy in 'Classes\Strategy\API.Classes.Strategy.IBGEMetadadosStrategy.pas',
   API.Classes.Base.IBGE.Metadados in 'Classes\Base\IBGE\API.Classes.Base.IBGE.Metadados.pas',
@@ -41,7 +41,15 @@ uses
   API.Classes.Bridge.IBGEMesorregiaoBridge in 'Classes\Bridge\API.Classes.Bridge.IBGEMesorregiaoBridge.pas',
   API.Classes.Base.IBGE.Estados in 'Classes\Base\IBGE\API.Classes.Base.IBGE.Estados.pas',
   Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles,
+  API.Classes.Singleton.Principal in 'Classes\Singleton\API.Classes.Singleton.Principal.pas',
+  API.Frames.ViaCep.Dados in 'Frames\ViaCep\API.Frames.ViaCep.Dados.pas' {frmDadosViaCep: TFrame},
+  API.Frames.ViaCep.BuscarCep in 'Frames\ViaCep\API.Frames.ViaCep.BuscarCep.pas' {frmBuscarCep: TFrame},
+  API.Interfaces.Observer.Notificacao in 'Interfaces\Observer\API.Interfaces.Observer.Notificacao.pas',
+  API.Interfaces.Observer.Subject in 'Interfaces\Observer\API.Interfaces.Observer.Subject.pas',
+  API.Frames.IBGE.Regiao.SelecionarRegiao in 'Frames\IBGE\Regiao\API.Frames.IBGE.Regiao.SelecionarRegiao.pas' {frmSelecionarRegiao: TFrame},
+  API.Frames.IBGE.Regiao.InformacaoRegiao in 'Frames\IBGE\Regiao\API.Frames.IBGE.Regiao.InformacaoRegiao.pas' {frmDadosRegiao: TFrame},
+  API.Frames.Navegador in 'Frames\API.Frames.Navegador.pas' {frameNavegador: TFrame};
 
 {$R *.res}
 

@@ -118,7 +118,7 @@ begin
   lApiIBGEEstado := TApiIBGEEstado.ObterInstancia;
 
   try
-    pJson := lApiIBGEEstado.ConsultarMesorregioes(Copy(cmbEstado.Text, 1, 2));
+//    pJson := lApiIBGEEstado.ConsultarMesorregioes(Copy(cmbEstado.Text, 1, 2));
   except
     on Exception do
     begin
@@ -135,7 +135,7 @@ var
   lItem: Integer;
 begin
   lItem := cmbRegiao.ItemIndex + 1;
-  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(ojRegiao);
+//  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(ojRegiao);
 
   try
     pJson := lApiIBGERegiao.ListarEstadosDaRegiao(lItem.ToString);
@@ -174,7 +174,7 @@ procedure TfrmIbgeMesorregiao.BuscarRegioes(var pJson: TJSONValue);
 var
   lApiIBGERegiao: TApiIBGERegiao;
 begin
-  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(ojRegiao);
+//  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(ojRegiao);
 
   try
     pJson := lApiIBGERegiao.ListarRegioes;
@@ -267,7 +267,7 @@ begin
     Exit;
   end;
 
-  if not Assigned(frmNavegador) then
+  if not Assigned(frmTelaNavegador) then
   begin
     lUrl := 'https://servicodados.ibge.gov.br/api/v3/malhas/mesorregioes/' + lbeId.Text + '?formato=application/vnd';
 
@@ -276,13 +276,13 @@ begin
       lUrl := lUrlEncode.Encode(lUrl);
 
       lUrl := 'http://geojson.io/#data=data:text/x-url,' + lUrl + '.geo+json';
-      frmNavegador := TfrmNavegador.Create(lUrl);
+      frmTelaNavegador := TfrmTelaNavegador.Create(lUrl);
     finally
       FreeAndNil(lUrlEncode);
     end;
   end;
 
-  frmNavegador.Show;
+  frmTelaNavegador.Show;
 end;
 
 procedure TfrmIbgeMesorregiao.PreencherCamposMetadadosMesorregiao;
@@ -302,9 +302,9 @@ begin
 
   try
     try
-      lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(ojMetadados);
+//      lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(ojMetadados);
       lJson := lApiIBGEMesorregiao.ConsultarMetadadosMesorregiao(lId.ToString);
-      lMetadados := TJSONIBGEMetadados(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
+//      lMetadados := TJSONIBGEMetadados(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
     except
       on EErroDeRota do
       begin
@@ -358,8 +358,8 @@ begin
   end;
 
   BuscarEstadosDaRegiao(lJson);
-  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(ojUfs);
-  lUf := TJSONIbgeUFs(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
+//  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(ojUfs);
+//  lUf := TJSONIbgeUFs(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
 
   try
     for var lEstado in lUf.Ufs do
@@ -378,8 +378,8 @@ var
   lApiIBGEMesorregiao: TApiIBGEMesorregiao;
 begin
   BuscarMesorregioesDoEstado(lJson);
-  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(ojMesorregioes);
-  lMesorregioes := TJSONIBGEMesorregioes(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
+//  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(ojMesorregioes);
+//  lMesorregioes := TJSONIBGEMesorregioes(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
 
   try
     for var lMesorregiao in lMesorregioes.Mesorregioes do
@@ -398,8 +398,8 @@ var
   lApiIBGERegiao: TApiIBGERegiao;
 begin
   BuscarRegioes(lJson);
-  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(ojRegioes);
-  lRegioes := TJSONIbgeRegioes(lApiIBGERegiao.Transformar.ParaObjeto(lJson));
+//  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(ojRegioes);
+//  lRegioes := TJSONIbgeRegioes(lApiIBGERegiao.Transformar.ParaObjeto(lJson));
 
   try
     cmbRegiao.Clear;
@@ -419,10 +419,10 @@ var
   lApiIBGEMesorregiao: TApiIBGEMesorregiao;
 begin
   BuscarMesorregioesDoEstado(lJson);
-  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(ojMesorregioes);
+//  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(ojMesorregioes);
 
   try
-    lMesorregioes := TJSONIBGEMesorregioes(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
+//    lMesorregioes := TJSONIBGEMesorregioes(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
 
     for var lMesorregiao in lMesorregioes.Mesorregioes do
     begin

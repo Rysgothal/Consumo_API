@@ -160,6 +160,7 @@ object frmDadosViaCep: TfrmDadosViaCep
     ImageMargins.Right = -10
     Images = dmPrincipal.imglistIconesBotoes
     TabOrder = 10
+    OnClick = btnLimparClick
   end
   object btnMaps: TButton
     Left = 16

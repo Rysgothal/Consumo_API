@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.OleCtrls, SHDocVw, Winapi.WebView2, Winapi.ActiveX, Vcl.Edge;
 
 type
-  TfrmNavegador = class(TForm)
+  TfrmTelaNavegador = class(TForm)
     edbNavegador: TEdgeBrowser;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
@@ -18,7 +18,7 @@ type
   end;
 
 var
-  frmNavegador: TfrmNavegador;
+  frmTelaNavegador: TfrmTelaNavegador;
 
 implementation
 
@@ -26,7 +26,7 @@ implementation
 
 { TForm1 }
 
-constructor TfrmNavegador.Create(const pValor: string);
+constructor TfrmTelaNavegador.Create(const pValor: string);
 begin
   inherited Create(Owner);
 //  edbNavegador.CreateWebView;
@@ -34,10 +34,10 @@ begin
 //  edbNavegador.ZoomFactor := 25;
 end;
 
-procedure TfrmNavegador.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TfrmTelaNavegador.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := TCloseAction.caFree;
-  frmNavegador := nil;
+  frmTelaNavegador := nil;
 end;
 
 end.

@@ -3,13 +3,19 @@ unit API.Classes.Base.ViaCep;
 interface
 
 uses
-  API.Classes.Base.Principal, System.JSON, API.Classes.Helpers.Enumerados;
+  API.Classes.Base.Principal, System.JSON, API.Classes.Helpers.Enumerados,
+  API.Classes.JSON.ViaCep,
+  API.Interfaces.Bridge.JSONParaObject;
 
 type
   TApiViaCep = class(TApi)
+  private
+    FJSON: TJSONViaCep;
   public
     class function ObterInstancia: TApiViaCep;
-    function ConsultarCep(const pCep: string): TJSONValue; virtual;
+    destructor Destroy; override;
+    property JSON: TJSONViaCep read FJSON;
+    procedure ConsultarCep(const pCep: string; pTransformar: ITransformar);
   end;
 
 var
@@ -23,7 +29,7 @@ uses
 
 { TViaCep }
 
-function TApiViaCep.ConsultarCep(const pCep: string): TJSONValue;
+procedure TApiViaCep.ConsultarCep(const pCep: string; pTransformar: ITransformar);
 begin
   if pCep = EmptyStr then
   begin
@@ -47,7 +53,13 @@ begin
     raise EErroDeRota.Create('Erro de Rota');
   end;
 
-  Result := Request.Response.JSONValue;
+  FJSON := TJSONViaCep(pTransformar.ParaObjeto(Request.Response.JSONValue));
+end;
+
+destructor TApiViaCep.Destroy;
+begin
+  FreeAndNil(FJSON);
+  inherited;
 end;
 
 class function TApiViaCep.ObterInstancia: TApiViaCep;
@@ -57,7 +69,6 @@ begin
     FApiViaCep := TApiViaCep(inherited Create('https://viacep.com.br/ws/', acViaCep));
   end;
 
-  FApiViaCep.Transformar := TBridgeViaCep.Create;
   Result := FApiViaCep;
 end;
 

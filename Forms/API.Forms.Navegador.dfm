@@ -1,4 +1,4 @@
-object frmNavegador: TfrmNavegador
+object frmTelaNavegador: TfrmTelaNavegador
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
@@ -23,9 +23,5 @@ object frmNavegador: TfrmNavegador
     Height = 699
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 8
-    ExplicitTop = 8
-    ExplicitWidth = 1125
-    ExplicitHeight = 561
   end
 end

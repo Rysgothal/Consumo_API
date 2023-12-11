@@ -3,13 +3,17 @@ unit API.Classes.Base.IBGE.Estados;
 interface
 
 uses
-  API.Classes.Base.Principal, API.Classes.Helpers.Enumerados, System.JSON;
+  API.Classes.Base.Principal, API.Classes.Helpers.Enumerados, System.JSON,
+  API.Classes.JSON.IBGE.Mesorregiao, API.Interfaces.Bridge.JSONParaObject;
 
 type
   TApiIBGEEstado = class(TApi)
+  private
+    FJSON: TJSONIBGEMesorregioes;
   public
     class function ObterInstancia: TApiIBGEEstado;
-    function ConsultarMesorregioes(const pUF: string): TJSONValue;
+    property JSON: TJSONIBGEMesorregioes read FJSON;
+    procedure ConsultarMesorregioes(const pUF: string; pTransformar: ITransformar);
   end;
 
 var
@@ -23,10 +27,10 @@ uses
 
 { TApiIBGEEstado }
 
-function TApiIBGEEstado.ConsultarMesorregioes(const pUF: string): TJSONValue;
+procedure TApiIBGEEstado.ConsultarMesorregioes(const pUF: string; pTransformar: ITransformar);
 begin
   FConfigRequest.ConfigurarRequisicao(Request, pUF);
-  Result := Request.Response.JSONValue;
+  FJSON := TJSONIBGEMesorregioes(pTransformar.ParaObjeto(Request.Response.JSONValue));
 end;
 
 class function TApiIBGEEstado.ObterInstancia: TApiIBGEEstado;
@@ -37,7 +41,6 @@ begin
       'estados/', acMesorregiao));
   end;
 
-  FApiIBGEEstado.Transformar := TBridgeIBGEMesorregioes.Create;
   Result := FApiIBGEEstado;
 end;
 

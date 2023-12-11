@@ -3,7 +3,7 @@ unit API.Classes.Helpers.Exceptions;
 interface
 
 uses
-  System.SysUtils;
+  System.SysUtils, Vcl.Forms, Winapi.Windows;
 
 type
   { API }
@@ -18,6 +18,18 @@ type
   ENomeNaoInformado = class(Exception);
   ENomeSemRegistros = class(Exception);
 
+  THelpersException = class abstract
+  public
+    class procedure TratarExceptions(pE: Exception);
+  end;
+
 implementation
+
+{ THelpersException }
+
+class procedure THelpersException.TratarExceptions(pE: Exception);
+begin
+  Application.MessageBox(PChar(pE.Message), 'Atenção', MB_OK + MB_ICONINFORMATION);
+end;
 
 end.
