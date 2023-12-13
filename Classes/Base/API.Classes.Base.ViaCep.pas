@@ -53,6 +53,11 @@ begin
     raise EErroDeRota.Create('Erro de Rota');
   end;
 
+  if Assigned(FJSON) then
+  begin
+    FreeAndNil(FJSON);
+  end;
+
   FJSON := TJSONViaCep(pTransformar.ParaObjeto(Request.Response.JSONValue));
 end;
 

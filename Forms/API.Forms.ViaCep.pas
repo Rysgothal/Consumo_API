@@ -18,6 +18,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure frmDadosViaCepbtnLimparClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
   public
@@ -36,7 +37,12 @@ uses
 {$R *.dfm}
 
 procedure TfrmViaCep.FormClose(Sender: TObject; var Action: TCloseAction);
+var
+  lApi: TApiSingleton;
 begin
+  lAPi := TApiSingleton.ObterInstancia(ejViaCep);
+  lApi.RemoverObserver(frmDadosViaCep);
+
   Action := TCloseAction.caFree;
   frmViaCep := nil;
 end;
@@ -45,8 +51,16 @@ procedure TfrmViaCep.FormCreate(Sender: TObject);
 var
   lApi: TApiSingleton;
 begin
-  lApi := TApiSingleton.ObterInstancia(ojViaCep);
-  lApi.AdicionarObserver(ojViaCep, frmDadosViaCep);
+  lApi := TApiSingleton.ObterInstancia(ejViaCep);
+  lApi.AdicionarObserver(frmDadosViaCep);
+end;
+
+procedure TfrmViaCep.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = VK_ESCAPE then
+  begin
+    Close;
+  end;
 end;
 
 procedure TfrmViaCep.frmDadosViaCepbtnLimparClick(Sender: TObject);

@@ -25,6 +25,7 @@ object frmIbgeRegiao: TfrmIbgeRegiao
     Align = alTop
     BevelOuter = bvLowered
     TabOrder = 0
+    ExplicitWidth = 624
     inline frmSelecionarRegiao: TfrmSelecionarRegiao
       Left = 8
       Top = 8
@@ -56,6 +57,7 @@ object frmIbgeRegiao: TfrmIbgeRegiao
       inherited btnLimpar: TButton
         Left = 1013
         Top = 13
+        OnClick = frmSelecionarRegiaobtnLimparClick
         ExplicitLeft = 1013
         ExplicitTop = 13
       end

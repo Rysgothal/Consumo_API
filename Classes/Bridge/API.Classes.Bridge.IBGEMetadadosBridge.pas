@@ -3,7 +3,7 @@ unit API.Classes.Bridge.IBGEMetadadosBridge;
 interface
 
 uses
-  API.Interfaces.Bridge.JSONParaObject, System.JSON;
+  API.Interfaces.Bridge.JSONParaObject, System.JSON, REST.Json;
 
 type
   TBridgeIBGEMetadados = class(TInterfacedObject, ITransformar)

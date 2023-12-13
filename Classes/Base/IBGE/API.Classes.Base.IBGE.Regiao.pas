@@ -12,7 +12,7 @@ type
   private
     FJSON: TJSONIBGERegiao;
   public
-    class function ObterInstancia: TApiIBGERegiao; overload;
+    class function ObterInstancia: TApiIBGERegiao;
     property JSON: TJSONIBGERegiao read FJSON write FJSON;
     destructor Destroy; override;
     procedure ConsultarRegiao(const pRegiao: string; pTransformar: ITransformar);

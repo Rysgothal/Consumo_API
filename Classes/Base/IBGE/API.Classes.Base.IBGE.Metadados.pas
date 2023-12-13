@@ -40,7 +40,7 @@ begin
     end;
   end;
 
-  FJSON := TJSONIBGEMetadados(pTransformar.ParaObjeto((Request.Response.JSONValue)));
+  FJSON := TJSONIBGEMetadados(pTransformar.ParaObjeto(Request.Response.JSONValue));
 end;
 
 destructor TApiIBGEMetadados.Destroy;

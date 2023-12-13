@@ -47,7 +47,6 @@ end;
 procedure TfrmSelecionarRegiao.Notificar;
 var
   lApi: TApiSingleton;
-  lObserver: IObserver;
   lRegiaoSel: Integer;
 begin
   lRegiaoSel := cmbRegiao.ItemIndex;
@@ -58,24 +57,26 @@ begin
     Exit;
   end;
 
-  lApi := TApiSingleton.ObterInstancia(ojRegiao);
+  lApi := TApiSingleton.ObterInstancia(ejRegiao);
+  lApi.Regiao.ConsultarRegiao((lRegiaoSel + 1).ToString, lApi.Transformar);
 
-  if not lApi.Observers.TryGetValue(ojRegiao, lObserver) then
+  for var lObserver in lApi.Observers do
   begin
-    Exit;
+    if not Assigned(lObserver) then
+    begin
+      Continue;
+    end;
+
+    lObserver.Atualizar;
   end;
 
-  lApi.Regiao.ConsultarRegiao((lRegiaoSel + 1).ToString, lApi.Transformar);
-  lObserver.Atualizar;
-//  LimparEdits;
-//  pnlInformacoes.Visible := not pnlInformacoes.Visible;
-//
-//  if not (pnlInformacoes.Visible) then
+//  if not lApi.Observers.TryGetValue(ejRegiao, lObserver) then
 //  begin
 //    Exit;
 //  end;
 
-//  PreencherEdits(RetornarMetadadosRegiao);
+//  lApi.Regiao.ConsultarRegiao((lRegiaoSel + 1).ToString, lApi.Transformar);
+//  lObserver.Atualizar;
 end;
 
 procedure TfrmSelecionarRegiao.PesquisarRegiao;
@@ -111,7 +112,7 @@ var
   lApi: TApiSingleton;
   lRegioes: TJSONIBGERegioes;
 begin
-  lApi := TApiSingleton.ObterInstancia(ojRegioes);
+  lApi := TApiSingleton.ObterInstancia(ejRegioes);
 
   try
     lRegioes := TJSONIBGERegioes(lApi.Transformar.ParaObjeto(lApi.Regiao.ListarRegioes));

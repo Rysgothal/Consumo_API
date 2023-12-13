@@ -44,18 +44,20 @@ procedure TfrmBuscarCep.Notificar;
 var
   lCep: string;
   lApi: TApiSingleton;
-  lObserver: IObserver;
 begin
-  lApi := TApiSingleton.ObterInstancia(ojViaCep);
-
-  if not lApi.Observers.TryGetValue(ojViaCep, lObserver) then
-  begin
-    Exit;
-  end;
-
+  lApi := TApiSingleton.ObterInstancia(ejViaCep);
   lCep := TStringHelper.DigitarSomenteNumeros(lbeCepConsulta.Text);
   lApi.ViaCep.ConsultarCep(lCep, lApi.Transformar);
-  lObserver.Atualizar;
+
+  for var lObserver in lApi.Observers do
+  begin
+    if not Assigned(lObserver) then
+    begin
+      Continue;
+    end;
+
+    lObserver.Atualizar;
+  end;
 end;
 
 procedure TfrmBuscarCep.PesquisarCep;

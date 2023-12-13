@@ -9,7 +9,7 @@ uses
 type
   TApiIBGEMesorregiao = class(TApi)
   public
-    class function ObterInstancia: TApiIBGEMesorregiao; overload;
+    class function ObterInstancia: TApiIBGEMesorregiao;
     function ConsultarMetadadosMesorregiao(const pIdMesorregiao: string): TJSONValue;
   end;
 

@@ -12,8 +12,10 @@ object frmTelaNavegador: TfrmTelaNavegador
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  KeyPreview = True
   Position = poMainFormCenter
   OnClose = FormClose
+  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 15
   object edbNavegador: TEdgeBrowser

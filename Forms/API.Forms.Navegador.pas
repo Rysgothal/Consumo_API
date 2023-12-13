@@ -10,6 +10,7 @@ type
   TfrmTelaNavegador = class(TForm)
     edbNavegador: TEdgeBrowser;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
   public
@@ -24,7 +25,7 @@ implementation
 
 {$R *.dfm}
 
-{ TForm1 }
+{ TfrmTelaNavegador }
 
 constructor TfrmTelaNavegador.Create(const pValor: string);
 begin
@@ -38,6 +39,14 @@ procedure TfrmTelaNavegador.FormClose(Sender: TObject; var Action: TCloseAction)
 begin
   Action := TCloseAction.caFree;
   frmTelaNavegador := nil;
+end;
+
+procedure TfrmTelaNavegador.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = VK_ESCAPE then
+  begin
+    Close;
+  end;
 end;
 
 end.

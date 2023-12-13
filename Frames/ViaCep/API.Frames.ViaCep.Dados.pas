@@ -55,7 +55,7 @@ begin
     frmTelaNavegador := TfrmTelaNavegador.Create(lPesquisa);
   end;
 
-  frmTelaNavegador.Show;
+  frmTelaNavegador.ShowModal;
 end;
 
 procedure TfrmDadosViaCep.Atualizar;
@@ -90,7 +90,7 @@ procedure TfrmDadosViaCep.PreencherEdits;
 var
   lApi: TApiSingleton;
 begin
-  lApi := TApiSingleton.ObterInstancia(ojViaCep);
+  lApi := TApiSingleton.ObterInstancia(ejViaCep);
 
   lbeCep.Text := lApi.ViaCep.JSON.Cep;
   lbeBairro.Text := lApi.ViaCep.JSON.Bairro;

@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Mask, Vcl.ExtCtrls,
-  API.Interfaces.Observer.Notificacao, System.JSON;
+  API.Interfaces.Observer.Notificacao, System.JSON,
+  API.Classes.JSON.IBGE.Metadados;
 
 type
   TfrmDadosRegiao = class(TFrame, IObserver)
@@ -17,17 +18,18 @@ type
     lbeArea: TLabeledEdit;
     lbeNivelGeografico: TLabeledEdit;
   private
-    procedure LimparEdits;
+    procedure PreencherEdits(lMetadadosRegiao: TJSONIBGEMetadado);
     { Private declarations }
   public
     { Public declarations }
     procedure Atualizar;
+    procedure LimparEdits;
   end;
 
 implementation
 
 uses
-  API.Classes.JSON.IBGE.Metadados, API.Classes.Singleton.Principal,
+  API.Classes.Singleton.Principal,
   API.Classes.Helpers.Enumerados;
 
 {$R *.dfm}
@@ -37,20 +39,17 @@ uses
 procedure TfrmDadosRegiao.Atualizar;
 var
   lApi: TApiSingleton;
+  lMetadadosRegiao: TJSONIBGEMetadado;
 begin
-  lApi := TApiSingleton.ObterInstancia(ojMetadados);
-  lApi.Metadados.ConsultarMetadados(lApi.Regiao.JSON.Nome, lApi.Transformar);
+  lApi := TApiSingleton.ObterInstancia(ejMetadados);
+  lApi.Metadados.ConsultarMetadados(lApi.Regiao.JSON.Id.ToString, lApi.Transformar);
   LimparEdits;
 
-  for var lRegiao in lApi.Metadados.JSON.Metadados do
-  begin
-    lbeNome.Text := lApi.Regiao.JSON.Nome;
-    lbeCentroideLong.Text := lRegiao.CentroIde.Longitude;
-    lbeId.Text := lRegiao.Id;
-    lbeArea.Text := lRegiao.Area.Dimensao + ' ' + lRegiao.Area.Unidade.Id;
-    lbeNivelGeografico.Text := lRegiao.NivelGeografico;
-    lbeCentroideLat.Text := lRegiao.CentroIde.Latitude;
-    lbeSigla.Text := lApi.Regiao.JSON.Sigla;
+  lMetadadosRegiao := lApi.Metadados.JSON.Metadados[0];
+  try
+    PreencherEdits(lMetadadosRegiao);
+  finally
+    FreeAndNil(lMetadadosRegiao);
   end;
 end;
 
@@ -63,6 +62,21 @@ begin
   lbeCentroideLat.Clear;
   lbeNome.Clear;
   lbeSigla.Clear;
+end;
+
+procedure TfrmDadosRegiao.PreencherEdits(lMetadadosRegiao: TJSONIBGEMetadado);
+var
+  lApi: TApiSingleton;
+begin
+  lApi := TApiSingleton.ObterInstancia(ejMetadados);
+
+  lbeNome.Text := lApi.Regiao.JSON.Nome;
+  lbeCentroideLong.Text := lMetadadosRegiao.CentroIde.Longitude;
+  lbeId.Text := lMetadadosRegiao.Id;
+  lbeArea.Text := lMetadadosRegiao.Area.Dimensao + ' ' + lMetadadosRegiao.Area.Unidade.Id;
+  lbeNivelGeografico.Text := lMetadadosRegiao.NivelGeografico;
+  lbeCentroideLat.Text := lMetadadosRegiao.CentroIde.Latitude;
+  lbeSigla.Text := lApi.Regiao.JSON.Sigla;
 end;
 
 end.
