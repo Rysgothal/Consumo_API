@@ -30,9 +30,7 @@ implementation
 constructor TfrmTelaNavegador.Create(const pValor: string);
 begin
   inherited Create(Owner);
-//  edbNavegador.CreateWebView;
   edbNavegador.Navigate(pValor);
-//  edbNavegador.ZoomFactor := 25;
 end;
 
 procedure TfrmTelaNavegador.FormClose(Sender: TObject; var Action: TCloseAction);

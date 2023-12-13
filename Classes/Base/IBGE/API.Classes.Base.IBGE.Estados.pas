@@ -30,6 +30,12 @@ uses
 procedure TApiIBGEEstado.ConsultarMesorregioes(const pUF: string; pTransformar: ITransformar);
 begin
   FConfigRequest.ConfigurarRequisicao(Request, pUF);
+
+  if Assigned(FJSON) then
+  begin
+    FreeAndNil(FJSON);
+  end;
+
   FJSON := TJSONIBGEMesorregioes(pTransformar.ParaObjeto(Request.Response.JSONValue));
 end;
 

@@ -12,9 +12,11 @@ object frmIbgeRegiao: TfrmIbgeRegiao
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  KeyPreview = True
   Position = poMainFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 15
   object pnlTop: TPanel
@@ -25,7 +27,6 @@ object frmIbgeRegiao: TfrmIbgeRegiao
     Align = alTop
     BevelOuter = bvLowered
     TabOrder = 0
-    ExplicitWidth = 624
     inline frmSelecionarRegiao: TfrmSelecionarRegiao
       Left = 8
       Top = 8

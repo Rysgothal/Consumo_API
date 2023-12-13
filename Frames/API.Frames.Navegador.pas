@@ -16,7 +16,6 @@ type
   public
     { Public declarations }
     procedure Atualizar; overload;
-    procedure Atualizar(const pLink: string); overload;
   end;
 
 implementation
@@ -27,11 +26,7 @@ implementation
 
 procedure TframeNavegador.Atualizar;
 begin
-end;
-
-procedure TframeNavegador.Atualizar(const pLink: string);
-begin
-
+  Pesquisar;
 end;
 
 procedure TframeNavegador.Pesquisar;

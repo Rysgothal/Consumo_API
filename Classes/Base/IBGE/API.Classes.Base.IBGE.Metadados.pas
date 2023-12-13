@@ -40,6 +40,11 @@ begin
     end;
   end;
 
+  if Assigned(FJSON) then
+  begin
+    FreeAndNil(FJSON);
+  end;
+
   FJSON := TJSONIBGEMetadados(pTransformar.ParaObjeto(Request.Response.JSONValue));
 end;
 

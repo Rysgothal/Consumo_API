@@ -48,8 +48,7 @@ uses
   API.Interfaces.Observer.Notificacao in 'Interfaces\Observer\API.Interfaces.Observer.Notificacao.pas',
   API.Interfaces.Observer.Subject in 'Interfaces\Observer\API.Interfaces.Observer.Subject.pas',
   API.Frames.IBGE.Regiao.SelecionarRegiao in 'Frames\IBGE\Regiao\API.Frames.IBGE.Regiao.SelecionarRegiao.pas' {frmSelecionarRegiao: TFrame},
-  API.Frames.IBGE.Regiao.InformacaoRegiao in 'Frames\IBGE\Regiao\API.Frames.IBGE.Regiao.InformacaoRegiao.pas' {frmDadosRegiao: TFrame},
-  API.Frames.Navegador in 'Frames\API.Frames.Navegador.pas' {frameNavegador: TFrame};
+  API.Frames.IBGE.Regiao.InformacaoRegiao in 'Frames\IBGE\Regiao\API.Frames.IBGE.Regiao.InformacaoRegiao.pas' {frmDadosRegiao: TFrame};
 
 {$R *.res}
 

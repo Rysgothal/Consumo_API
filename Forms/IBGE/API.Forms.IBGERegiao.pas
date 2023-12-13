@@ -21,9 +21,11 @@ type
     procedure frmSelecionarRegiaobtnInformacoesClick(Sender: TObject);
     procedure frmSelecionarRegiaocmbRegiaoChange(Sender: TObject);
     procedure frmSelecionarRegiaobtnLimparClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     procedure LimparFormulario;
     procedure PesquisarRegiao(pRegiao: string);
+    procedure AnimarPainelInformacoes;
     { Private declarations }
   public
     { Public declarations }
@@ -52,6 +54,22 @@ begin
   edbNavegador.Navigate(lPesquisa);
 end;
 
+procedure TfrmIbgeRegiao.AnimarPainelInformacoes;
+var
+  lAltura: Integer;
+begin
+  lAltura := 0;
+  pnlInformacoes.Height := 0;
+  Application.ProcessMessages;
+
+  while pnlInformacoes.Height <> 144 do
+  begin
+    pnlInformacoes.Height := lAltura;
+    Sleep(10);
+    lAltura := lAltura + 4;
+  end;
+end;
+
 procedure TfrmIbgeRegiao.FormClose(Sender: TObject; var Action: TCloseAction);
 var
   lApi: TApiSingleton;
@@ -72,26 +90,46 @@ begin
   frmSelecionarRegiao.PreencherComboBoxRegioes;
 end;
 
+procedure TfrmIbgeRegiao.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = VK_ESCAPE then
+  begin
+    Close;
+  end;
+end;
+
 procedure TfrmIbgeRegiao.frmSelecionarRegiaobtnInformacoesClick(Sender: TObject);
 begin
-  pnlInformacoes.Visible := not pnlInformacoes.Visible;
+  if frmSelecionarRegiao.cmbRegiao.ItemIndex <> -1 then
+  begin
+    pnlInformacoes.Visible := not pnlInformacoes.Visible;
+  end;
 
   if pnlInformacoes.Visible then
   begin
+    AnimarPainelInformacoes;
     frmSelecionarRegiao.btnInformacoesClick(Sender);
   end;
 end;
 
 procedure TfrmIbgeRegiao.frmSelecionarRegiaobtnLimparClick(Sender: TObject);
 begin
+  frmSelecionarRegiao.btnLimparClick(Sender);
   frmMetadadosRegiao.LimparEdits;
   LimparFormulario;
 end;
 
 procedure TfrmIbgeRegiao.frmSelecionarRegiaocmbRegiaoChange(Sender: TObject);
 begin
-  frmSelecionarRegiao.cmbRegiaoChange(Sender);
-  PesquisarRegiao(frmSelecionarRegiao.cmbRegiao.Text);
+  try
+    frmSelecionarRegiao.cmbRegiaoChange(Sender);
+    PesquisarRegiao(frmSelecionarRegiao.cmbRegiao.Text);
+  except
+    on E: EEdgeError do
+    begin
+      Application.MessageBox('Calma lá amigão, deixa o navegador respirar', 'Atenção', MB_OK + MB_ICONINFORMATION);
+    end;
+  end;
 end;
 
 procedure TfrmIbgeRegiao.LimparFormulario;

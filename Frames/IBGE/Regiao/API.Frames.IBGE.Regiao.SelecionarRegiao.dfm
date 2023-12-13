@@ -49,5 +49,6 @@ object frmSelecionarRegiao: TfrmSelecionarRegiao
     ImageMargins.Right = -10
     Images = dmPrincipal.imglistIconesBotoes
     TabOrder = 2
+    OnClick = btnLimparClick
   end
 end

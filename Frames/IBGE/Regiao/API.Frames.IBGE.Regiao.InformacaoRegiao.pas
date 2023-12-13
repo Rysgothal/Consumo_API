@@ -46,11 +46,7 @@ begin
   LimparEdits;
 
   lMetadadosRegiao := lApi.Metadados.JSON.Metadados[0];
-  try
-    PreencherEdits(lMetadadosRegiao);
-  finally
-    FreeAndNil(lMetadadosRegiao);
-  end;
+  PreencherEdits(lMetadadosRegiao);
 end;
 
 procedure TfrmDadosRegiao.LimparEdits;

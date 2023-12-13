@@ -15,10 +15,10 @@ type
     btnLimpar: TButton;
     procedure cmbRegiaoChange(Sender: TObject);
     procedure btnInformacoesClick(Sender: TObject);
+    procedure btnLimparClick(Sender: TObject);
   private
     { Private declarations }
     procedure Notificar;
-    procedure PesquisarRegiao;
   public
     { Public declarations }
     procedure PreencherComboBoxRegioes;
@@ -39,9 +39,14 @@ begin
   Notificar;
 end;
 
+procedure TfrmSelecionarRegiao.btnLimparClick(Sender: TObject);
+begin
+  cmbRegiao.ItemIndex := -1;
+end;
+
 procedure TfrmSelecionarRegiao.cmbRegiaoChange(Sender: TObject);
 begin
-//  PesquisarRegiao;
+  Notificar;
 end;
 
 procedure TfrmSelecionarRegiao.Notificar;
@@ -69,42 +74,6 @@ begin
 
     lObserver.Atualizar;
   end;
-
-//  if not lApi.Observers.TryGetValue(ejRegiao, lObserver) then
-//  begin
-//    Exit;
-//  end;
-
-//  lApi.Regiao.ConsultarRegiao((lRegiaoSel + 1).ToString, lApi.Transformar);
-//  lObserver.Atualizar;
-end;
-
-procedure TfrmSelecionarRegiao.PesquisarRegiao;
-//var
-//  lApi: TApiSingleton;
-//  lRegiao: TJSONIBGERegiao;
-//  lRegiaoSel: Integer;
-begin
-//  lRegiaoSel := cmbRegiao.ItemIndex;
-//
-//  if lRegiaoSel = -1 then
-//  begin
-//    Application.MessageBox('Selecione ao menos uma região', 'Atenção', MB_OK + MB_ICONINFORMATION);
-//    Exit;
-//  end;
-//
-//  lApi := TApiSingleton.ObterInstancia(ojRegiao);
-//  try
-//    lRegiao := TJSONIBGERegiao(lApi.Transformar.ParaObjeto(lApi.Regiao.ConsultarRegiao((lRegiaoSel + 1).ToString)));
-//    PesquisarRegiao(lRegiao.Nome);
-//
-//    if pnlInformacoes.Visible then
-//    begin
-//      PreencherEdits(RetornarMetadadosRegiao);
-//    end;
-//  finally
-//    FreeAndNil(lRegiao);
-//  end;
 end;
 
 procedure TfrmSelecionarRegiao.PreencherComboBoxRegioes;

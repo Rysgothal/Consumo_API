@@ -8,7 +8,6 @@ uses
 type
   IObserver = interface
     procedure Atualizar;
-//    procedure Atualizar(pValor: string);
   end;
 
 implementation
