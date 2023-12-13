@@ -20,7 +20,7 @@ uses
 
 function TBridgeIBGEUFs.ParaObjeto(const pJSON: TJSONValue): TObject;
 begin
-  Result := TJSONIbgeUFs.Create(pJSON, 'uf');
+  Result := TJSONIBGEUFs.Create(pJSON, 'uf');
 end;
 
 end.

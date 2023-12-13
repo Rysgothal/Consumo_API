@@ -11,13 +11,9 @@ type
   private
     FJSON: TJSONIBGEMesorregioes;
   public
-    class function ObterInstancia: TApiIBGEEstado;
     property JSON: TJSONIBGEMesorregioes read FJSON;
     procedure ConsultarMesorregioes(const pUF: string; pTransformar: ITransformar);
   end;
-
-var
-  FApiIBGEEstado: TApiIBGEEstado;
 
 implementation
 
@@ -38,21 +34,5 @@ begin
 
   FJSON := TJSONIBGEMesorregioes(pTransformar.ParaObjeto(Request.Response.JSONValue));
 end;
-
-class function TApiIBGEEstado.ObterInstancia: TApiIBGEEstado;
-begin
-  if not Assigned(FApiIBGEEstado) then
-  begin
-    FApiIBGEEstado := TApiIBGEEstado(inherited Create('https://servicodados.ibge.gov.br/api/v1/localidades/' +
-      'estados/', acMesorregiao));
-  end;
-
-  Result := FApiIBGEEstado;
-end;
-
-initialization
-
-finalization
-  FreeAndNil(FApiIBGEEstado);
 
 end.

@@ -9,12 +9,8 @@ uses
 type
   TApiIBGEMesorregiao = class(TApi)
   public
-    class function ObterInstancia: TApiIBGEMesorregiao;
     function ConsultarMetadadosMesorregiao(const pIdMesorregiao: string): TJSONValue;
   end;
-
-var
-  FApiIBGEMesorregiao: TApiIBGEMesorregiao;
 
 implementation
 
@@ -45,21 +41,5 @@ begin
   FConfigRequest := lConfig;
   Result := Request.Response.JSONValue;
 end;
-
-class function TApiIBGEMesorregiao.ObterInstancia: TApiIBGEMesorregiao;
-begin
-  if not Assigned(FApiIBGEMesorregiao) then
-  begin
-    FApiIBGEMesorregiao := TApiIBGEMesorregiao(inherited Create('https://servicodados.ibge.gov.br/api/v3/malhas/' +
-      'mesorregioes/', acMesorregiao));
-  end;
-
-  Result := FApiIBGEMesorregiao;
-end;
-
-initialization
-
-finalization
-  FreeAndNil(FApiIBGEMesorregiao);
 
 end.

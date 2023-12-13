@@ -12,14 +12,10 @@ type
   private
     FJSON: TJSONViaCep;
   public
-    class function ObterInstancia: TApiViaCep;
     destructor Destroy; override;
     property JSON: TJSONViaCep read FJSON;
     procedure ConsultarCep(const pCep: string; pTransformar: ITransformar);
   end;
-
-var
-  FApiViaCep: TApiViaCep;
 
 implementation
 
@@ -66,20 +62,5 @@ begin
   FreeAndNil(FJSON);
   inherited;
 end;
-
-class function TApiViaCep.ObterInstancia: TApiViaCep;
-begin
-  if not Assigned(FApiViaCep) then
-  begin
-    FApiViaCep := TApiViaCep(inherited Create('https://viacep.com.br/ws/', acViaCep));
-  end;
-
-  Result := FApiViaCep;
-end;
-
-initialization
-
-finalization
-  FreeAndNil(FApiViaCep);
 
 end.

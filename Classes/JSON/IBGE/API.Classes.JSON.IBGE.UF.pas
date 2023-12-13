@@ -7,7 +7,7 @@ uses
   System.Classes, System.SysUtils, REST.Client, API.Classes.JSON.IBGE.Regiao;
 
 type
-  TJSONIbgeUF = class
+  TJSONIBGEUF = class
   private
     [JSONName('id')]
     FId: Integer;
@@ -25,28 +25,28 @@ type
     property Regiao: TJSONIBGERegiao read FRegiao write FRegiao;
   end;
 
-  TJSONIbgeUFs = class
+  TJSONIBGEUFs = class
   private
     [JSONName('uf'), JSONMarshalled(False)]
-    FUfArray: TArray<TJSONIbgeUF>;
-    FUfLista: TObjectList<TJSONIbgeUF>;
-    function GetUfs: TObjectList<TJSONIbgeUF>;
+    FUfArray: TArray<TJSONIBGEUF>;
+    FUfLista: TObjectList<TJSONIBGEUF>;
+    function GetUfs: TObjectList<TJSONIBGEUF>;
   public
     constructor Create(pJSONValue: TJSONValue; aDefault: string); overload;
     destructor Destroy; override;
-    property Ufs: TObjectList<TJSONIbgeUF> read GetUfs;
+    property Ufs: TObjectList<TJSONIBGEUF> read GetUfs;
   end;
 
 implementation
 
 { TJSONIbgeUFs }
 
-constructor TJSONIbgeUFs.Create(pJSONValue: TJSONValue; aDefault: string);
+constructor TJSONIBGEUFs.Create(pJSONValue: TJSONValue; aDefault: string);
 var
   lJSONUnMarshal: TJSONUnMarshal;
 begin
   inherited Create;
-  FUfLista := TObjectList<TJSONIbgeUF>.Create;
+  FUfLista := TObjectList<TJSONIBGEUF>.Create;
 
   if pJSONValue is TJSONArray then
   begin
@@ -60,10 +60,10 @@ begin
     Exit;
   end;
 
-  Self := TJson.JsonToObject<TJSONIbgeUFs>(TJSONObject(pJSONValue));
+  Self := TJson.JsonToObject<TJSONIBGEUFs>(TJSONObject(pJSONValue));
 end;
 
-destructor TJSONIbgeUFs.Destroy;
+destructor TJSONIBGEUFs.Destroy;
 begin
   for var lUF in FUfArray do
   begin

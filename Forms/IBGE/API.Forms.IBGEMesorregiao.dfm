@@ -1,7 +1,7 @@
 object frmIbgeMesorregiao: TfrmIbgeMesorregiao
   Left = 0
   Top = 0
-  BorderStyle = bsDialog
+  BorderStyle = bsSingle
   Caption = 'IBGE - Mesorregi'#227'o'
   ClientHeight = 411
   ClientWidth = 659

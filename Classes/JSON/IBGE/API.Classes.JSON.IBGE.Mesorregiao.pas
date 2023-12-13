@@ -15,12 +15,12 @@ type
     [JSONName('nome')]
     FNome: string;
     [JSONName('UF')]
-    FUF: TJSONIbgeUF;
+    FUF: TJSONIBGEUF;
   public
     destructor Destroy; override;
     property Id: Integer read FId write FId;
     property Nome: string read FNome write FNome;
-    property UF: TJSONIbgeUF read FUF write FUF;
+    property UF: TJSONIBGEUF read FUF write FUF;
   end;
 
   TJSONIBGEMesorregioes = class

@@ -12,14 +12,10 @@ type
   private
     FJSON: TJSONIBGEMetadados;
   public
-    class function ObterInstancia: TApiIBGEMetadados;
     destructor Destroy; override;
     property JSON: TJSONIBGEMetadados read FJSON write FJSON;
     procedure ConsultarMetadados(const pIdRegiao: string; pTransformar: ITransformar);
   end;
-
-var
-  FApiIBGEMetadados: TApiIBGEMetadados;
 
 implementation
 
@@ -53,21 +49,5 @@ begin
   FreeAndNil(FJSON);
   inherited;
 end;
-
-class function TApiIBGEMetadados.ObterInstancia: TApiIBGEMetadados;
-begin
-  if not Assigned(FApiIBGEMetadados) then
-  begin
-    FApiIBGEMetadados := TApiIBGEMetadados(inherited Create('https://servicodados.ibge.gov.br/api/v3/malhas/regioes/',
-      acMetadados));
-  end;
-
-  Result := FApiIBGEMetadados;
-end;
-
-initialization
-
-finalization
-  FreeAndNil(FApiIBGEMetadados);
 
 end.

@@ -12,16 +12,12 @@ type
   private
     FJSON: TJSONIBGERegiao;
   public
-    class function ObterInstancia: TApiIBGERegiao;
     property JSON: TJSONIBGERegiao read FJSON write FJSON;
     destructor Destroy; override;
     procedure ConsultarRegiao(const pRegiao: string; pTransformar: ITransformar);
     function ListarRegioes: TJSONValue;
     function ListarEstadosDaRegiao(const pRegiao: string): TJSONValue;
   end;
-
-var
-  FApiIBGERegiao: TApiIBGERegiao;
 
 implementation
 
@@ -73,21 +69,5 @@ begin
   FConfigRequest.ConfigurarRequisicao(Request, EmptyStr);
   Result := Request.Response.JSONValue;
 end;
-
-class function TApiIBGERegiao.ObterInstancia: TApiIBGERegiao;
-begin
-  if not Assigned(FApiIBGERegiao) then
-  begin
-    FApiIBGERegiao := TApiIBGERegiao(inherited Create('https://servicodados.ibge.gov.br/api/v1/localidades/regioes/',
-      acRegiao));
-  end;
-
-  Result := FApiIBGERegiao;
-end;
-
-initialization
-
-finalization
-  FreeAndNil(FApiIBGERegiao);
 
 end.

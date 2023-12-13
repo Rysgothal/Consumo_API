@@ -17,7 +17,6 @@ type
     FMetadados: TApiIBGEMetadados;
     FEstado: TApiIBGEEstado;
     FTransformar: ITransformar;
-//    FObservers: TDictionary<TEstruturaJSON, IObserver>;
     FObservers: TList<IObserver>;
     constructor Create;
   public
@@ -29,7 +28,6 @@ type
     property Metadados: TApiIBGEMetadados read FMetadados write FMetadados;
     property Estado: TApiIBGEEstado read FEstado write FEstado;
     property Transformar: ITransformar read FTransformar write FTransformar;
-//    property Observers: TDictionary<TEstruturaJSON, IObserver> read FObservers write FObservers;
     property Observers: TList<IObserver> read FObservers write FObservers;
     procedure AdicionarObserver(pObserver: IObserver);
     procedure RemoverObserver(pObserver: IObserver);
@@ -53,17 +51,22 @@ end;
 
 constructor TApiSingleton.Create;
 begin
-  FViaCep := TApiViaCep.ObterInstancia;
-  FMetadados := TApiIBGEMetadados.ObterInstancia;
-  FEstado := TApiIBGEEstado.ObterInstancia;
-  FMesorregiao := TApiIBGEMesorregiao.ObterInstancia;
-  FRegiao := TApiIBGERegiao.ObterInstancia;
+  FViaCep := TApiViaCep.Create('https://viacep.com.br/ws/', acViaCep);
+  FMetadados := TApiIBGEMetadados.Create('https://servicodados.ibge.gov.br/api/v3/malhas/regioes/',acMetadados);
+  FEstado := TApiIBGEEstado.Create('https://servicodados.ibge.gov.br/api/v1/localidades/estados/', acMesorregiao);
+  FMesorregiao := TApiIBGEMesorregiao.Create('https://servicodados.ibge.gov.br/api/v3/malhas/mesorregioes/', acMesorregiao);
+  FRegiao := TApiIBGERegiao.Create('https://servicodados.ibge.gov.br/api/v1/localidades/regioes/', acRegiao);
 
   FObservers := TList<IObserver>.Create;
 end;
 
 destructor TApiSingleton.Destroy;
 begin
+  FreeAndNil(FViaCep);
+  FreeAndNil(FMetadados);
+  FreeAndNil(FEstado);
+  FreeAndNil(FMesorregiao);
+  FreeAndNil(FRegiao);
   FreeAndNil(FObservers);
   inherited;
 end;

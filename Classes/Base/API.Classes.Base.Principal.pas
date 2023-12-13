@@ -14,8 +14,8 @@ type
     FClient: TRESTClient;
   protected
     FConfigRequest: IApiStrategy;
-    constructor Create(const pURL: string; pTipoApi: TApiConsulta);
   public
+    constructor Create(const pURL: string; pTipoApi: TApiConsulta);
     property Request: TRESTRequest read FRequest write FRequest;
     destructor Destroy; override;
   end;

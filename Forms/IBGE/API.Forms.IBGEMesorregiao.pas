@@ -9,7 +9,8 @@ uses
   API.Classes.JSON.IBGE.Metadados, API.Classes.Helpers.Exceptions,
   API.Classes.Base.IBGE.Mesorregiao, API.Classes.JSON.IBGE.Regiao,
   API.Classes.JSON.IBGE.UF, API.Classes.JSON.IBGE.Mesorregiao,
-  API.Classes.Base.IBGE.Estados, API.Classes.Base.IBGE.Metadados;
+  API.Classes.Base.IBGE.Estados, API.Classes.Base.IBGE.Metadados,
+  API.Classes.Singleton.Principal;
 
 type
   TfrmIbgeMesorregiao = class(TForm)
@@ -57,14 +58,14 @@ type
     procedure LimparBottonPainel;
     procedure AbrirMapa;
     procedure BuscarRegioes(var pJson: TJSONValue);
-    procedure BuscarEstadosDaRegiao(var pJson: TJSONValue);
     procedure BuscarMesorregioesDoEstado(var pJson: TJSONValue);
-    procedure HabilitarCmbMesorregioes(pBoolean: Boolean);
-    procedure HabilitarComboBoxEstados(pBoolean: Boolean);
-    procedure HabilitarBotoesNavegacao(pBoolean: Boolean);
+    procedure HabilitarCmbMesorregioes(pBoolean: Boolean = True);
+    procedure HabilitarComboBoxEstados(pBoolean: Boolean = True);
+    procedure HabilitarBotoesNavegacao(pBoolean: Boolean = True);
     procedure RetornarIdMesorregiaoSelecionada(var pId: Integer);
     procedure InserirNoMemo(pMetadados: TJSONIBGEMetadados);
     procedure SelecionarItemCmbMesorregioes(pItemLimite, pItem: Integer);
+    procedure LimparComponentesAoEscolherRegiao;
 
   public
     { Public declarations }
@@ -115,7 +116,7 @@ procedure TfrmIbgeMesorregiao.BuscarMesorregioesDoEstado(var pJson: TJSONValue);
 var
   lApiIBGEEstado: TApiIBGEEstado;
 begin
-  lApiIBGEEstado := TApiIBGEEstado.ObterInstancia;
+//  lApiIBGEEstado := TApiIBGEEstado.ObterInstancia;
 
   try
 //    pJson := lApiIBGEEstado.ConsultarMesorregioes(Copy(cmbEstado.Text, 1, 2));
@@ -129,26 +130,6 @@ begin
   end;
 end;
 
-procedure TfrmIbgeMesorregiao.BuscarEstadosDaRegiao(var pJson: TJSONValue);
-var
-  lApiIBGERegiao: TApiIBGERegiao;
-  lItem: Integer;
-begin
-  lItem := cmbRegiao.ItemIndex + 1;
-//  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(ojRegiao);
-
-  try
-    pJson := lApiIBGERegiao.ListarEstadosDaRegiao(lItem.ToString);
-  except
-    on Exception do
-    begin
-      Application.MessageBox('Não foi possível buscar os Estados da Região selecionada, Tente novamente!', 'Atenção',
-        MB_OK + MB_ICONINFORMATION);
-      Abort;
-    end;
-  end;
-end;
-
 procedure TfrmIbgeMesorregiao.LimparBottonPainel;
 begin
   memJson.Clear;
@@ -156,7 +137,15 @@ begin
   LimparEdits;
 end;
 
-procedure TfrmIbgeMesorregiao.HabilitarBotoesNavegacao(pBoolean: Boolean);
+procedure TfrmIbgeMesorregiao.LimparComponentesAoEscolherRegiao;
+begin
+  LimparEdits;
+  memJson.Clear;
+  cmbNomeMesorregiao.Clear;
+  cmbEstado.Clear;
+end;
+
+procedure TfrmIbgeMesorregiao.HabilitarBotoesNavegacao(pBoolean: Boolean = True);
 begin
   btnPrimeiroRegistro.Enabled := pBoolean;
   btnAnterior.Enabled := pBoolean;
@@ -164,7 +153,7 @@ begin
   btnUltimoRegistro.Enabled := pBoolean;
 end;
 
-procedure TfrmIbgeMesorregiao.HabilitarCmbMesorregioes(pBoolean: Boolean);
+procedure TfrmIbgeMesorregiao.HabilitarCmbMesorregioes(pBoolean: Boolean = True);
 begin
   lblNomeMesorregiao.Enabled := pBoolean;
   cmbNomeMesorregiao.Enabled := pBoolean;
@@ -195,7 +184,7 @@ begin
     Exit;
   end;
 
-  HabilitarCmbMesorregioes(True);
+  HabilitarCmbMesorregioes;
   PreencherComboBoxMesorregiao;
 end;
 
@@ -220,7 +209,7 @@ begin
   PreencherRegioesComboBox;
 end;
 
-procedure TfrmIbgeMesorregiao.HabilitarComboBoxEstados(pBoolean: Boolean);
+procedure TfrmIbgeMesorregiao.HabilitarComboBoxEstados(pBoolean: Boolean = True);
 begin
   lblEstado.Enabled := pBoolean;
   cmbEstado.Enabled := pBoolean;
@@ -339,17 +328,13 @@ end;
 
 procedure TfrmIbgeMesorregiao.PreencherComboBoxEstados;
 var
-  lJson: TJSONValue;
-  lUf: TJSONIbgeUFs;
-  lApiIBGEMesorregiao: TApiIBGEMesorregiao;
+  lApi: TApiSingleton;
+  lEstados: TJSONIbgeUFs;
+  lJSON: TJSONValue;
 begin
-  LimparEdits;
-  memJson.Clear;
-  cmbNomeMesorregiao.Clear;
-
+  LimparComponentesAoEscolherRegiao;
   HabilitarCmbMesorregioes(False);
-  HabilitarComboBoxEstados(True);
-  cmbEstado.Clear;
+  HabilitarComboBoxEstados;
 
   if cmbRegiao.ItemIndex = -1 then
   begin
@@ -357,52 +342,47 @@ begin
     Exit;
   end;
 
-  BuscarEstadosDaRegiao(lJson);
-//  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(ojUfs);
-//  lUf := TJSONIbgeUFs(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
+  lApi := TApiSingleton.ObterInstancia(ejUfs);
+  lJSON := lApi.Regiao.ListarEstadosDaRegiao((cmbRegiao.ItemIndex + 1).ToString);
 
   try
-    for var lEstado in lUf.Ufs do
+    lEstados := TJSONIBGEUFs(lApi.Transformar.ParaObjeto(lJSON));
+
+    for var lEstado in lEstados.Ufs do
     begin
-      cmbEstado.Items.Add(lEstado.Sigla + ' - ' + lEstado.Nome);
+      cmbEstado.Items.Add(lEstado.Nome);
     end;
   finally
-    FreeAndNil(lUf);
+    FreeAndNil(lEstados);
   end;
 end;
 
 procedure TfrmIbgeMesorregiao.PreencherComboBoxMesorregiao;
 var
-  lJson: TJSONValue;
-  lMesorregioes: TJSONIBGEMesorregioes;
-  lApiIBGEMesorregiao: TApiIBGEMesorregiao;
+  lApi: TApiSingleton;
+  lSiglaEstado: string;
 begin
-  BuscarMesorregioesDoEstado(lJson);
-//  lApiIBGEMesorregiao := TApiIBGEMesorregiao.ObterInstancia(ojMesorregioes);
-//  lMesorregioes := TJSONIBGEMesorregioes(lApiIBGEMesorregiao.Transformar.ParaObjeto(lJson));
+  lSiglaEstado := Copy(cmbEstado.Text, 1, 2);
+  lApi := TApiSingleton.ObterInstancia(ejMesorregioes);
+  lApi.Estado.ConsultarMesorregioes(lSiglaEstado, lApi.Transformar);
 
-  try
-    for var lMesorregiao in lMesorregioes.Mesorregioes do
-    begin
-      cmbNomeMesorregiao.Items.Add(lMesorregiao.Nome);
-    end;
-  finally
-    FreeAndNil(lMesorregioes);
+  for var lMesorregiao in lApi.Estado.JSON.Mesorregioes do    /// MemoryLeak   AQUI
+  begin
+    cmbNomeMesorregiao.Items.Add(lMesorregiao.Nome);
   end;
 end;
 
 procedure TfrmIbgeMesorregiao.PreencherRegioesComboBox;
 var
-  lJson: TJSONValue;
+  lApi: TApiSingleton;
   lRegioes: TJSONIBGERegioes;
-  lApiIBGERegiao: TApiIBGERegiao;
 begin
-  BuscarRegioes(lJson);
-//  lApiIBGERegiao := TApiIBGERegiao.ObterInstancia(ojRegioes);
-//  lRegioes := TJSONIbgeRegioes(lApiIBGERegiao.Transformar.ParaObjeto(lJson));
+  lApi := TApiSingleton.ObterInstancia(ejRegioes);
+  lRegioes := TJSONIBGERegioes(lApi.Transformar.ParaObjeto(lApi.Regiao.ListarRegioes));
 
   try
     cmbRegiao.Clear;
+
     for var lRegiao in lRegioes.Regiao do
     begin
       cmbRegiao.Items.Add(lRegiao.Nome);
