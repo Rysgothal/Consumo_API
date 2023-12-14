@@ -182,6 +182,13 @@
             <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
+        <DCCReference Include="Frames\IBGE\Mesorregiao\API.Frames.IBGE.Mesorregiao.DadosMaisInfo.pas">
+            <Form>frmMesorregiaoMaisInfo</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Interfaces\Factory_Method\API.Interfaces.FactoryMethod.Api.pas"/>
+        <DCCReference Include="Classes\Factory_Method\API.Classes.FactoryMethod.Fabrica.pas"/>
         <RcItem Include="Imagens\Logo-Ganso.png">
             <ResourceType>RCDATA</ResourceType>
             <ResourceId>LogoGansoColor</ResourceId>
@@ -1035,9 +1042,9 @@
                 </DeployClass>
                 <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="OSX64" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Android64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="OSXARM64" Name="$(PROJECTNAME).app"/>
-                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>

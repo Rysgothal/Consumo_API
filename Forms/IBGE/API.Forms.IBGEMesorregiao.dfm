@@ -3,8 +3,8 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
   Top = 0
   BorderStyle = bsSingle
   Caption = 'IBGE - Mesorregi'#227'o'
-  ClientHeight = 411
-  ClientWidth = 659
+  ClientHeight = 477
+  ClientWidth = 631
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,29 +19,29 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
   object pnlTop: TPanel
     Left = 0
     Top = 0
-    Width = 659
-    Height = 81
+    Width = 631
+    Height = 59
     Align = alTop
     BevelOuter = bvLowered
     TabOrder = 0
     object lblRegiao: TLabel
       Left = 16
       Top = 18
-      Width = 41
+      Width = 44
       Height = 15
-      Caption = 'Regi'#245'es'
+      Caption = 'Regi'#245'es:'
     end
     object lblEstado: TLabel
-      Left = 304
+      Left = 336
       Top = 18
-      Width = 40
+      Width = 43
       Height = 15
-      Caption = 'Estados'
+      Caption = 'Estados:'
       Enabled = False
     end
     object cmbRegiao: TComboBox
-      Left = 16
-      Top = 39
+      Left = 66
+      Top = 15
       Width = 145
       Height = 23
       Style = csDropDownList
@@ -49,8 +49,8 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
       OnChange = cmbRegiaoChange
     end
     object cmbEstado: TComboBox
-      Left = 304
-      Top = 39
+      Left = 385
+      Top = 15
       Width = 203
       Height = 23
       Style = csDropDownList
@@ -59,53 +59,26 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
       OnChange = cmbEstadoChange
     end
   end
-  object memJson: TMemo
-    Left = 0
-    Top = 238
-    Width = 659
-    Height = 173
-    TabStop = False
-    Align = alBottom
-    ReadOnly = True
-    TabOrder = 1
-  end
   object pnlBotton: TPanel
     Left = 0
-    Top = 81
-    Width = 659
-    Height = 157
+    Top = 59
+    Width = 631
+    Height = 151
     Align = alTop
     BevelEdges = [beTop, beBottom]
     BevelOuter = bvNone
-    TabOrder = 2
-    DesignSize = (
-      659
-      157)
+    TabOrder = 1
     object lblNomeMesorregiao: TLabel
       Left = 16
-      Top = 12
-      Width = 71
+      Top = 20
+      Width = 74
       Height = 15
-      Caption = 'Mesorregi'#245'es'
+      Caption = 'Mesorregi'#245'es:'
       Enabled = False
     end
-    object lblVezes: TLabel
-      Left = 146
-      Top = 82
-      Width = 7
-      Height = 15
-      Alignment = taCenter
-      Caption = 'X'
-    end
-    object lblMedidaDimensao: TLabel
-      Left = 519
-      Top = 82
-      Width = 3
-      Height = 15
-    end
     object cmbNomeMesorregiao: TComboBox
-      Left = 16
-      Top = 33
+      Left = 93
+      Top = 17
       Width = 270
       Height = 23
       Style = csDropDownList
@@ -113,92 +86,21 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
       TabOrder = 0
       OnChange = cmbNomeMesorregiaoChange
     end
-    object lbeLatitude: TLabeledEdit
-      Left = 165
-      Top = 79
-      Width = 121
-      Height = 23
-      TabStop = False
-      Color = clInfoBk
-      EditLabel.Width = 43
-      EditLabel.Height = 15
-      EditLabel.Caption = 'Latitude'
-      ReadOnly = True
-      TabOrder = 4
-      Text = ''
-    end
-    object lbeLongitude: TLabeledEdit
-      Left = 16
-      Top = 79
-      Width = 121
-      Height = 23
-      TabStop = False
-      Color = clInfoBk
-      EditLabel.Width = 54
-      EditLabel.Height = 15
-      EditLabel.Caption = 'Longitude'
-      ReadOnly = True
-      TabOrder = 3
-      Text = ''
-    end
-    object lbeId: TLabeledEdit
-      Left = 304
-      Top = 33
-      Width = 81
-      Height = 23
-      TabStop = False
-      Color = clInfoBk
-      EditLabel.Width = 11
-      EditLabel.Height = 15
-      EditLabel.Caption = 'ID'
-      ReadOnly = True
-      TabOrder = 1
-      Text = ''
-    end
-    object lbeNome: TLabeledEdit
-      Left = 403
-      Top = 33
-      Width = 241
-      Height = 23
-      TabStop = False
-      Color = clInfoBk
-      EditLabel.Width = 33
-      EditLabel.Height = 15
-      EditLabel.Caption = 'Nome'
-      ReadOnly = True
-      TabOrder = 2
-      Text = ''
-    end
-    object lbeDimensao: TLabeledEdit
-      Left = 314
-      Top = 79
-      Width = 249
-      Height = 23
-      TabStop = False
-      Color = clInfoBk
-      EditLabel.Width = 53
-      EditLabel.Height = 15
-      EditLabel.Caption = 'Dimens'#227'o'
-      ReadOnly = True
-      TabOrder = 5
-      Text = ''
-    end
     object btnLimpar: TButton
-      Left = 550
+      Left = 527
       Top = 110
       Width = 90
       Height = 41
-      Anchors = [akTop, akRight]
       Caption = '&Limpar'
       ImageIndex = 10
       ImageMargins.Left = 10
       ImageMargins.Right = -10
       Images = dmPrincipal.imglistIconesBotoes
-      TabOrder = 7
+      TabOrder = 2
       OnClick = btnLimparClick
     end
     object btnMaps: TButton
-      Left = 451
+      Left = 424
       Top = 110
       Width = 97
       Height = 41
@@ -207,13 +109,24 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
       ImageMargins.Left = 10
       ImageMargins.Right = -10
       Images = dmPrincipal.imglistIconesBotoes
-      TabOrder = 6
+      TabOrder = 1
       OnClick = btnMapsClick
+    end
+    inline frmDadosMesorregiao: TfrmDadosMesorregiao
+      Left = -1
+      Top = 59
+      Width = 632
+      Height = 50
+      TabOrder = 3
+      ExplicitLeft = -1
+      ExplicitTop = 59
+      ExplicitWidth = 632
+      ExplicitHeight = 50
     end
   end
   object btnAnterior: TButton
-    Left = 47
-    Top = 213
+    Left = 46
+    Top = 186
     Width = 33
     Height = 25
     Margins.Left = 20
@@ -228,12 +141,12 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
     Font.Name = 'Wingdings'
     Font.Style = []
     ParentFont = False
-    TabOrder = 4
+    TabOrder = 3
     OnClick = btnAnteriorClick
   end
   object btnPrimeiroRegistro: TButton
-    Left = 16
-    Top = 213
+    Left = 15
+    Top = 186
     Width = 33
     Height = 25
     Margins.Left = 0
@@ -248,12 +161,12 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
     Font.Name = 'Wingdings'
     Font.Style = []
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 2
     OnClick = btnPrimeiroRegistroClick
   end
   object btnProximo: TButton
-    Left = 78
-    Top = 213
+    Left = 77
+    Top = 186
     Width = 33
     Height = 25
     Margins.Left = 20
@@ -268,12 +181,12 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
     Font.Name = 'Wingdings'
     Font.Style = []
     ParentFont = False
-    TabOrder = 5
+    TabOrder = 4
     OnClick = btnProximoClick
   end
   object btnUltimoRegistro: TButton
-    Left = 109
-    Top = 213
+    Left = 108
+    Top = 186
     Width = 33
     Height = 25
     Margins.Left = 20
@@ -288,7 +201,26 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
     Font.Name = 'Wingdings'
     Font.Style = []
     ParentFont = False
-    TabOrder = 6
+    TabOrder = 5
     OnClick = btnUltimoRegistroClick
+  end
+  inline frmMesorregiaoMaisInfo: TfrmMesorregiaoMaisInfo
+    Left = 0
+    Top = 214
+    Width = 631
+    Height = 263
+    Align = alBottom
+    TabOrder = 6
+    ExplicitTop = 214
+    ExplicitWidth = 631
+    ExplicitHeight = 263
+    inherited memJson: TMemo
+      Width = 631
+      Height = 263
+      ExplicitLeft = 1
+      ExplicitTop = 34
+      ExplicitWidth = 639
+      ExplicitHeight = 109
+    end
   end
 end

@@ -2,12 +2,20 @@ object frmDadosMesorregiao: TfrmDadosMesorregiao
   Left = 0
   Top = 0
   Width = 647
-  Height = 70
+  Height = 45
   TabOrder = 0
   PixelsPerInch = 96
+  object lblVezes: TLabel
+    Left = 205
+    Top = 21
+    Width = 7
+    Height = 15
+    Alignment = taCenter
+    Caption = 'X'
+  end
   object lbeId: TLabeledEdit
     Left = 16
-    Top = 30
+    Top = 17
     Width = 41
     Height = 23
     TabStop = False
@@ -21,7 +29,7 @@ object frmDadosMesorregiao: TfrmDadosMesorregiao
   end
   object lbeDimensao: TLabeledEdit
     Left = 351
-    Top = 30
+    Top = 17
     Width = 274
     Height = 23
     TabStop = False
@@ -35,10 +43,11 @@ object frmDadosMesorregiao: TfrmDadosMesorregiao
   end
   object lbeLatitude: TLabeledEdit
     Left = 216
-    Top = 30
+    Top = 17
     Width = 121
     Height = 23
     TabStop = False
+    Alignment = taCenter
     Color = clInfoBk
     EditLabel.Width = 43
     EditLabel.Height = 15
@@ -49,10 +58,11 @@ object frmDadosMesorregiao: TfrmDadosMesorregiao
   end
   object lbeLongitude: TLabeledEdit
     Left = 81
-    Top = 30
+    Top = 17
     Width = 121
     Height = 23
     TabStop = False
+    Alignment = taCenter
     Color = clInfoBk
     EditLabel.Width = 54
     EditLabel.Height = 15
