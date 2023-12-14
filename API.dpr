@@ -50,9 +50,7 @@ uses
   API.Frames.IBGE.Regiao.SelecionarRegiao in 'Frames\IBGE\Regiao\API.Frames.IBGE.Regiao.SelecionarRegiao.pas' {frmSelecionarRegiao: TFrame},
   API.Frames.IBGE.Regiao.InformacaoRegiao in 'Frames\IBGE\Regiao\API.Frames.IBGE.Regiao.InformacaoRegiao.pas' {frmDadosRegiao: TFrame},
   API.Frames.IBGE.Mesorregiao.Dados in 'Frames\IBGE\Mesorregiao\API.Frames.IBGE.Mesorregiao.Dados.pas' {frmDadosMesorregiao: TFrame},
-  API.Frames.IBGE.Mesorregiao.DadosMaisInfo in 'Frames\IBGE\Mesorregiao\API.Frames.IBGE.Mesorregiao.DadosMaisInfo.pas' {frmMesorregiaoMaisInfo: TFrame},
-  API.Interfaces.FactoryMethod.Api in 'Interfaces\Factory_Method\API.Interfaces.FactoryMethod.Api.pas',
-  API.Classes.FactoryMethod.Fabrica in 'Classes\Factory_Method\API.Classes.FactoryMethod.Fabrica.pas';
+  API.Frames.IBGE.Mesorregiao.DadosMaisInfo in 'Frames\IBGE\Mesorregiao\API.Frames.IBGE.Mesorregiao.DadosMaisInfo.pas' {frmMesorregiaoMaisInfo: TFrame};
 
 {$R *.res}
 
