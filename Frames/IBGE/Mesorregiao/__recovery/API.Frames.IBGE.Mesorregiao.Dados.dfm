@@ -1,0 +1,64 @@
+object frmDadosMesorregiao: TfrmDadosMesorregiao
+  Left = 0
+  Top = 0
+  Width = 647
+  Height = 70
+  TabOrder = 0
+  PixelsPerInch = 96
+  object lbeId: TLabeledEdit
+    Left = 16
+    Top = 30
+    Width = 41
+    Height = 23
+    TabStop = False
+    Color = clInfoBk
+    EditLabel.Width = 11
+    EditLabel.Height = 15
+    EditLabel.Caption = 'ID'
+    ReadOnly = True
+    TabOrder = 0
+    Text = ''
+  end
+  object lbeDimensao: TLabeledEdit
+    Left = 351
+    Top = 30
+    Width = 274
+    Height = 23
+    TabStop = False
+    Color = clInfoBk
+    EditLabel.Width = 53
+    EditLabel.Height = 15
+    EditLabel.Caption = 'Dimens'#227'o'
+    ReadOnly = True
+    TabOrder = 1
+    Text = ''
+  end
+  object lbeLatitude: TLabeledEdit
+    Left = 216
+    Top = 30
+    Width = 121
+    Height = 23
+    TabStop = False
+    Color = clInfoBk
+    EditLabel.Width = 43
+    EditLabel.Height = 15
+    EditLabel.Caption = 'Latitude'
+    ReadOnly = True
+    TabOrder = 2
+    Text = ''
+  end
+  object lbeLongitude: TLabeledEdit
+    Left = 81
+    Top = 30
+    Width = 121
+    Height = 23
+    TabStop = False
+    Color = clInfoBk
+    EditLabel.Width = 54
+    EditLabel.Height = 15
+    EditLabel.Caption = 'Longitude'
+    ReadOnly = True
+    TabOrder = 3
+    Text = ''
+  end
+end

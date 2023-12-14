@@ -2,7 +2,7 @@ object frmIbgeRegiao: TfrmIbgeRegiao
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
-  BorderStyle = bsDialog
+  BorderStyle = bsSingle
   Caption = 'IBGE - Regi'#245'es'
   ClientHeight = 644
   ClientWidth = 1127

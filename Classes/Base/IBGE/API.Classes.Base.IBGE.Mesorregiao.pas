@@ -4,12 +4,17 @@ interface
 
 uses
   API.Classes.Base.Principal, System.JSON, REST.Types,
-  API.Classes.Helpers.Enumerados;
+  API.Classes.Helpers.Enumerados, API.Classes.JSON.IBGE.Metadados,
+  API.Interfaces.Bridge.JSONParaObject;
 
 type
   TApiIBGEMesorregiao = class(TApi)
+  private
+    FJSON: TJSONIBGEMetadados;
   public
-    function ConsultarMetadadosMesorregiao(const pIdMesorregiao: string): TJSONValue;
+    destructor Destroy; override;
+    property JSON: TJSONIBGEMetadados read FJSON write FJSON;
+    procedure ConsultarMetadadosMesorregiao(const pIdMesorregiao: string);
   end;
 
 implementation
@@ -22,15 +27,15 @@ uses
 
 { TIBGEMesorregiao }
 
-function TApiIBGEMesorregiao.ConsultarMetadadosMesorregiao(const pIdMesorregiao: string): TJSONValue;
+procedure TApiIBGEMesorregiao.ConsultarMetadadosMesorregiao(const pIdMesorregiao: string);
 var
   lConfig: IApiStrategy;
+  lTransformar: ITransformar;
 begin
-  lConfig := FConfigRequest;
-  FConfigRequest := TStrategyIBGEMetadados.Create;
+  lConfig := TStrategyIBGEMetadados.Create;
 
   try
-    FConfigRequest.ConfigurarRequisicao(Request, pIdMesorregiao);
+    lConfig.ConfigurarRequisicao(Request, pIdMesorregiao);
   except
     on ERESTException do
     begin
@@ -38,8 +43,19 @@ begin
     end;
   end;
 
-  FConfigRequest := lConfig;
-  Result := Request.Response.JSONValue;
+  lTransformar := TBridgeIBGEMetadados.Create;
+  if Assigned(FJSON) then
+  begin
+    FreeAndNil(FJSON);
+  end;
+
+  FJSON := TJSONIBGEMetadados(lTransformar.ParaObjeto(Request.Response.JSONValue));
+end;
+
+destructor TApiIBGEMesorregiao.Destroy;
+begin
+  FreeAndNil(FJSON);
+  inherited;
 end;
 
 end.

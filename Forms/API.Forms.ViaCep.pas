@@ -5,8 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Mask, System.StrUtils, JSON,
-  System.ImageList, Vcl.ImgList, API.Classes.Helpers.Strings, API.DataModules.Principal,
-  API.Classes.Base.ViaCep, API.Classes.Decorator.Log, API.Frames.ViaCep.BuscarCep,
+  System.ImageList, Vcl.ImgList, API.Classes.Helpers.Strings, API.DataModules.Principal, API.Frames.ViaCep.BuscarCep,
   API.Frames.ViaCep.Dados;
 
 type
@@ -31,7 +30,7 @@ var
 implementation
 
 uses
-  REST.Json, API.Classes.JSON.ViaCep, API.Classes.Helpers.Enumerados,
+  REST.Json, API.Classes.Helpers.Enumerados,
   API.Forms.Navegador, API.Classes.Singleton.Principal;
 
 {$R *.dfm}

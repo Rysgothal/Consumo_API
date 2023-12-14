@@ -11,8 +11,9 @@ type
   private
     FJSON: TJSONIBGEMesorregioes;
   public
+    destructor Destroy; override;
     property JSON: TJSONIBGEMesorregioes read FJSON;
-    procedure ConsultarMesorregioes(const pUF: string; pTransformar: ITransformar);
+    procedure ConsultarMesorregioes(const pUF: string);
   end;
 
 implementation
@@ -23,7 +24,9 @@ uses
 
 { TApiIBGEEstado }
 
-procedure TApiIBGEEstado.ConsultarMesorregioes(const pUF: string; pTransformar: ITransformar);
+procedure TApiIBGEEstado.ConsultarMesorregioes(const pUF: string);
+var
+  lTransformar: ITransformar;
 begin
   FConfigRequest.ConfigurarRequisicao(Request, pUF);
 
@@ -32,7 +35,14 @@ begin
     FreeAndNil(FJSON);
   end;
 
-  FJSON := TJSONIBGEMesorregioes(pTransformar.ParaObjeto(Request.Response.JSONValue));
+  lTransformar := TBridgeIBGEMesorregioes.Create;
+  FJSON := TJSONIBGEMesorregioes(lTransformar.ParaObjeto(Request.Response.JSONValue));
+end;
+
+destructor TApiIBGEEstado.Destroy;
+begin
+  FreeAndNil(FJSON);
+  inherited;
 end;
 
 end.
