@@ -5,11 +5,9 @@ interface
 uses
   API.Classes.Base.Principal, System.JSON, API.Classes.Helpers.Enumerados,
   API.Classes.JSON.ViaCep,
-  API.Interfaces.Bridge.JSONParaObject;
+  API.Interfaces.Bridge.JSONParaObject, API.Interfaces.FactoryMethod.Api;
 
 type
-  TTeste = class(TInterfacedObject, IApiTipo);
-
   TApiViaCep = class(TApi)
   private
     FJSON: TJSONViaCep;
@@ -36,14 +34,14 @@ begin
 
   if pCep.Length < 8 then
   begin
-    raise ECepInvalido.Create('O CEP está inválido');
+    raise ECepInvalido.Create('O CEP estÃ¡ invÃ¡lido');
   end;
 
   FConfigRequest.ConfigurarRequisicao(Request, pCep);
 
   if ContainsStr(Request.Response.JSONText, 'erro') then
   begin
-    raise ECepInexistente.Create('O CEP informado não foi encontrado');
+    raise ECepInexistente.Create('O CEP informado nÃ£o foi encontrado');
   end;
 
   if Request.Response.StatusCode <> 200 then

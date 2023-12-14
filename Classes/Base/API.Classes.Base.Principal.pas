@@ -5,10 +5,15 @@ interface
 uses
   REST.Client, API.Interfaces.Strategy.Principal,
   API.Classes.Helpers.Enumerados, API.Interfaces.Bridge.JSONParaObject,
-  API.Classes.Bridge.ViaCepBridge;
+  API.Classes.Bridge.ViaCepBridge, API.Interfaces.factoryMethod.Api;
 
 type
-  TApi = class
+  TTeste = class(TInterfacedObject, IApiTipo)
+  public
+   procedure Consultar(const pValor: string);
+  end;
+
+  TApi = class(TTeste)
   private
     FRequest: TRESTRequest;
     FClient: TRESTClient;
