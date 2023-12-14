@@ -29,7 +29,8 @@ implementation
 
 class procedure THelpersException.TratarExceptions(pE: Exception);
 begin
-  Application.MessageBox(PChar(pE.Message), 'Atenção', MB_OK + MB_ICONINFORMATION);
+  Application.MessageBox(PChar('Foi encontrado um inconsistência: ' + sLineBreak + pE.Message),
+    'Atenção', MB_OK + MB_ICONINFORMATION);
 end;
 
 end.

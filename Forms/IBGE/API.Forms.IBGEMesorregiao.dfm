@@ -122,6 +122,16 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
       ExplicitTop = 59
       ExplicitWidth = 632
       ExplicitHeight = 50
+      inherited lbeLatitude: TLabeledEdit
+        EditLabel.ExplicitLeft = 255
+        EditLabel.ExplicitTop = -1
+        EditLabel.ExplicitWidth = 43
+      end
+      inherited lbeLongitude: TLabeledEdit
+        EditLabel.ExplicitLeft = 114
+        EditLabel.ExplicitTop = -1
+        EditLabel.ExplicitWidth = 54
+      end
     end
   end
   object btnAnterior: TButton
@@ -217,10 +227,10 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
     inherited memJson: TMemo
       Width = 631
       Height = 263
-      ExplicitLeft = 1
-      ExplicitTop = 34
-      ExplicitWidth = 639
-      ExplicitHeight = 109
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 631
+      ExplicitHeight = 263
     end
   end
 end

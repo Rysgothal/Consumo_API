@@ -47,7 +47,7 @@ object frmDadosViaCep: TfrmDadosViaCep
     EditLabel.Height = 15
     EditLabel.Caption = 'Estado'
     ReadOnly = True
-    TabOrder = 2
+    TabOrder = 4
     Text = ''
   end
   object lbeBairro: TLabeledEdit
@@ -75,7 +75,7 @@ object frmDadosViaCep: TfrmDadosViaCep
     EditLabel.Height = 15
     EditLabel.Caption = 'CEP'
     ReadOnly = True
-    TabOrder = 4
+    TabOrder = 2
     Text = ''
   end
   object lbeComplemento: TLabeledEdit
@@ -103,7 +103,7 @@ object frmDadosViaCep: TfrmDadosViaCep
     EditLabel.Height = 15
     EditLabel.Caption = 'SIAFI'
     ReadOnly = True
-    TabOrder = 6
+    TabOrder = 9
     Text = ''
   end
   object lbeIBGE: TLabeledEdit
@@ -117,7 +117,7 @@ object frmDadosViaCep: TfrmDadosViaCep
     EditLabel.Height = 15
     EditLabel.Caption = 'IBGE'
     ReadOnly = True
-    TabOrder = 7
+    TabOrder = 6
     Text = ''
   end
   object lbeGIA: TLabeledEdit
@@ -131,7 +131,7 @@ object frmDadosViaCep: TfrmDadosViaCep
     EditLabel.Height = 15
     EditLabel.Caption = 'GIA'
     ReadOnly = True
-    TabOrder = 8
+    TabOrder = 7
     Text = ''
   end
   object lbeDDD: TLabeledEdit
@@ -145,7 +145,7 @@ object frmDadosViaCep: TfrmDadosViaCep
     EditLabel.Height = 15
     EditLabel.Caption = 'DDD'
     ReadOnly = True
-    TabOrder = 9
+    TabOrder = 8
     Text = ''
   end
   object btnLimpar: TButton
@@ -159,7 +159,7 @@ object frmDadosViaCep: TfrmDadosViaCep
     ImageMargins.Left = 10
     ImageMargins.Right = -10
     Images = dmPrincipal.imglistIconesBotoes
-    TabOrder = 10
+    TabOrder = 11
     OnClick = btnLimparClick
   end
   object btnMaps: TButton
@@ -172,7 +172,7 @@ object frmDadosViaCep: TfrmDadosViaCep
     ImageMargins.Left = 10
     ImageMargins.Right = -10
     Images = dmPrincipal.imglistIconesBotoes
-    TabOrder = 11
+    TabOrder = 10
     OnClick = btnMapsClick
   end
 end

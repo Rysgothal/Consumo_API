@@ -262,29 +262,36 @@ var
   lEstados: TJSONIbgeUFs;
   lJSON: TJSONValue;
 begin
-  LimparComponentesAoEscolherRegiao;
-  HabilitarCmbMesorregioes(False);
-  HabilitarBotoesNavegacao(False);
-  HabilitarComboBoxEstados;
-
-  if cmbRegiao.ItemIndex = -1 then
-  begin
-    HabilitarComboBoxEstados(False);
-    Exit;
-  end;
-
-  lApi := TApiSingleton.ObterInstancia(ejUfs);
-  lJSON := lApi.Regiao.ListarEstadosDaRegiao((cmbRegiao.ItemIndex + 1).ToString);
-
   try
-    lEstados := TJSONIBGEUFs(lApi.Transformar.ParaObjeto(lJSON));
+    LimparComponentesAoEscolherRegiao;
+    HabilitarCmbMesorregioes(False);
+    HabilitarBotoesNavegacao(False);
+    HabilitarComboBoxEstados;
 
-    for var lEstado in lEstados.Ufs do
+    if cmbRegiao.ItemIndex = -1 then
     begin
-      cmbEstado.Items.Add(lEstado.Sigla + ' - ' + lEstado.Nome);
+      HabilitarComboBoxEstados(False);
+      Exit;
     end;
-  finally
-    FreeAndNil(lEstados);
+
+    lApi := TApiSingleton.ObterInstancia(ejUfs);
+    lJSON := lApi.Regiao.ListarEstadosDaRegiao((cmbRegiao.ItemIndex + 1).ToString);
+
+    try
+      lEstados := TJSONIBGEUFs(lApi.Transformar.ParaObjeto(lJSON));
+
+      for var lEstado in lEstados.Ufs do
+      begin
+        cmbEstado.Items.Add(lEstado.Sigla + ' - ' + lEstado.Nome);
+      end;
+    finally
+      FreeAndNil(lEstados);
+    end;
+  except
+    on E: Exception do
+    begin
+      THelpersException.TratarExceptions(E);
+    end;
   end;
 end;
 
