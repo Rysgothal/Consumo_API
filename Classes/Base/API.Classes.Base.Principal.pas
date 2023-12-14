@@ -55,4 +55,11 @@ begin
   inherited;
 end;
 
+{ TTeste }
+
+procedure TTeste.Consultar(const pValor: string);
+begin
+
+end;
+
 end.

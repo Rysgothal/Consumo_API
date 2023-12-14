@@ -6,23 +6,25 @@ uses
   API.Classes.Base.ViaCep, API.Classes.Base.IBGE.Mesorregiao, API.Classes.Base.IBGE.Regiao,
   API.Classes.Base.IBGE.Metadados, API.Classes.Base.IBGE.Estados, API.Interfaces.Bridge.JSONParaObject,
   API.Classes.Helpers.Enumerados, System.Classes, System.Generics.Collections,
-  API.Interfaces.Observer.Notificacao;
+  API.Interfaces.Observer.Notificacao, API.Interfaces.FactoryMethod.Api;
 
 type
   TApiSingleton = class
   private
-    FViaCep: TApiViaCep;
+//    FViaCep: TApiViaCep;
     FMesorregiao: TApiIBGEMesorregiao;
     FRegiao: TApiIBGERegiao;
     FMetadados: TApiIBGEMetadados;
     FEstado: TApiIBGEEstado;
     FTransformar: ITransformar;
     FObservers: TList<IObserver>;
+    FApi: IApiTipo;
     constructor Create;
   public
     destructor Destroy; override;
     class function ObterInstancia(pTransformar: TEstruturaJSON): TApiSingleton;
-    property ViaCep: TApiViaCep read FViaCep write FViaCep;
+    property Api: IApiTipo read FApi write FApi;
+//    property ViaCep: TApiViaCep read FViaCep write FViaCep;
     property Mesorregiao: TApiIBGEMesorregiao read FMesorregiao write FMesorregiao;
     property Regiao: TApiIBGERegiao read FRegiao write FRegiao;
     property Metadados: TApiIBGEMetadados read FMetadados write FMetadados;
@@ -34,13 +36,14 @@ type
   end;
 
 var
-  FApi: TApiSingleton;
+  FApiSingleton: TApiSingleton;
 
 implementation
 
 uses
   System.SysUtils, API.Classes.Bridge.ViaCepBridge, API.Classes.Bridge.IBGERegiaoBridge,
-  API.Classes.Bridge.IBGEMetadadosBridge, API.Classes.Bridge.IBGEUFBridge, API.Classes.Bridge.IBGEMesorregiaoBridge;
+  API.Classes.Bridge.IBGEMetadadosBridge, API.Classes.Bridge.IBGEUFBridge, API.Classes.Bridge.IBGEMesorregiaoBridge,
+  API.Classes.FactoryMethod.Fabrica;
 
 { TApiSingleton }
 
@@ -50,8 +53,13 @@ begin
 end;
 
 constructor TApiSingleton.Create;
+var
+  lFabricaApi: IApiFabrica;
 begin
-  FViaCep := TApiViaCep.Create('https://viacep.com.br/ws/', acViaCep);
+  lFabricaApi := TFabricaApi.Create;
+  FApi := lFabricaApi.SelecionarApi(acViaCep);
+
+//  FViaCep := TApiViaCep.Create('https://viacep.com.br/ws/', acViaCep);
   FMetadados := TApiIBGEMetadados.Create('https://servicodados.ibge.gov.br/api/v3/malhas/regioes/',acMetadados);
   FEstado := TApiIBGEEstado.Create('https://servicodados.ibge.gov.br/api/v1/localidades/estados/', acMesorregiao);
   FMesorregiao := TApiIBGEMesorregiao.Create('https://servicodados.ibge.gov.br/api/v3/malhas/mesorregioes/', acMesorregiao);
@@ -62,7 +70,7 @@ end;
 
 destructor TApiSingleton.Destroy;
 begin
-  FreeAndNil(FViaCep);
+//  FreeAndNil(FViaCep);
   FreeAndNil(FMetadados);
   FreeAndNil(FEstado);
   FreeAndNil(FMesorregiao);
@@ -73,21 +81,21 @@ end;
 
 class function TApiSingleton.ObterInstancia(pTransformar: TEstruturaJSON): TApiSingleton;
 begin
-  if not Assigned(FApi) then
+  if not Assigned(FApiSingleton) then
   begin
-    FApi := TApiSingleton.Create;
+    FApiSingleton := TApiSingleton.Create;
   end;
 
   case pTransformar of
-    ejViaCep: FApi.FTransformar := TBridgeViaCep.Create;
-    ejMesorregioes: FApi.FTransformar := TBridgeIBGEMesorregioes.Create;
-    ejRegiao: FApi.FTransformar := TBridgeIBGERegiao.Create;
-    ejRegioes: FApi.FTransformar := TBridgeIBGERegioes.Create;
-    ejMetadados: FApi.FTransformar := TBridgeIBGEMetadados.Create;
-    ejUfs: FApi.FTransformar := TBridgeIBGEUFs.Create;
+    ejViaCep: FApiSingleton.FTransformar := TBridgeViaCep.Create;
+    ejMesorregioes: FApiSingleton.FTransformar := TBridgeIBGEMesorregioes.Create;
+    ejRegiao: FApiSingleton.FTransformar := TBridgeIBGERegiao.Create;
+    ejRegioes: FApiSingleton.FTransformar := TBridgeIBGERegioes.Create;
+    ejMetadados: FApiSingleton.FTransformar := TBridgeIBGEMetadados.Create;
+    ejUfs: FApiSingleton.FTransformar := TBridgeIBGEUFs.Create;
   end;
 
-  Result := FApi;
+  Result := FApiSingleton;
 end;
 
 procedure TApiSingleton.RemoverObserver(pObserver: IObserver);
@@ -98,6 +106,6 @@ end;
 initialization
 
 finalization
-  FreeAndNil(FApi);
+  FreeAndNil(FApiSingleton);
 
 end.

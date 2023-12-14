@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Mask, Vcl.ExtCtrls,
-  API.Interfaces.Observer.Notificacao, System.JSON, API.Classes.JSON.ViaCep;
+  API.Interfaces.Observer.Notificacao, System.JSON, API.Classes.JSON.ViaCep,
+  API.Classes.Base.ViaCep;
 
 type
   TfrmDadosViaCep = class(TFrame, IObserver)
@@ -89,19 +90,21 @@ end;
 procedure TfrmDadosViaCep.PreencherEdits;
 var
   lApi: TApiSingleton;
+  lViaCep: TApiViaCep;
 begin
   lApi := TApiSingleton.ObterInstancia(ejViaCep);
+  lViaCep := TApiViaCep(lApi.Api);
 
-  lbeCep.Text := lApi.ViaCep.JSON.Cep;
-  lbeBairro.Text := lApi.ViaCep.JSON.Bairro;
-  lbeLogradouro.Text := lApi.ViaCep.JSON.Logradouro;
-  lbeCidade.Text := lApi.ViaCep.JSON.Cidade;
-  lbeEstado.Text := lApi.ViaCep.JSON.Uf;
-  lbeComplemento.Text := lApi.ViaCep.JSON.Complemento;
-  lbeIBGE.Text := lApi.ViaCep.JSON.Ibge.ToString;
-  lbeGIA.Text := lApi.ViaCep.JSON.Gia.ToString;
-  lbeDDD.Text := lApi.ViaCep.JSON.Ddd.ToString;
-  lbeSIAFI.Text := lApi.ViaCep.JSON.Siafi.ToString;
+  lbeCep.Text := lViaCep.JSON.Cep;
+  lbeBairro.Text := lViaCep.JSON.Bairro;
+  lbeLogradouro.Text := lViaCep.JSON.Logradouro;
+  lbeCidade.Text := lViaCep.JSON.Cidade;
+  lbeEstado.Text := lViaCep.JSON.Uf;
+  lbeComplemento.Text := lViaCep.JSON.Complemento;
+  lbeIBGE.Text := lViaCep.JSON.Ibge.ToString;
+  lbeGIA.Text := lViaCep.JSON.Gia.ToString;
+  lbeDDD.Text := lViaCep.JSON.Ddd.ToString;
+  lbeSIAFI.Text := lViaCep.JSON.Siafi.ToString;
 end;
 
 end.

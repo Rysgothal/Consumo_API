@@ -21,7 +21,7 @@ uses
 function TFabricaApi.SelecionarApi(pApiConsulta: TApiConsulta): IApiTipo;
 begin
   case pApiConsulta of
-    acViaCep: TApiViaCep.Create('', pApiConsulta);
+    acViaCep: Result := TApiViaCep.Create('https://viacep.com.br/ws/', acViaCep);
     acMesorregiao: ;
     acRegiao: ;
     acMetadados: ;

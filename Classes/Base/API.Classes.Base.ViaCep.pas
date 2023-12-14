@@ -8,8 +8,6 @@ uses
   API.Interfaces.Bridge.JSONParaObject;
 
 type
-  TTeste = class(TInterfacedObject, IApiTipo);
-
   TApiViaCep = class(TApi)
   private
     FJSON: TJSONViaCep;
