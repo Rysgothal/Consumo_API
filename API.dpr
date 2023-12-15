@@ -32,7 +32,6 @@ uses
   API.Classes.Base.IBGE.Metadados in 'Classes\Base\IBGE\API.Classes.Base.IBGE.Metadados.pas',
   API.Classes.Strategy.IBGEMesorregiaoStrategy in 'Classes\Strategy\API.Classes.Strategy.IBGEMesorregiaoStrategy.pas',
   API.Classes.Strategy.IBGEEstadosStrategy in 'Classes\Strategy\API.Classes.Strategy.IBGEEstadosStrategy.pas',
-  API.Classes.Decorator.Log in 'Classes\Decorator\API.Classes.Decorator.Log.pas',
   API.Interfaces.Bridge.JSONParaObject in 'Interfaces\Bridge\API.Interfaces.Bridge.JSONParaObject.pas',
   API.Classes.Bridge.ViaCepBridge in 'Classes\Bridge\API.Classes.Bridge.ViaCepBridge.pas',
   API.Classes.Bridge.IBGERegiaoBridge in 'Classes\Bridge\API.Classes.Bridge.IBGERegiaoBridge.pas',

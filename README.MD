@@ -15,4 +15,6 @@ Ao executar a aplicação, você se depara com uma tela com um menu na parte sup
 
 - Conceito de Design Pattern
     > - Strategy
-    > - 
+    > - Bridge
+    > - Singleton
+    > - Observer
