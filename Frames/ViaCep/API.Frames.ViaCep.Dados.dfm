@@ -168,6 +168,7 @@ object frmDadosViaCep: TfrmDadosViaCep
     Width = 97
     Height = 45
     Caption = '&Maps'
+    Enabled = False
     ImageIndex = 3
     ImageMargins.Left = 10
     ImageMargins.Right = -10

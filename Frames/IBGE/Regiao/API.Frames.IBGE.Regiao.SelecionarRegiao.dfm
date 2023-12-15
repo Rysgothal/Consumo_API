@@ -30,6 +30,7 @@ object frmSelecionarRegiao: TfrmSelecionarRegiao
     Width = 123
     Height = 41
     Caption = '&Informa'#231#245'es'
+    Enabled = False
     ImageIndex = 21
     ImageMargins.Left = 10
     ImageMargins.Right = -10

@@ -84,6 +84,8 @@ begin
 
     TLabeledEdit(Self.Components[I]).Clear;
   end;
+
+  btnMaps.Enabled := False;;
 end;
 
 procedure TfrmDadosViaCep.PreencherEdits;
@@ -102,6 +104,8 @@ begin
   lbeGIA.Text := lApi.ViaCep.JSON.Gia.ToString;
   lbeDDD.Text := lApi.ViaCep.JSON.Ddd.ToString;
   lbeSIAFI.Text := lApi.ViaCep.JSON.Siafi.ToString;
+
+  btnMaps.Enabled := True;
 end;
 
 end.

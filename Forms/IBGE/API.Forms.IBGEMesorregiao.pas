@@ -42,6 +42,7 @@ type
     procedure btnProximoClick(Sender: TObject);
     procedure btnPrimeiroRegistroClick(Sender: TObject);
     procedure btnUltimoRegistroClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
     procedure PopularMesorregioes;
@@ -53,7 +54,7 @@ type
     procedure LimparBottonPainel;
     procedure AbrirMapa;
     procedure HabilitarSelecaoMesorregiao(pBoolean: Boolean = True);
-    procedure HabilitarComboBoxEstados(pBoolean: Boolean = True);
+    procedure HabilitarSelecaoEstados(pBoolean: Boolean = True);
     procedure HabilitarBotoesNavegacao(pBoolean: Boolean = True);
     function RetornarIdMesorregiao(pSiglaEstado: string): Integer;
     procedure SelecionarItemMesorregiao(pItemLimite, pItem: Integer);
@@ -215,7 +216,15 @@ begin
   PopularRegioes;
 end;
 
-procedure TfrmIbgeMesorregiao.HabilitarComboBoxEstados(pBoolean: Boolean = True);
+procedure TfrmIbgeMesorregiao.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = VK_ESCAPE then
+  begin
+    Close;
+  end;
+end;
+
+procedure TfrmIbgeMesorregiao.HabilitarSelecaoEstados(pBoolean: Boolean = True);
 begin
   lblEstado.Enabled := pBoolean;
   cmbEstado.Enabled := pBoolean;
@@ -269,6 +278,7 @@ begin
   end;
 
   HabilitarBotoesNavegacao;
+  btnMaps.Enabled := True;
 end;
 
 procedure TfrmIbgeMesorregiao.SelecionarPrimeiraMesorregiao;
@@ -301,11 +311,11 @@ begin
     LimparComponentesAoEscolherRegiao;
     HabilitarSelecaoMesorregiao(False);
     HabilitarBotoesNavegacao(False);
-    HabilitarComboBoxEstados;
+    HabilitarSelecaoEstados;
 
     if cmbRegiao.ItemIndex = -1 then
     begin
-      HabilitarComboBoxEstados(False);
+      HabilitarSelecaoEstados(False);
       Exit;
     end;
 
@@ -391,9 +401,10 @@ begin
   cmbMesorregiao.Clear;
   cmbEstado.Clear;
   frmMesorregiaoMaisInfo.Limpar;
-  HabilitarComboBoxEstados(False);
+  HabilitarSelecaoEstados(False);
   HabilitarSelecaoMesorregiao(False);
   HabilitarBotoesNavegacao(False);
+  btnMaps.Enabled := False;
   frmDadosMesorregiao.LimparEdits;
 end;
 

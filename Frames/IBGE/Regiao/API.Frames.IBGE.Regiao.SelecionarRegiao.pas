@@ -19,6 +19,8 @@ type
   private
     { Private declarations }
     procedure Notificar;
+    procedure SelecionarRegiao;
+    procedure Limpar;
   public
     { Public declarations }
     procedure PreencherComboBoxRegioes;
@@ -41,12 +43,12 @@ end;
 
 procedure TfrmSelecionarRegiao.btnLimparClick(Sender: TObject);
 begin
-  cmbRegiao.ItemIndex := -1;
+  Limpar;
 end;
 
 procedure TfrmSelecionarRegiao.cmbRegiaoChange(Sender: TObject);
 begin
-  Notificar;
+  SelecionarRegiao;
 end;
 
 procedure TfrmSelecionarRegiao.Notificar;
@@ -93,6 +95,22 @@ begin
   finally
     FreeAndNil(lRegioes);
   end;
+end;
+
+procedure TfrmSelecionarRegiao.SelecionarRegiao;
+begin
+  Notificar;
+
+  if not btnInformacoes.Enabled then
+  begin
+    btnInformacoes.Enabled := True;
+  end;
+end;
+
+procedure TfrmSelecionarRegiao.Limpar;
+begin
+  cmbRegiao.ItemIndex := -1;
+  btnInformacoes.Enabled := False;
 end;
 
 end.
