@@ -76,7 +76,7 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
       Caption = 'Mesorregi'#245'es:'
       Enabled = False
     end
-    object cmbNomeMesorregiao: TComboBox
+    object cmbMesorregiao: TComboBox
       Left = 93
       Top = 17
       Width = 270
@@ -84,7 +84,7 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
       Style = csDropDownList
       Enabled = False
       TabOrder = 0
-      OnChange = cmbNomeMesorregiaoChange
+      OnChange = cmbMesorregiaoChange
     end
     object btnLimpar: TButton
       Left = 527

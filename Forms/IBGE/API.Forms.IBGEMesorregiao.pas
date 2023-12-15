@@ -10,7 +10,8 @@ uses
   API.Classes.Base.IBGE.Mesorregiao, API.Classes.JSON.IBGE.Regiao,
   API.Classes.JSON.IBGE.UF, API.Classes.JSON.IBGE.Mesorregiao,
   API.Classes.Base.IBGE.Estados, API.Classes.Base.IBGE.Metadados,
-  API.Classes.Singleton.Principal, API.Frames.IBGE.Mesorregiao.Dados, API.Frames.IBGE.Mesorregiao.DadosMaisInfo;
+  API.Classes.Singleton.Principal, API.Frames.IBGE.Mesorregiao.Dados, API.Frames.IBGE.Mesorregiao.DadosMaisInfo,
+  API.Classes.Helpers.Enumerados;
 
 type
   TfrmIbgeMesorregiao = class(TForm)
@@ -20,7 +21,7 @@ type
     cmbEstado: TComboBox;
     lblEstado: TLabel;
     pnlBotton: TPanel;
-    cmbNomeMesorregiao: TComboBox;
+    cmbMesorregiao: TComboBox;
     lblNomeMesorregiao: TLabel;
     btnLimpar: TButton;
     btnMaps: TButton;
@@ -36,27 +37,35 @@ type
     procedure FormCreate(Sender: TObject);
     procedure cmbRegiaoChange(Sender: TObject);
     procedure cmbEstadoChange(Sender: TObject);
-    procedure cmbNomeMesorregiaoChange(Sender: TObject);
+    procedure cmbMesorregiaoChange(Sender: TObject);
     procedure btnAnteriorClick(Sender: TObject);
     procedure btnProximoClick(Sender: TObject);
     procedure btnPrimeiroRegistroClick(Sender: TObject);
     procedure btnUltimoRegistroClick(Sender: TObject);
   private
     { Private declarations }
-    procedure PreencherComboBoxMesorregiao;
-    procedure PreencherComboBoxEstados;
+    procedure PopularMesorregioes;
+    procedure PopularEstados;
+    procedure PopularRegioes;
     procedure SelecionarMesorregiao;
-    procedure PreencherRegioesComboBox;
+    procedure SelecionarEstado;
     procedure LimparFormulario;
     procedure LimparBottonPainel;
     procedure AbrirMapa;
-    procedure HabilitarCmbMesorregioes(pBoolean: Boolean = True);
+    procedure HabilitarSelecaoMesorregiao(pBoolean: Boolean = True);
     procedure HabilitarComboBoxEstados(pBoolean: Boolean = True);
     procedure HabilitarBotoesNavegacao(pBoolean: Boolean = True);
     function RetornarIdMesorregiao(pSiglaEstado: string): Integer;
-    procedure SelecionarItemCmbMesorregioes(pItemLimite, pItem: Integer);
+    procedure SelecionarItemMesorregiao(pItemLimite, pItem: Integer);
+    procedure NavegarMesorregioes(pDirecao: TNavegarBotoes);
+    procedure SelecionarPrimeiraMesorregiao;
+    procedure SelecionarAnteriorMesorregiao;
+    procedure SelecionarProximaMesorregiao;
+    procedure SelecionarUltimaMesorregiao;
     procedure LimparComponentesAoEscolherRegiao;
-    procedure SelecionarEstado;
+    procedure RemoverObservers;
+    procedure AdicionarObservers;
+    function RetornarURLParaPesquisa: string;
   public
     { Public declarations }
   end;
@@ -67,14 +76,13 @@ var
 implementation
 
 uses
-  API.Forms.Navegador, System.SysUtils, System.NetEncoding,
-  API.Classes.Helpers.Enumerados, API.Classes.Base.IBGE.Regiao;
+  API.Forms.Navegador, System.SysUtils, System.NetEncoding, API.Classes.Base.IBGE.Regiao;
 
 {$R *.dfm}
 
 procedure TfrmIbgeMesorregiao.btnAnteriorClick(Sender: TObject);
 begin
-  SelecionarItemCmbMesorregioes(0, cmbNomeMesorregiao.ItemIndex - 1);
+  NavegarMesorregioes(nbAnterior);
 end;
 
 procedure TfrmIbgeMesorregiao.btnLimparClick(Sender: TObject);
@@ -89,17 +97,17 @@ end;
 
 procedure TfrmIbgeMesorregiao.btnPrimeiroRegistroClick(Sender: TObject);
 begin
-  SelecionarItemCmbMesorregioes(cmbNomeMesorregiao.Items.Count, 0);
+  NavegarMesorregioes(nbPrimeiro);
 end;
 
 procedure TfrmIbgeMesorregiao.btnProximoClick(Sender: TObject);
 begin
-  SelecionarItemCmbMesorregioes(cmbNomeMesorregiao.Items.Count, cmbNomeMesorregiao.ItemIndex + 1);
+  NavegarMesorregioes(nbProximo);
 end;
 
 procedure TfrmIbgeMesorregiao.btnUltimoRegistroClick(Sender: TObject);
 begin
-  SelecionarItemCmbMesorregioes(cmbNomeMesorregiao.Items.Count, cmbNomeMesorregiao.Items.Count -1);
+  NavegarMesorregioes(nbUltimo);
 end;
 
 procedure TfrmIbgeMesorregiao.LimparBottonPainel;
@@ -112,7 +120,7 @@ procedure TfrmIbgeMesorregiao.LimparComponentesAoEscolherRegiao;
 begin
   frmDadosMesorregiao.LimparEdits;
   frmMesorregiaoMaisInfo.Limpar;
-  cmbNomeMesorregiao.Clear;
+  cmbMesorregiao.Clear;
   cmbEstado.Clear;
 end;
 
@@ -122,12 +130,47 @@ begin
 
   if cmbEstado.ItemIndex = -1 then
   begin
-    HabilitarCmbMesorregioes(False);
+    HabilitarSelecaoMesorregiao(False);
     Exit;
   end;
 
-  HabilitarCmbMesorregioes;
-  PreencherComboBoxMesorregiao;
+  HabilitarSelecaoMesorregiao;
+  PopularMesorregioes;
+end;
+
+procedure TfrmIbgeMesorregiao.RemoverObservers;
+var
+  lApi: TApiSingleton;
+begin
+  lApi := TApiSingleton.ObterInstancia(ejMesorregioes);
+  lApi.RemoverObserver(frmDadosMesorregiao);
+  lApi.RemoverObserver(frmMesorregiaoMaisInfo);
+end;
+
+procedure TfrmIbgeMesorregiao.AdicionarObservers;
+var
+  lApi: TApiSingleton;
+begin
+  lApi := TApiSingleton.ObterInstancia(ejMesorregioes);
+  lApi.AdicionarObserver(frmDadosMesorregiao);
+  lApi.AdicionarObserver(frmMesorregiaoMaisInfo);
+end;
+
+function TfrmIbgeMesorregiao.RetornarURLParaPesquisa: string;
+var
+  lUrlEncode: TURLEncoding;
+begin
+  lUrlEncode := TURLEncoding.Create;
+
+  try
+    Result  := 'https://servicodados.ibge.gov.br/api/v3/malhas/mesorregioes/' + frmDadosMesorregiao.lbeId.Text +
+      '?formato=application/vnd';
+
+    Result := lUrlEncode.Encode(Result);
+    Result := 'http://geojson.io/#data=data:text/x-url,' + Result + '.geo+json';
+  finally
+    FreeAndNil(lUrlEncode);
+  end;
 end;
 
 procedure TfrmIbgeMesorregiao.HabilitarBotoesNavegacao(pBoolean: Boolean = True);
@@ -138,10 +181,10 @@ begin
   btnUltimoRegistro.Enabled := pBoolean;
 end;
 
-procedure TfrmIbgeMesorregiao.HabilitarCmbMesorregioes(pBoolean: Boolean = True);
+procedure TfrmIbgeMesorregiao.HabilitarSelecaoMesorregiao(pBoolean: Boolean = True);
 begin
   lblNomeMesorregiao.Enabled := pBoolean;
-  cmbNomeMesorregiao.Enabled := pBoolean;
+  cmbMesorregiao.Enabled := pBoolean;
 end;
 
 procedure TfrmIbgeMesorregiao.cmbEstadoChange(Sender: TObject);
@@ -149,34 +192,27 @@ begin
   SelecionarEstado;
 end;
 
-procedure TfrmIbgeMesorregiao.cmbNomeMesorregiaoChange(Sender: TObject);
+procedure TfrmIbgeMesorregiao.cmbMesorregiaoChange(Sender: TObject);
 begin
   SelecionarMesorregiao;
 end;
 
 procedure TfrmIbgeMesorregiao.cmbRegiaoChange(Sender: TObject);
 begin
-  PreencherComboBoxEstados;
+  PopularEstados;
 end;
 
 procedure TfrmIbgeMesorregiao.FormClose(Sender: TObject; var Action: TCloseAction);
-var
-  lApi: TApiSingleton;
 begin
-  lApi := TApiSingleton.ObterInstancia(ejMesorregioes);
-  lApi.RemoverObserver(frmDadosMesorregiao);
+  RemoverObservers;
   Action := TCloseAction.caFree;
   frmIbgeMesorregiao := nil;
 end;
 
 procedure TfrmIbgeMesorregiao.FormCreate(Sender: TObject);
-var
-  lApi: TApiSingleton;
 begin
-  lApi := TApiSingleton.ObterInstancia(ejMesorregioes);
-  lApi.AdicionarObserver(frmDadosMesorregiao);
-  lApi.AdicionarObserver(frmMesorregiaoMaisInfo);
-  PreencherRegioesComboBox;
+  AdicionarObservers;
+  PopularRegioes;
 end;
 
 procedure TfrmIbgeMesorregiao.HabilitarComboBoxEstados(pBoolean: Boolean = True);
@@ -185,23 +221,11 @@ begin
   cmbEstado.Enabled := pBoolean;
 end;
 
-procedure TfrmIbgeMesorregiao.SelecionarItemCmbMesorregioes(pItemLimite, pItem: Integer);
-begin
-  if cmbNomeMesorregiao.ItemIndex = pItemLimite then
-  begin
-    Exit;
-  end;
-
-  cmbNomeMesorregiao.ItemIndex := pItem;
-  cmbNomeMesorregiao.OnChange(nil);
-end;
-
 procedure TfrmIbgeMesorregiao.AbrirMapa;
 var
-  lUrl: string;
-  lUrlEncode: TUrlEncoding;
+  lURL: string;
 begin
-  if cmbNomeMesorregiao.ItemIndex = -1 then
+  if cmbMesorregiao.ItemIndex = -1 then
   begin
     Application.MessageBox('Nenhuma mesorregião selecionada, porfavor selecione!', 'Sem Mesorregiao', MB_OK +
     MB_ICONINFORMATION);
@@ -210,17 +234,8 @@ begin
 
   if not Assigned(frmTelaNavegador) then
   begin
-    lUrl := 'https://servicodados.ibge.gov.br/api/v3/malhas/mesorregioes/' + frmDadosMesorregiao.lbeId.Text + '?formato=application/vnd';
-
-    lUrlEncode := TURLEncoding.Create;
-    try
-      lUrl := lUrlEncode.Encode(lUrl);
-
-      lUrl := 'http://geojson.io/#data=data:text/x-url,' + lUrl + '.geo+json';
-      frmTelaNavegador := TfrmTelaNavegador.Create(lUrl);
-    finally
-      FreeAndNil(lUrlEncode);
-    end;
+    lUrl := RetornarURLParaPesquisa;
+    frmTelaNavegador := TfrmTelaNavegador.Create(lURL);
   end;
 
   frmTelaNavegador.Show;
@@ -232,7 +247,7 @@ var
   lSiglaEstado: string;
   lId: Integer;
 begin
-  if cmbNomeMesorregiao.ItemIndex = -1 then
+  if cmbMesorregiao.ItemIndex = -1 then
   begin
     HabilitarBotoesNavegacao(False);
     Exit;
@@ -256,7 +271,27 @@ begin
   HabilitarBotoesNavegacao;
 end;
 
-procedure TfrmIbgeMesorregiao.PreencherComboBoxEstados;
+procedure TfrmIbgeMesorregiao.SelecionarPrimeiraMesorregiao;
+begin
+  SelecionarItemMesorregiao(0, 0);
+end;
+
+procedure TfrmIbgeMesorregiao.SelecionarProximaMesorregiao;
+begin
+  SelecionarItemMesorregiao(Pred(cmbMesorregiao.Items.Count), Succ(cmbMesorregiao.ItemIndex));
+end;
+
+procedure TfrmIbgeMesorregiao.SelecionarUltimaMesorregiao;
+begin
+  SelecionarItemMesorregiao(Pred(cmbMesorregiao.Items.Count), Pred(cmbMesorregiao.Items.Count));
+end;
+
+procedure TfrmIbgeMesorregiao.SelecionarAnteriorMesorregiao;
+begin
+  SelecionarItemMesorregiao(0, Pred(cmbMesorregiao.ItemIndex))
+end;
+
+procedure TfrmIbgeMesorregiao.PopularEstados;
 var
   lApi: TApiSingleton;
   lEstados: TJSONIbgeUFs;
@@ -264,7 +299,7 @@ var
 begin
   try
     LimparComponentesAoEscolherRegiao;
-    HabilitarCmbMesorregioes(False);
+    HabilitarSelecaoMesorregiao(False);
     HabilitarBotoesNavegacao(False);
     HabilitarComboBoxEstados;
 
@@ -295,7 +330,7 @@ begin
   end;
 end;
 
-procedure TfrmIbgeMesorregiao.PreencherComboBoxMesorregiao;
+procedure TfrmIbgeMesorregiao.PopularMesorregioes;
 var
   lApi: TApiSingleton;
   lSiglaEstado: string;
@@ -306,11 +341,11 @@ begin
 
   for var lMesorregiao in lApi.Estado.JSON.Mesorregioes do
   begin
-    cmbNomeMesorregiao.Items.Add(lMesorregiao.Nome);
+    cmbMesorregiao.Items.Add(lMesorregiao.Nome);
   end;
 end;
 
-procedure TfrmIbgeMesorregiao.PreencherRegioesComboBox;
+procedure TfrmIbgeMesorregiao.PopularRegioes;
 var
   lApi: TApiSingleton;
   lRegioes: TJSONIBGERegioes;
@@ -340,7 +375,7 @@ begin
 
   for var lMesorregiao in lApi.Estado.JSON.Mesorregioes do
   begin
-    if lMesorregiao.Nome <> cmbNomeMesorregiao.Text then
+    if lMesorregiao.Nome <> cmbMesorregiao.Text then
     begin
       Continue;
     end;
@@ -353,13 +388,34 @@ end;
 procedure TfrmIbgeMesorregiao.LimparFormulario;
 begin
   cmbRegiao.ItemIndex := -1;
-  cmbNomeMesorregiao.Clear;
+  cmbMesorregiao.Clear;
   cmbEstado.Clear;
   frmMesorregiaoMaisInfo.Limpar;
   HabilitarComboBoxEstados(False);
-  HabilitarCmbMesorregioes(False);
+  HabilitarSelecaoMesorregiao(False);
   HabilitarBotoesNavegacao(False);
   frmDadosMesorregiao.LimparEdits;
+end;
+
+procedure TfrmIbgeMesorregiao.NavegarMesorregioes(pDirecao: TNavegarBotoes);
+begin
+  case pDirecao of
+    nbPrimeiro: SelecionarPrimeiraMesorregiao;
+    nbAnterior: SelecionarAnteriorMesorregiao;
+    nbProximo: SelecionarProximaMesorregiao;
+    nbUltimo: SelecionarUltimaMesorregiao;
+  end;
+end;
+
+procedure TfrmIbgeMesorregiao.SelecionarItemMesorregiao(pItemLimite, pItem: Integer);
+begin
+  if cmbMesorregiao.ItemIndex = pItemLimite then
+  begin
+    Exit;
+  end;
+
+  cmbMesorregiao.ItemIndex := pItem;
+  cmbMesorregiao.OnChange(nil);
 end;
 
 end.
