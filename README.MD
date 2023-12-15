@@ -9,6 +9,7 @@ Como não irei disponibilizar o executável (muito extenso para dar upload), ser
 Ao executar a aplicação, você se depara com uma tela com um menu na parte superior, e na parte inferior está o dia atual e seu horário. 
 
 * A primeira API implementada é a [ViaCep](https://viacep.com.br/), com ela conseguirá informações relacionadas ao CEP inserido. 
+* A segunda API implementada é a [IBGE](https://servicodados.ibge.gov.br/api/docs/), conseguindo consultar regiões, mesorregiões e estados. 
 
 # Sua Estrutura 📢
 - Conceito S.O.L.I.D.
