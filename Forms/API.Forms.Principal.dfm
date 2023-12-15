@@ -132,6 +132,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object mmnIBGE: TMenuItem
         Caption = 'IBGE'
+        ImageIndex = 2
         object mmnIBGERegioes: TMenuItem
           Caption = 'Regi'#245'es'
           OnClick = mmnIBGERegioesClick
