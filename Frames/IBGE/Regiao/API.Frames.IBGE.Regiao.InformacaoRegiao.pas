@@ -45,7 +45,7 @@ begin
   lApi.Metadados.ConsultarMetadados(lApi.Regiao.JSON.Id.ToString, lApi.Transformar);
   LimparEdits;
 
-  lMetadadosRegiao := lApi.Metadados.JSON.Metadados[0];
+  lMetadadosRegiao := lApi.Metadados.JSON.Metadados;
   PreencherEdits(lMetadadosRegiao);
 end;
 

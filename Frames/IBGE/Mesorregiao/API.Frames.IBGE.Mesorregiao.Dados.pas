@@ -39,7 +39,7 @@ var
 begin
   HabilitarComponentes;
   lApi := TApiSingleton.ObterInstancia(ejMesorregioes);
-  lMetadados := lApi.Mesorregiao.JSON.Metadados[0];
+  lMetadados := lApi.Mesorregiao.JSON.Metadados;   //
 
   lbeLatitude.Text := lMetadados.Centroide.Latitude;
   lbeLongitude.Text := lMetadados.Centroide.Longitude;

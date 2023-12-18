@@ -67,11 +67,13 @@ type
     [JSONName('metadados'), JSONMarshalled(false)]
     FMesorregioesArray: TArray<TJSONIBGEMetadado>;
     FMesorregioesLista: TObjectList<TJSONIBGEMetadado>;
-    function GetMetadados: TObjectList<TJSONIBGEMetadado>;
+//    function GetMetadados: TObjectList<TJSONIBGEMetadado>; overload;
+    function GetMetadados: TJSONIBGEMetadado; overload;
   public
     constructor Create(pJSONValue: TJSONValue; aDefault: string); overload;
     destructor Destroy; override;
-    property Metadados: TObjectList<TJSONIBGEMetadado> read GetMetadados;
+//    property Metadados: TObjectList<TJSONIBGEMetadado> read GetMetadados;
+    property Metadados: TJSONIBGEMetadado read GetMetadados;
   end;
 
 implementation
@@ -112,14 +114,14 @@ begin
   inherited;
 end;
 
-function TJSONIBGEMetadados.GetMetadados: TObjectList<TJSONIBGEMetadado>;
+function TJSONIBGEMetadados.GetMetadados: TJSONIBGEMetadado;
 begin
   for var lElemento in FMesorregioesArray do
   begin
     FMesorregioesLista.Add(lElemento);
   end;
 
-  Result := FMesorregioesLista;
+  Result := FMesorregioesLista[0];
 end;
 
 { TJSONIBGEArea }

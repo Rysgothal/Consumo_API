@@ -66,7 +66,11 @@ begin
   begin
     pnlInformacoes.Height := lAltura;
     Sleep(10);
-    lAltura := lAltura + 4;
+
+    case lAltura < 144 of
+      True: lAltura := lAltura + 5;
+      else lAltura := 144;
+    end;
   end;
 end;
 

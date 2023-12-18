@@ -35,7 +35,7 @@ var
   lLimitrofe: Integer;
 begin
   lApi := TApiSingleton.ObterInstancia(ejMesorregioes);
-  lMetadados := lApi.Mesorregiao.JSON.Metadados[0];
+  lMetadados := lApi.Mesorregiao.JSON.Metadados;
 
   Limpar;
   memJson.Lines.Add('Informações detalhadas:');
