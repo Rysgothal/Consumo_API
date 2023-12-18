@@ -349,6 +349,7 @@ begin
   lApi := TApiSingleton.ObterInstancia(ejMesorregioes);
   lApi.Estado.ConsultarMesorregioes(lSiglaEstado);
 
+  cmbMesorregiao.Clear;
   for var lMesorregiao in lApi.Estado.JSON.Mesorregioes do
   begin
     cmbMesorregiao.Items.Add(lMesorregiao.Nome);

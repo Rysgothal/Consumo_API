@@ -1,12 +1,12 @@
 object frmDadosMesorregiao: TfrmDadosMesorregiao
   Left = 0
   Top = 0
-  Width = 647
+  Width = 555
   Height = 45
   TabOrder = 0
   PixelsPerInch = 96
   object lblVezes: TLabel
-    Left = 205
+    Left = 160
     Top = 21
     Width = 7
     Height = 15
@@ -28,7 +28,7 @@ object frmDadosMesorregiao: TfrmDadosMesorregiao
     Text = ''
   end
   object lbeDimensao: TLabeledEdit
-    Left = 351
+    Left = 270
     Top = 17
     Width = 274
     Height = 23
@@ -42,9 +42,9 @@ object frmDadosMesorregiao: TfrmDadosMesorregiao
     Text = ''
   end
   object lbeLatitude: TLabeledEdit
-    Left = 216
+    Left = 167
     Top = 17
-    Width = 121
+    Width = 92
     Height = 23
     TabStop = False
     Alignment = taCenter
@@ -57,9 +57,9 @@ object frmDadosMesorregiao: TfrmDadosMesorregiao
     Text = ''
   end
   object lbeLongitude: TLabeledEdit
-    Left = 81
+    Left = 68
     Top = 17
-    Width = 121
+    Width = 92
     Height = 23
     TabStop = False
     Alignment = taCenter

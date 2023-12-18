@@ -4,7 +4,7 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
   BorderStyle = bsSingle
   Caption = 'IBGE - Mesorregi'#227'o'
   ClientHeight = 477
-  ClientWidth = 631
+  ClientWidth = 565
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,11 +20,12 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
   object pnlTop: TPanel
     Left = 0
     Top = 0
-    Width = 631
+    Width = 565
     Height = 59
     Align = alTop
     BevelOuter = bvLowered
     TabOrder = 0
+    ExplicitWidth = 631
     object lblRegiao: TLabel
       Left = 16
       Top = 18
@@ -33,7 +34,7 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
       Caption = 'Regi'#245'es:'
     end
     object lblEstado: TLabel
-      Left = 336
+      Left = 291
       Top = 18
       Width = 43
       Height = 15
@@ -50,7 +51,7 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
       OnChange = cmbRegiaoChange
     end
     object cmbEstado: TComboBox
-      Left = 385
+      Left = 340
       Top = 15
       Width = 203
       Height = 23
@@ -63,12 +64,13 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
   object pnlBotton: TPanel
     Left = 0
     Top = 59
-    Width = 631
+    Width = 565
     Height = 151
     Align = alTop
     BevelEdges = [beTop, beBottom]
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitWidth = 631
     object lblNomeMesorregiao: TLabel
       Left = 16
       Top = 20
@@ -88,7 +90,7 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
       OnChange = cmbMesorregiaoChange
     end
     object btnLimpar: TButton
-      Left = 527
+      Left = 467
       Top = 110
       Width = 90
       Height = 41
@@ -101,7 +103,7 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
       OnClick = btnLimparClick
     end
     object btnMaps: TButton
-      Left = 424
+      Left = 364
       Top = 110
       Width = 97
       Height = 41
@@ -116,24 +118,14 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
     end
     inline frmDadosMesorregiao: TfrmDadosMesorregiao
       Left = -1
-      Top = 59
+      Top = 54
       Width = 632
       Height = 50
       TabOrder = 3
       ExplicitLeft = -1
-      ExplicitTop = 59
+      ExplicitTop = 54
       ExplicitWidth = 632
       ExplicitHeight = 50
-      inherited lbeLatitude: TLabeledEdit
-        EditLabel.ExplicitLeft = 255
-        EditLabel.ExplicitTop = -1
-        EditLabel.ExplicitWidth = 43
-      end
-      inherited lbeLongitude: TLabeledEdit
-        EditLabel.ExplicitLeft = 114
-        EditLabel.ExplicitTop = -1
-        EditLabel.ExplicitWidth = 54
-      end
     end
   end
   object btnAnterior: TButton
@@ -219,7 +211,7 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
   inline frmMesorregiaoMaisInfo: TfrmMesorregiaoMaisInfo
     Left = 0
     Top = 214
-    Width = 631
+    Width = 565
     Height = 263
     Align = alBottom
     TabOrder = 6
@@ -227,7 +219,7 @@ object frmIbgeMesorregiao: TfrmIbgeMesorregiao
     ExplicitWidth = 631
     ExplicitHeight = 263
     inherited memJson: TMemo
-      Width = 631
+      Width = 565
       Height = 263
       ExplicitLeft = 0
       ExplicitTop = 0
