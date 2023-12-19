@@ -67,12 +67,10 @@ type
     [JSONName('metadados'), JSONMarshalled(false)]
     FMesorregioesArray: TArray<TJSONIBGEMetadado>;
     FMesorregioesLista: TObjectList<TJSONIBGEMetadado>;
-//    function GetMetadados: TObjectList<TJSONIBGEMetadado>; overload;
-    function GetMetadados: TJSONIBGEMetadado; overload;
+    function GetMetadados: TJSONIBGEMetadado;
   public
     constructor Create(pJSONValue: TJSONValue; aDefault: string); overload;
     destructor Destroy; override;
-//    property Metadados: TObjectList<TJSONIBGEMetadado> read GetMetadados;
     property Metadados: TJSONIBGEMetadado read GetMetadados;
   end;
 
